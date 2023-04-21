@@ -8,6 +8,7 @@ Created on Fri Apr  7 15:24:04 2023
 import json
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 import plotly.express as px
 import datetime as dt
 import pytz
