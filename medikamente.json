@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  7 18:07:38 2023
+
+@author: Melanie
+"""
+
+[
+    {
+        "Medikament": "Ibuprofen",
+        "Einnahme_Menge": 1,
+        "Uhrzeit": "2022-04-12T10:00:00Z",
+        "Eingenommen": true
+    },
+    {
+        "Medikament": "Paracetamol",
+        "Einnahme_Menge": 2,
+        "Uhrzeit": "2022-04-12T15:00:00Z",
+        "Eingenommen": false
+    }
+]
+
