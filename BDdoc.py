@@ -255,7 +255,7 @@ neue_uhrzeit = st.time_input('Uhrzeit:', dt.time(9, 0))
 if st.button('Termin hinzufügen'):
     neue_zeit = dt.datetime.combine(neues_datum, neue_uhrzeit)
     neue_uhrzeit = neue_zeit.strftime('%H:%M')
-    df = df.append({
+    df = pd.concat([df, pd.DataFrame({'Datum': dates, 'Systolischer BD': sbp_values, 'Diastolischer BD': dbp_values})], ignore_index=True)
         'Termin': neuer_termin,
         'Datum': neues_datum.strftime('%Y-%m-%d'),
         'Uhrzeit': neue_uhrzeit
