@@ -295,20 +295,17 @@ def local_to_utc(local_time):
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
-neue_uhrzeit = pytz.timezone('Deine Zeitzone hier').localize(neue_uhrzeit)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
 
-# Schaltfläche hinzufügen
+# Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    neue_daten = pd.DataFrame({
-        'Medikament': [neues_medikament],
-        'Einnahme_Menge': [neue_einnahme_menge],
-        'Uhrzeit': [local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit))],
-        'Eingenommen': [False]
-    })
-    df = pd.concat([df, neue_daten], ignore_index=True)
-
-
+    df = df.append({
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Eingenommen': False
+    }, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
