@@ -251,15 +251,15 @@ neuer_termin = st.text_input('Neuer Termin:', '')
 neues_datum = st.date_input('Datum:', dt.date.today())
 neue_uhrzeit = st.time_input('Uhrzeit:', dt.time(9, 0))
 
-# Schaltfläche zum Hinzufügen des neuen Termins
 if st.button('Termin hinzufügen'):
     neue_zeit = dt.datetime.combine(neues_datum, neue_uhrzeit)
     neue_uhrzeit = neue_zeit.strftime('%H:%M')
-    df = pd.concat([df, pd.DataFrame({'Datum': dates, 'Systolischer BD': sbp_values, 'Diastolischer BD': dbp_values})], ignore_index=True)
+    neue_termin = {
         'Termin': neuer_termin,
         'Datum': neues_datum.strftime('%Y-%m-%d'),
         'Uhrzeit': neue_uhrzeit
-    }, ignore_index=True)
+    }
+    df = pd.concat([df, pd.DataFrame(neue_termin, index=[0])], ignore_index=True)
 
 # Tabelle mit den Terminen anzeigen
 st.table(df)
