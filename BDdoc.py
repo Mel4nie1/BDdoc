@@ -288,7 +288,7 @@ except:
 def local_to_utc(local_time):
     local_tz = get_localzone()
     utc_tz = pytz.utc
-    local_time = local_tz.localize(local_time)
+    local_time = local_time.replace(tzinfo=local_tz)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
