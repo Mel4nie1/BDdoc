@@ -4,3 +4,4 @@ plotly
 datetime
 pytz
 pillow
+streamlit_authenticator
