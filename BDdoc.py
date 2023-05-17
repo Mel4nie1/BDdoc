@@ -314,7 +314,7 @@ for i, row in df.iterrows():
 st.table(df)
 
 # Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern'):
+if st.button('Daten speichern', key='daten_speichern_button'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
 
