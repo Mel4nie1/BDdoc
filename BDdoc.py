@@ -23,7 +23,7 @@ from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 
 # Hintergrundfarbe auf Rot setzen
-st.markdown(""" <style>.stApp {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
+st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_allow_html=True)
 
 # -------- load secrets for jsonbin.io --------
 jsonbin_secrets = st.secrets["jsonbin"]
@@ -53,6 +53,11 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
+st.beta_set_page_config(
+    page_title="BDdoc - Überblick über deine Blutdruckwerte",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
