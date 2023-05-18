@@ -22,6 +22,10 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 
+# Hintergundbildfarbe auf rot ändern
+st.markdown("<style>.stApp {background-color: #FFC0CB;}</style>", unsafe_allow_html=True)
+
+
 # -------- load secrets for jsonbin.io --------
 jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
