@@ -22,6 +22,13 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 
+
+# Setzen des Titels und Untertitels    
+st.set_page_config(
+    page_title="BDdoc - Überblick über deine Blutdruckwerte",
+    layout="wide",  # Ändern Sie dies entsprechend Ihren Layout-Anforderungen
+    initial_sidebar_state="expanded"  # Ändern Sie dies entsprechend Ihren Anforderungen
+
 # Hintergundbildfarbe auf rot ändern
 st.markdown("<style>.stApp {background-color: #FFC0CB;}</style>", unsafe_allow_html=True)
 
@@ -53,12 +60,6 @@ elif authentication_status == False:
 elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
-    
-# Setzen des Titels und Untertitels    
-st.set_page_config(
-    page_title="BDdoc - Überblick über deine Blutdruckwerte",
-    layout="wide",  # Ändern Sie dies entsprechend Ihren Layout-Anforderungen
-    initial_sidebar_state="expanded"  # Ändern Sie dies entsprechend Ihren Anforderungen
 
 
 # Profilbild hochladen
