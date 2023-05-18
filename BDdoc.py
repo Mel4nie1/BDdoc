@@ -22,9 +22,8 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 
-# Hintergundbildfarbe auf rot ändern
-st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
- unsafe_allow_html=True)
+# Hintergrundfarbe auf Rot setzen
+st.markdown(""" <style>.stApp {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
 
 # Setzen des Titels und Untertitels    
 st.set_page_config(
