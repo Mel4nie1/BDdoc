@@ -25,13 +25,6 @@ import streamlit_authenticator as stauth
 # Hintergrundfarbe auf Rot setzen
 st.markdown(""" <style>.stApp {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
 
-# Setzen des Titels und Untertitels    
-st.set_page_config(
-    page_title="BDdoc - Überblick über deine Blutdruckwerte",
-    layout="wide",  # Ändern Sie dies entsprechend Ihren Layout-Anforderungen
-    initial_sidebar_state="expanded"  # Ändern Sie dies entsprechend Ihren Anforderungen
-
-
 # -------- load secrets for jsonbin.io --------
 jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
