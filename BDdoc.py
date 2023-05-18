@@ -53,11 +53,13 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
-st.beta_set_page_config(
+# Titel 
+st.set_page_config(
     page_title="BDdoc - Überblick über deine Blutdruckwerte",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
 
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
