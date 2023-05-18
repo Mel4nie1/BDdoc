@@ -22,17 +22,15 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 
+# Hintergundbildfarbe auf rot ändern
+st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
+ unsafe_allow_html=True)
 
 # Setzen des Titels und Untertitels    
 st.set_page_config(
     page_title="BDdoc - Überblick über deine Blutdruckwerte",
     layout="wide",  # Ändern Sie dies entsprechend Ihren Layout-Anforderungen
     initial_sidebar_state="expanded"  # Ändern Sie dies entsprechend Ihren Anforderungen
-
-# Hintergundbildfarbe auf rot ändern
-st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
- unsafe_allow_html=True)
-
 
 
 # -------- load secrets for jsonbin.io --------
