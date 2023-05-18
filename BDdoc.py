@@ -30,7 +30,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"  # Ändern Sie dies entsprechend Ihren Anforderungen
 
 # Hintergundbildfarbe auf rot ändern
-st.markdown("<style>.stApp {background-color: #FFC0CB;}</style>", unsafe_allow_html=True)
+st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
+ unsafe_allow_html=True)
+
 
 
 # -------- load secrets for jsonbin.io --------
