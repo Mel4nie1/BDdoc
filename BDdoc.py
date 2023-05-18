@@ -53,8 +53,12 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
-# Titel der App
-st.title(f"BDdoc - Überblick über deine Blutdruckwerte")
+# Setzen des Titels
+st.title("BDdoc - Überblick über deine Blutdruckwerte")
+
+# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
+st.header("Überblick über deine Blutdruckwerte")
+
 
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
