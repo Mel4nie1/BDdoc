@@ -232,22 +232,22 @@ data = {'notizen': notizen.split('\n')}
 # Daten mit save_key() Funktion speichern
 res = save_key(api_key, bin_id4, username, data)
 
-# Überprüfen Sie den Erfolg der Speicherung
-res = save_key(api_key, bin_id4, username, data)
-if res["success"]:
+if "success" in res and res["success"]:
     st.success("Notizen erfolgreich gespeichert!")
 else:
     st.write("Fehler beim Speichern der Notizen.")
+
 
 # Löschfunktion definieren
 def delete_notes():
     # Daten mit leerem Notizen-Text speichern
     empty_data = {'notizen': []}
     res = save_key(api_key, bin_id4, username, empty_data)
-    if res["success"]:
-        st.success("Notizen erfolgreich gelöscht!")
-    else:
-        st.write("Fehler beim Löschen der Notizen.")
+if "success" in res and res["success"]:
+    st.success("Notizen erfolgreich gespeichert!")
+else:
+    st.write("Fehler beim Speichern der Notizen.")
+
 
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
