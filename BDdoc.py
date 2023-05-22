@@ -29,6 +29,7 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_al
 jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
 bin_id1 = jsonbin_secrets["bin_id1"]
+bin_id2 = jsonbin_secrets["bin_id2"]
 
 
 # -------- user login --------
@@ -113,15 +114,6 @@ st.write("Systolischer Wert: {}".format(systolic))
 
 st.write("Diastolischer Wert: {}".format(diastolic))
 
-# Daten aus der Datei laden
-with open("BD.json", "r") as f:
-
- data = json.load(f)
-
-# Daten aus der Datei laden
-with open("BD.json", "r") as f:
- data = json.load(f)
-
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
 
@@ -132,9 +124,20 @@ diastolic_bp = st.number_input("Diastolischer Blutdruck (mmHg):", step=1, format
 data["systolic_bp"] = systolic_bp
 data["diastolic_bp"] = diastolic_bp
 
-# Daten als JSON in Datei schreiben
-with open("BD.json", "w") as f:
- json.dump(data, f)
+# Daten in der JSONBin-Bin speichern
+address_list = load_key(api_key, bin_id2, username)
+address_list.append(data)
+res = save_key(api_key, bin_id2, username, address_list)
+
+# Überprüfen Sie den Erfolg der Speicherung
+if res["success"]:
+    st.write("Daten erfolgreich gespeichert.")
+else:
+    st.write("Fehler beim Speichern der Daten.")
+
+# Daten aus der JSONBin-Bin laden
+address_list = load_key(api_key, bin_id2, username)
+
 
 # Zufällige Blutdruckwerte generieren
 dates = pd.date_range(start='2022-01-01', end='2022-12-31', freq='D')
