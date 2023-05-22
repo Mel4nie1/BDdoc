@@ -120,10 +120,6 @@ systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="
 # Eingabefeld für den diastolischen Blutdruck in mmHg
 diastolic_bp = st.number_input("Diastolischer Blutdruck (mmHg):", step=1, format="%d")
 
-# Daten aktualisieren
-data["systolic_bp"] = systolic_bp
-data["diastolic_bp"] = diastolic_bp
-
 # Daten in der JSONBin-Bin speichern
 address_list = load_key(api_key, bin_id2, username)
 address_list.append(data)
