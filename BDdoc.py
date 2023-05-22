@@ -224,33 +224,31 @@ for key, value in hypertonie.items():
 st.subheader("Notizen")
 
 # Notizen-Box
-notizen = st.text_area("Notizen hier eingeben:", '\n'.join(notes))
+notizen = st.text_area("Notizen hier eingeben:")
 
-# Schaltfläche zum Speichern der Notizen
-if st.button("Notizen speichern"):
-    # Notizen aufteilen und leere Zeilen entfernen
-    notes = notizen.split('\n')
-    notes = [note for note in notes if note.strip()]
-    # Notizen speichern
-    res = save_notes(api_key, notes)
-    if res.get('success'):
-        st.success("Notizen erfolgreich gespeichert!")
-    else:
-        st.error("Fehler beim Speichern der Notizen.")
+# Daten als JSON-Objekt formatieren
+data = {'notizen': notizen.split('\n')}
+
+# Daten mit save_key() Funktion speichern
+res = save_key(api_key, bin_id4, username, data)
+
+# Löschfunktion definieren
+def delete_notes():
+    # Daten mit leerem Notizen-Text speichern
+    empty_data = {'notizen': []}
+    res = save_key(api_key, bin_id4, username, empty_data)
 
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
-    # Notizen löschen
-    res = delete_notes(api_key)
-    if res.get('success'):
-        st.success("Notizen erfolgreich gelöscht!")
-        notizen = ''  # Notizen-Feld leeren
-    else:
-        st.error("Fehler beim Löschen der Notizen.")
+    # Löschfunktion aufrufen
+    delete_notes()
+    # Textarea zurücksetzen
+    notizen = ''
 
-# Aktuelle Notizen anzeigen
+# Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
 st.write(notizen)
+
 # Titel hinzufügen
 st.subheader("Terminkalender")
 
