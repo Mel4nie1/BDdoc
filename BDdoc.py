@@ -28,7 +28,7 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_al
 # -------- load secrets for jsonbin.io --------
 jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
-bin_id1 = jsonbin_secrets["bin1_id"]
+bin_id1 = jsonbin_secrets["bin_id1"]
 
 
 # -------- user login --------
@@ -85,9 +85,9 @@ profil = {
 }
 
 # Save profile data using save_key() function
-address_list = load_key(api_key, bin_id, username)
+address_list = load_key(api_key, bin_id1, username)
 address_list.append(profil)
-res = save_key(api_key, bin_id, username, address_list)
+res = save_key(api_key, bin_id1, username, address_list)
 
 # Dummy-Daten
 systolic = "-"
