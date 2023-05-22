@@ -28,7 +28,7 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_al
 # -------- load secrets for jsonbin.io --------
 jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
-bin_id = jsonbin_secrets["bin1_id"]
+bin_id1 = jsonbin_secrets["bin1_id"]
 
 
 # -------- user login --------
