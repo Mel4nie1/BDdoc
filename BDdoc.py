@@ -59,19 +59,14 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
-
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
 # Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
-
- image = Image.open(io.BytesIO(file.read()))
-
- st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
-
+    image = Image.open(io.BytesIO(file.read()))
+    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -89,47 +84,40 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# JSON-Datei mit Profildaten speichern
-with open("profil.json", "w") as f:
-    json.dump(profil, f)
-
-# JSON-Datei mit Profildaten laden
-with open("profil.json", "r") as f:
-    profil = json.load(f)
-
+# Save profile data using save_key() function
+address_list = load_key(api_key, bin_id, username)
+address_list.append(profil)
+res = save_key(api_key, bin_id, username, address_list)
 
 # Dummy-Daten
 systolic = "-"
-
 diastolic = "-"
 
 # Erstelle einen Button zum Verbinden mit einem Bluetooth-Gerät
 connect_button = st.button("Verbinde mit Blutdruckgerät ❤️")
 
 if connect_button:
- st.write("Erfolgreich verbunden")
+    st.write("Erfolgreich verbunden")
 
- # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
- # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
- systolic = 120
- diastolic = 80
+    # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
+    # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
+    systolic = 120
+    diastolic = 80
 
 # Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
 if systolic is not None and diastolic is not None:
- st.subheader("Aktueller Blutdruckwert")
+    st.subheader("Aktueller Blutdruckwert")
 
 st.write("Systolischer Wert: {}".format(systolic))
-
 st.write("Diastolischer Wert: {}".format(diastolic))
 
 # Daten aus der Datei laden
-with open("BD.json", "r") as f:
+address_list = load_key(api_key, bin_id, username)
 
- data = json.load(f)
-
-# Daten aus der Datei laden
+# Data from the file
 with open("BD.json", "r") as f:
- data = json.load(f)
+    data = json.load(f)
+
 
 
 # Eingabefeld für den systolischen Blutdruck in mmHg
