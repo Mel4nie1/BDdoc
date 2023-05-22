@@ -33,6 +33,7 @@ bin_id2 = jsonbin_secrets["bin_id2"]
 bin_id3 = jsonbin_secrets["bin_id3"]
 bin_id4 = jsonbin_secrets["bin_id4"]
 bin_id5 = jsonbin_secrets["bin_id5"]
+bin_id6 = jsonbin_secrets["bin_id6"]
 
 # -------- user login --------
 with open('config.yaml') as file:
@@ -302,25 +303,11 @@ if st.button('Daten speichern'):
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# JSON-Datei laden oder leere DataFrame erstellen
-try:
-    with open('medikamente.json', 'r') as f:
-        df = pd.read_json(f)
-except:
-    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
+# JSON-Daten aus der JSON-Bin laden oder leeren DataFrame erstellen
+data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
+df = pd.DataFrame(data)
 
-# Funktion zur Umwandlung von lokaler Zeit in UTC
-def local_to_utc(local_time):
-    local_tz = get_localzone()
-    utc_tz = pytz.utc
-    local_time = local_time.replace(tzinfo=local_tz)
-    utc_time = local_time.astimezone(utc_tz)
-    return utc_time
-
-# Eingabefelder für das neue Medikament
-neues_medikament = st.text_input('Neues Medikament:', '')
-neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
-neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
+# ...
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
@@ -343,9 +330,10 @@ if st.button('Daten speichern', key='daten_speichern_button'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
 
-    # JSON-Datei öffnen und Daten schreiben
-    with open('medikamente.json', 'w') as f:
-        json.dump(data, f)
-
-    st.success('Daten wurden erfolgreich gespeichert.')
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:   
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
