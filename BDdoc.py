@@ -233,6 +233,7 @@ data = {'notizen': notizen.split('\n')}
 res = save_key(api_key, bin_id4, username, data)
 
 # Überprüfen Sie den Erfolg der Speicherung
+res = save_key(api_key, bin_id4, username, data)
 if res["success"]:
     st.success("Notizen erfolgreich gespeichert!")
 else:
