@@ -265,6 +265,10 @@ st.write(notizen)
 # Titel hinzufügen
 st.subheader("Terminkalender")
 
+# Wenn die JSON-Bin existiert, laden Sie die Termine
+data = load_key(api_key, bin_id5, 'termine', empty_value=[])
+df = pd.DataFrame(data)
+
 # Eingabefelder für den neuen Termin
 neuer_termin = st.text_input('Neuer Termin:', '')
 neues_datum = st.date_input('Datum:', dt.date.today())
@@ -283,17 +287,16 @@ if st.button('Termin hinzufügen'):
 # Tabelle mit den Terminen anzeigen
 st.table(df)
 
-# Termin-Daten als JSON-Objekt speichern
-data = df.to_dict(orient='records')
-
-# Daten mit save_key() Funktion speichern
-res = save_key(api_key, bin_id5, 'termine', data)
-
-# Überprüfen Sie den Erfolg der Speicherung
-if res["success"]:
-    st.success('Daten wurden erfolgreich gespeichert.')
-else:
-    st.write('Fehler beim Speichern der Daten.')
+# Termin-Daten in JSON-Bin speichern
+if st.button('Daten speichern'):
+    # Die Daten in ein Dictionary umwandeln
+    data = df.to_dict(orient='records')
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id, 'termine', data)
+    if res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
     
 # Titel der App
