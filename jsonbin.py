@@ -51,3 +51,26 @@ def save_key(api_key, bin_id, key, data):
     res = requests.put(url, headers=headers, json=res).json()
     return res
 
+def load_notes(api_key):
+    """
+    Load notes from bin
+    """
+    data = load_data(api_key)
+    return data.get('notizen', [])
+
+
+def save_notes(api_key, notes):
+    """
+    Save notes to bin
+    """
+    data = load_data(api_key)
+    data['notizen'] = notes
+    return save_data(api_key, data)
+
+
+def delete_notes(api_key):
+    """
+    Delete notes from bin
+    """
+    return save_notes(api_key, [])
+
