@@ -32,6 +32,7 @@ bin_id1 = jsonbin_secrets["bin_id1"]
 bin_id2 = jsonbin_secrets["bin_id2"]
 bin_id3 = jsonbin_secrets["bin_id3"]
 bin_id4 = jsonbin_secrets["bin_id4"]
+bin_id5 = jsonbin_secrets["bin_id5"]
 
 # -------- user login --------
 with open('config.yaml') as file:
@@ -260,20 +261,9 @@ if st.button("Notizen löschen"):
 st.write("Aktuelle Notizen:")
 st.write(notizen)
 
+
 # Titel hinzufügen
 st.subheader("Terminkalender")
-
-# JSON-Dateipfad
-json_path = 'termine.json'
-
-# Wenn die JSON-Datei existiert, laden Sie die Termine
-if os.path.isfile(json_path):
-    with open(json_path, 'r') as f:
-        data = json.load(f)
-    df = pd.DataFrame.from_dict(data)
-# Ansonsten ein leeres DataFrame initialisieren
-else:
-    df = pd.DataFrame(columns=['Termin', 'Datum', 'Uhrzeit'])
 
 # Eingabefelder für den neuen Termin
 neuer_termin = st.text_input('Neuer Termin:', '')
@@ -293,16 +283,19 @@ if st.button('Termin hinzufügen'):
 # Tabelle mit den Terminen anzeigen
 st.table(df)
 
-# Termin-Daten im JSON-Format speichern
-if st.button('Daten speichern'):
-    # Die Daten in ein Dictionary umwandeln
-    data = df.to_dict(orient='records')
-    # JSON-Datei öffnen und Daten schreiben
-    with open(json_path, 'w') as f:
-        json.dump(data, f)
+# Termin-Daten als JSON-Objekt speichern
+data = df.to_dict(orient='records')
+
+# Daten mit save_key() Funktion speichern
+res = save_key(api_key, bin_id5, 'termine', data)
+
+# Überprüfen Sie den Erfolg der Speicherung
+if res["success"]:
     st.success('Daten wurden erfolgreich gespeichert.')
+else:
+    st.write('Fehler beim Speichern der Daten.')
 
-
+    
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
