@@ -293,7 +293,7 @@ if st.button('Daten speichern'):
     data = df.to_dict(orient='records')
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id5, 'termine', data)
-    if res["success"]:
+    if "success" in res and res["success"]:    
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
