@@ -50,3 +50,12 @@ def save_key(api_key, bin_id, key, data):
         res[key] = data
     res = requests.put(url, headers=headers, json=res).json()
     return res
+
+res = save_key(api_key, bin_id4, username, data)
+print(res)  # Hinzugefügter Code zum Überprüfen des Rückgabewerts
+
+if res["success"]:
+    st.success("Notizen erfolgreich gespeichert!")
+else:
+    st.write("Fehler beim Speichern der Notizen.")
+
