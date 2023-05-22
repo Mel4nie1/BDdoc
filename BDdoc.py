@@ -30,7 +30,8 @@ jsonbin_secrets = st.secrets["jsonbin"]
 api_key = jsonbin_secrets["api_key"]
 bin_id1 = jsonbin_secrets["bin_id1"]
 bin_id2 = jsonbin_secrets["bin_id2"]
-
+bin_id3 = jsonbin_secrets["bin_id3"]
+bin_id4 = jsonbin_secrets["bin_id4"]
 
 # -------- user login --------
 with open('config.yaml') as file:
@@ -163,11 +164,11 @@ else:
     df_grouped = df.groupby(pd.Grouper(key='Datum', freq='MS')).mean().reset_index()
     df_grouped['Datum'] = df_grouped['Datum'].dt.strftime('%Y-%m-%d')
 
-# Gruppierte Daten als JSON-Datei speichern
+# Gruppierte Daten als JSON-String speichern
 json_data = df_grouped.to_json(orient='records')
 
-with open('diagramm.json', 'w') as f:
-    json.dump(json_data, f)
+# Daten mit save_key() Funktion speichern
+res = save_key(api_key, bin_id3, username, json_data)
 
 
 # Linienchart mit Plotly Express erstellen
@@ -225,31 +226,34 @@ st.subheader("Notizen")
 # Notizen-Box
 notizen = st.text_area("Notizen hier eingeben:")
 
-# Schaltfläche zum Speichern der Notizen
-if st.button("Notizen speichern"):
-   # Daten als JSON-Objekt formatieren
-   data = {'notizen': notizen.split('\n')}
+# Daten als JSON-Objekt formatieren
+data = {'notizen': notizen.split('\n')}
 
-   # JSON-Objekt in Datei schreiben
-   with open('notizen.json', 'a') as f:
-       json.dump(data, f)
+# Daten mit save_key() Funktion speichern
+res = save_key(api_key, bin_id4, username, data)
 
-   st.success("Notizen gespeichert!")
+# Überprüfen Sie den Erfolg der Speicherung
+if res["success"]:
+    st.success("Notizen erfolgreich gespeichert!")
+else:
+    st.write("Fehler beim Speichern der Notizen.")
 
-   # Löschfunktion definieren
-   def delete_notes():
-       # JSON-Datei leeren
-       with open('notizen.json', 'w') as f:
-           json.dump({'notizen': []}, f)
-       # Erfolgsmeldung anzeigen
-       st.success("Notizen gelöscht!")
-       # Textarea zurücksetzen
-       return ''
+# Löschfunktion definieren
+def delete_notes():
+    # Daten mit leerem Notizen-Text speichern
+    empty_data = {'notizen': []}
+    res = save_key(api_key, bin_id4, username, empty_data)
+    if res["success"]:
+        st.success("Notizen erfolgreich gelöscht!")
+    else:
+        st.write("Fehler beim Löschen der Notizen.")
 
-   # Schaltfläche zum Löschen der Notizen
-   if st.button("Notizen löschen"):
-       # Löschfunktion aufrufen
-       notizen = delete_notes()
+# Schaltfläche zum Löschen der Notizen
+if st.button("Notizen löschen"):
+    # Löschfunktion aufrufen
+    delete_notes()
+    # Textarea zurücksetzen
+    notizen = ''
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
