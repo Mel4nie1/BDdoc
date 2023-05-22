@@ -132,7 +132,7 @@ address_list.append(data)
 res = save_key(api_key, bin_id2, username, address_list)
 
 # Überprüfen Sie den Erfolg der Speicherung
-if res["success"]:
+if "success" in res and res["success"]:
     st.write("Daten erfolgreich gespeichert.")
 else:
     st.write("Fehler beim Speichern der Daten.")
