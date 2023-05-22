@@ -220,9 +220,6 @@ for key, value in hypertonie.items():
 
     st.write(key + ": " + str(value[0]) + " - " + str(value[1]))
 
-# Notizen laden
-notes = load_notes(api_key)
-
 # Titel hinzufügen
 st.subheader("Notizen")
 
