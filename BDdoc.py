@@ -91,34 +91,36 @@ res = save_key(api_key, bin_id, username, address_list)
 
 # Dummy-Daten
 systolic = "-"
+
 diastolic = "-"
 
 # Erstelle einen Button zum Verbinden mit einem Bluetooth-Gerät
 connect_button = st.button("Verbinde mit Blutdruckgerät ❤️")
 
 if connect_button:
-    st.write("Erfolgreich verbunden")
+ st.write("Erfolgreich verbunden")
 
-    # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
-    # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
-    systolic = 120
-    diastolic = 80
+ # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
+ # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
+ systolic = 120
+ diastolic = 80
 
 # Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
 if systolic is not None and diastolic is not None:
-    st.subheader("Aktueller Blutdruckwert")
+ st.subheader("Aktueller Blutdruckwert")
 
 st.write("Systolischer Wert: {}".format(systolic))
+
 st.write("Diastolischer Wert: {}".format(diastolic))
 
 # Daten aus der Datei laden
-address_list = load_key(api_key, bin_id, username)
-
-# Data from the file
 with open("BD.json", "r") as f:
-    data = json.load(f)
 
+ data = json.load(f)
 
+# Daten aus der Datei laden
+with open("BD.json", "r") as f:
+ data = json.load(f)
 
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
