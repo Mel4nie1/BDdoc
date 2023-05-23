@@ -259,7 +259,7 @@ def delete_notes():
 if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
-
+    
 # Daten aus der JSONBin-Bin laden
 address_data = load_key(api_key, bin_id4, username)
 notizen = '\n'.join(address_data.get('notizen', []))
@@ -267,8 +267,6 @@ notizen = '\n'.join(address_data.get('notizen', []))
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
 st.write(notizen)
-
-
 
 
 # Titel hinzufügen
