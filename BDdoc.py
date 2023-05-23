@@ -332,25 +332,21 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    neue_medikation = {
+    df = df.append({
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
-        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
-    }
-    df = df.append(neue_medikation, ignore_index=True)
+    }, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
-for i, row in df.iterrows():
-    if st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'].strftime('%H:%M') + ' Uhr eingenommen?'):
-        df.at[i, 'Eingenommen'] = True
 st.table(df)
 
-# Medikamenten-Daten in JSON-Bin speichern
-if st.button('Daten speichern - Medikamente'):
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern', key=str(dt.datetime.now())):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
-    # Daten mit save_key-Funktion speichern
+    # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', data)
     if "success" in res and res["success"]:
         st.success('Daten wurden erfolgreich gespeichert.')
