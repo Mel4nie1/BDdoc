@@ -270,6 +270,7 @@ st.write("Aktuelle Notizen:")
 st.write(notizen_text)
 
 
+
 # Titel hinzufügen
 st.subheader("Terminkalender")
 
