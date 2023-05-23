@@ -139,17 +139,6 @@ if st.button("Daten speichern"):
 # Daten aus der JSONBin-Bin laden
 address_list = load_key(api_key, bin_id2, username)
 
-# Überprüfen, ob Daten vorhanden sind, um sie anzuzeigen
-if len(address_list) > 0:
-    st.subheader("Aktuelle Blutdruckwerte")
-    for data in address_list:
-        st.write("Systolischer Wert: {}".format(data["systolic_bp"]))
-        st.write("Diastolischer Wert: {}".format(data["diastolic_bp"]))
-else:
-    st.write("Es sind keine Daten vorhanden.")
-
-
-
 
 # Zufällige Blutdruckwerte generieren
 dates = pd.date_range(start='2022-01-01', end='2022-12-31', freq='D')
