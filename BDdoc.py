@@ -231,7 +231,7 @@ for key, value in hypertonie.items():
 st.subheader("Notizen")
 
 # Notizen-Box
-eingabe_notizen = st.text_area("Notizen hier eingeben:", value=notizen)
+eingabe_notizen = st.text_area("Notizen hier eingeben:", value="")
 
 # Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
 if eingabe_notizen:
@@ -267,7 +267,7 @@ if st.button("Notizen löschen"):
 
 # Daten aus der JSONBin-Bin laden
 address_data = load_key(api_key, bin_id4, username)
-notizen = '\n'.join(address_data['notizen'])
+notizen = '\n'.join(address_data.get('notizen', []))
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
