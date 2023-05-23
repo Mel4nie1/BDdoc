@@ -298,7 +298,7 @@ if st.button('Termin hinzufügen'):
 st.table(df)
 
 # Termin-Daten in JSON-Bin speichern
-if st.button('Daten speichern'):
+if st.button('Daten speichern - Termine'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
     # Daten mit save_key() Funktion speichern
@@ -308,27 +308,13 @@ if st.button('Daten speichern'):
     else:
         st.write('Fehler beim Speichern der Daten.')
 
-
-# Termin-Daten in JSON-Bin speichern
-if st.button('Daten speichern'):
-    # Die Daten in ein Dictionary umwandeln
-    data = df.to_dict(orient='records')
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id5, 'termine', data)
-    if "success" in res and res["success"]:    
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
 
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# JSON-Datei laden oder leere DataFrame erstellen
-try:
-    with open('medikamente.json', 'r') as f:
-        df = pd.read_json(f)
-except:
-    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
+# JSON-Bin-Daten laden oder leeren DataFrame erstellen
+data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
+df = pd.DataFrame(data)
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
@@ -343,15 +329,15 @@ neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
 neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
-
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    df = df.append({
+    neue_medikation = {
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
         'Eingenommen': False
-    }, ignore_index=True)
+    }
+    df = df.append(neue_medikation, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
@@ -359,16 +345,14 @@ for i, row in df.iterrows():
         df.at[i, 'Eingenommen'] = True
 st.table(df)
 
-if st.button('Daten hier speichern', key=str(dt.datetime.now())):
-    
-
-# Termin-Daten im JSON-Format speichern
-  if st.button('Daten hier speichern'):
+# Medikamenten-Daten in JSON-Bin speichern
+if st.button('Daten speichern - Medikamente'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
-    
-    # JSON-Datei öffnen und Daten schreiben
-    with open('medikamente.json', 'w') as f:
-        json.dump(data, f)
-        
-    st.success('Daten wurden nun erfolgreich gespeichert.')
+    # Daten mit save_key-Funktion speichern
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
+
