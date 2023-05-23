@@ -109,14 +109,6 @@ if connect_button:
  systolic = 120
  diastolic = 80
 
-# Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
-if systolic is not None and diastolic is not None:
- st.subheader("Aktueller Blutdruckwert")
-
-st.write("Systolischer Wert: {}".format(systolic))
-
-st.write("Diastolischer Wert: {}".format(diastolic))
-
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
 
@@ -129,19 +121,28 @@ data = {
     "diastolic_bp": diastolic_bp
 }
 
-# Daten in der JSONBin-Bin speichern
-address_list = load_key(api_key, bin_id2, username)
-address_list.append(data)
-res = save_key(api_key, bin_id2, username, address_list)
+# Speichern der Daten nur, wenn beide Werte eingegeben wurden
+if systolic_bp is not None and diastolic_bp is not None:
+    # Daten in der JSONBin-Bin speichern
+    address_list = load_key(api_key, bin_id2, username)
+    address_list.append(data)
+    res = save_key(api_key, bin_id2, username, address_list)
 
-# Überprüfen Sie den Erfolg der Speicherung
-if "success" in res and res["success"]:
-    st.write("Daten erfolgreich gespeichert.")
-else:
-    st.write("Fehler beim Speichern der Daten.")
+    # Überprüfen Sie den Erfolg der Speicherung
+    if "success" in res and res["success"]:
+        st.success("Daten erfolgreich gespeichert.")
+    else:
+        st.error("Fehler beim Speichern der Daten.")
 
 # Daten aus der JSONBin-Bin laden
 address_list = load_key(api_key, bin_id2, username)
+
+# Nur anzeigen, wenn Daten vorhanden sind
+if address_list:
+    st.subheader("Aktueller Blutdruckwert")
+    latest_data = address_list[-1]
+    st.write("Systolischer Wert: {}".format(latest_data["systolic_bp"]))
+    st.write("Diastolischer Wert: {}".format(latest_data["diastolic_bp"]))
 
 
 
