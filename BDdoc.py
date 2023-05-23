@@ -325,6 +325,9 @@ def local_to_utc(local_time):
     return utc_time
 
 
+# Leere Liste erstellen
+data = []
+
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
@@ -332,24 +335,27 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    df = df.append({
+    # Neue Zeile zum DataFrame hinzufügen
+    data.append({
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
-    }, ignore_index=True)
+    })
+
+# DataFrame erstellen
+df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 st.table(df)
 
 # Schaltfläche zum Speichern der Daten
 if st.button('Daten speichern', key=str(dt.datetime.now())):
-    # Die Daten in ein Dictionary umwandeln
-    data = df.to_dict(orient='records')
     # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', data)
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
     if "success" in res and res["success"]:
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
+
 
