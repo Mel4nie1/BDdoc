@@ -359,7 +359,7 @@ for i, row in df.iterrows():
         df.at[i, 'Eingenommen'] = True
 st.table(df)
 
-if st.button('Daten speichern', key=str(dt.datetime.now())):
+if st.button('Daten hier speichern', key=str(dt.datetime.now())):
     
 
 # Termin-Daten im JSON-Format speichern
