@@ -109,6 +109,13 @@ if connect_button:
  systolic = 120
  diastolic = 80
 
+# Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
+if systolic is not None and diastolic is not None:
+ st.subheader("Aktueller Blutdruckwert")
+
+st.write("Systolischer Wert: {}".format(systolic))
+
+st.write("Diastolischer Wert: {}".format(diastolic))
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
 
