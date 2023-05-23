@@ -225,8 +225,6 @@ for key, value in hypertonie.items():
 
     st.write(key + ": " + str(value[0]) + " - " + str(value[1]))
 
-import streamlit as st
-
 # Titel hinzufügen
 st.subheader("Notizen")
 
@@ -239,8 +237,7 @@ notizen = address_data.get('notizen', [])
 
 # Aktuelle Notizen anzeigen
 st.write("Aktuelle Notizen:")
-notizen_text = '\n'.join(notizen)
-st.write(notizen_text)
+st.write(eingabe_notizen)
 
 # Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
 if st.button("Notiz speichern"):
