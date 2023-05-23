@@ -231,14 +231,6 @@ st.subheader("Notizen")
 # Notizen-Box
 eingabe_notizen = st.text_area("Notizen hier eingeben:", value="", key="notizen_input")
 
-# Laden der aktuellen Notizen
-address_data = load_key(api_key, bin_id4, username)
-notizen = address_data.get('notizen', [])
-
-# Aktuelle Notizen anzeigen
-st.write("Aktuelle Notizen:")
-st.write(eingabe_notizen)
-
 # Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
 if st.button("Notiz speichern"):
     if eingabe_notizen:
@@ -252,6 +244,14 @@ if st.button("Notiz speichern"):
             st.success("Notizen erfolgreich gespeichert!")
         else:
             st.write("Fehler beim Speichern der Notizen.")
+            
+# Laden der aktuellen Notizen
+address_data = load_key(api_key, bin_id4, username)
+notizen = address_data.get('notizen', [])
+
+# Aktuelle Notizen anzeigen
+st.write("Aktuelle Notizen:")
+st.write(eingabe_notizen)
 
 # Löschfunktion definieren
 def delete_notes():
