@@ -314,9 +314,9 @@ def local_to_utc(local_time):
     return utc_time
 
 # Funktion zum Speichern der Daten mit save_key()
-def save_data_to_key(api_key, bin_id, username, data):
+def save_data_to_key(api_key, bin_id6, username, data):
     # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_key(api_key, bin_id, username, data)
+    res = save_key(api_key, bin_id6, username, data)
     return res
 
 # Eingabefelder für das neue Medikament
@@ -344,7 +344,7 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
     # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_data_to_key(api_key, bin_id3, username, json.dumps(data))
+    res = save_data_to_key(api_key, bin_id6, username, json.dumps(data))
     if res == 'success':
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
