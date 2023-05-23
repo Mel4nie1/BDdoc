@@ -36,7 +36,7 @@ def load_key(api_key, bin_id, key, empty_value=[]):
         return empty_value
 
 
-def save_key(api_key, bin_id, key, data):
+def save_key(api_key, bin_id5, key, data):
     """
     Save key to bin
     """
