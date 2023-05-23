@@ -231,7 +231,7 @@ for key, value in hypertonie.items():
 st.subheader("Notizen")
 
 # Notizen-Box
-notizen = st.text_area("Notizen hier eingeben:")
+notizen = st.text_area("Notizen hier eingeben:", value=notizen)
 
 # Daten als JSON-Objekt formatieren
 data = {'notizen': notizen.split('\n')}
@@ -250,10 +250,10 @@ def delete_notes():
     # Daten mit leerem Notizen-Text speichern
     empty_data = {'notizen': []}
     res = save_key(api_key, bin_id4, username, empty_data)
-if "success" in res and res["success"]:
-    st.success("Notizen erfolgreich gespeichert!")
-else:
-    st.write("Fehler beim Speichern der Notizen.")
+    if "success" in res and res["success"]:
+        st.success("Notizen erfolgreich gelöscht!")
+    else:
+        st.write("Fehler beim Löschen der Notizen.")
 
 
 # Schaltfläche zum Löschen der Notizen
@@ -262,6 +262,10 @@ if st.button("Notizen löschen"):
     delete_notes()
     # Textarea zurücksetzen
     notizen = ''
+
+# Daten aus der JSONBin-Bin laden
+address_data = load_key(api_key, bin_id4, username)
+notizen = '\n'.join(address_data['notizen'])
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
