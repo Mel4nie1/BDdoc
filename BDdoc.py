@@ -115,34 +115,39 @@ systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="
 # Eingabefeld für den diastolischen Blutdruck in mmHg
 diastolic_bp = st.number_input("Diastolischer Blutdruck (mmHg):", step=1, format="%d")
 
-# Daten aktualisieren
-data = {
-    "systolic_bp": systolic_bp,
-    "diastolic_bp": diastolic_bp
-}
+# Schaltfläche zum Speichern der Daten
+if st.button("Daten speichern"):
+    # Speichern der Daten nur, wenn beide Werte eingegeben wurden
+    if systolic_bp is not None and diastolic_bp is not None:
+        # Daten aktualisieren
+        data = {
+            "systolic_bp": systolic_bp,
+            "diastolic_bp": diastolic_bp
+        }
 
-# Speichern der Daten nur, wenn beide Werte eingegeben wurden
-if systolic_bp is not None and diastolic_bp is not None:
-    # Daten in der JSONBin-Bin speichern
-    address_list = load_key(api_key, bin_id2, username)
-    address_list.append(data)
-    res = save_key(api_key, bin_id2, username, address_list)
+        # Daten in der JSONBin-Bin speichern
+        address_list = load_key(api_key, bin_id2, username)
+        address_list.append(data)
+        res = save_key(api_key, bin_id2, username, address_list)
 
-    # Überprüfen Sie den Erfolg der Speicherung
-    if "success" in res and res["success"]:
-        st.success("Daten erfolgreich gespeichert.")
-    else:
-        st.error("Fehler beim Speichern der Daten.")
+        # Überprüfen Sie den Erfolg der Speicherung
+        if "success" in res and res["success"]:
+            st.success("Daten erfolgreich gespeichert.")
+        else:
+            st.error("Fehler beim Speichern der Daten.")
 
 # Daten aus der JSONBin-Bin laden
 address_list = load_key(api_key, bin_id2, username)
 
-# Nur anzeigen, wenn Daten vorhanden sind
-if address_list:
-    st.subheader("Aktueller Blutdruckwert")
-    latest_data = address_list[-1]
-    st.write("Systolischer Wert: {}".format(latest_data["systolic_bp"]))
-    st.write("Diastolischer Wert: {}".format(latest_data["diastolic_bp"]))
+# Überprüfen, ob Daten vorhanden sind, um sie anzuzeigen
+if len(address_list) > 0:
+    st.subheader("Aktuelle Blutdruckwerte")
+    for data in address_list:
+        st.write("Systolischer Wert: {}".format(data["systolic_bp"]))
+        st.write("Diastolischer Wert: {}".format(data["diastolic_bp"]))
+else:
+    st.write("Es sind keine Daten vorhanden.")
+
 
 
 
