@@ -300,6 +300,12 @@ if st.button('Daten speichern'):
         st.write('Fehler beim Speichern der Daten.')
 
     
+import streamlit as st
+import pandas as pd
+import datetime as dt
+import pytz
+import json
+
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
@@ -308,16 +314,16 @@ df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenomm
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = get_localzone()
+    local_tz = pytz.timezone('YOUR_LOCAL_TIMEZONE')
     utc_tz = pytz.utc
-    local_time = local_time.replace(tzinfo=local_tz)
+    local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
 # Funktion zum Speichern der Daten mit save_key()
-def save_data_to_key(api_key, bin_id6, username, data):
+def save_data_to_key(api_key, bin_id, username, data):
     # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_key(api_key, bin_id6, username, data)
+    res = save_key(api_key, bin_id, username, data)
     return res
 
 # Eingabefelder für das neue Medikament
@@ -340,3 +346,5 @@ for i, row in df.iterrows():
     if st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'].strftime('%H:%M') + ' Uhr eingenommen?'):
         df.at[i, 'Eingenommen'] = True
 st.table(df)
+
+
