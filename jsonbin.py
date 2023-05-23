@@ -74,17 +74,4 @@ def delete_notes(api_key):
     """
     return save_notes(api_key, [])
 
-def save_key(api_key, bin_id, username, data):
-    # Hier wird die Logik zur Speicherung der Daten in der JSONBin-Bin implementiert
-    # Du solltest die entsprechende Implementierung für den Zugriff auf die JSONBin-Bin und das Speichern der Daten verwenden
 
-    # Beispielhafte Implementierung:
-    try:
-        # Speichern der Daten in der JSONBin-Bin
-        # Hier erfolgt der entsprechende Code zur Speicherung der Daten
-
-        # Erfolgreiche Speicherung, "success" mit True zurückgeben
-        return {"success": True}
-    except Exception as e:
-        # Fehler bei der Speicherung, "success" mit False zurückgeben
-        return {"success": False, "error": str(e)}
