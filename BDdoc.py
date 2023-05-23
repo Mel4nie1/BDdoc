@@ -230,22 +230,21 @@ for key, value in hypertonie.items():
 # Titel hinzufügen
 st.subheader("Notizen")
 
-# Wert von notizen initialisieren
-notizen = ''
-
 # Notizen-Box
 notizen = st.text_area("Notizen hier eingeben:", value=notizen)
 
-# Daten als JSON-Objekt formatieren
-data = {'notizen': notizen.split('\n')}
+# Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
+if notizen:
+    # Daten als JSON-Objekt formatieren
+    data = {'notizen': notizen.split('\n')}
 
-# Daten mit save_key() Funktion speichern
-res = save_key(api_key, bin_id4, username, data)
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id4, username, data)
 
-if "success" in res and res["success"]:
-    st.success("Notizen erfolgreich gespeichert!")
-else:
-    st.write("Fehler beim Speichern der Notizen.")
+    if "success" in res and res["success"]:
+        st.success("Notizen erfolgreich gespeichert!")
+    else:
+        st.write("Fehler beim Speichern der Notizen.")
 
 
 # Löschfunktion definieren
@@ -273,6 +272,7 @@ notizen = '\n'.join(address_data['notizen'])
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
 st.write(notizen)
+
 
 
 
