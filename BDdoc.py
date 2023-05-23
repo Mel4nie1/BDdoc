@@ -230,6 +230,9 @@ for key, value in hypertonie.items():
 # Titel hinzufügen
 st.subheader("Notizen")
 
+# Wert von notizen initialisieren
+notizen = ''
+
 # Notizen-Box
 notizen = st.text_area("Notizen hier eingeben:", value=notizen)
 
@@ -270,6 +273,7 @@ notizen = '\n'.join(address_data['notizen'])
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
 st.write(notizen)
+
 
 
 # Titel hinzufügen
