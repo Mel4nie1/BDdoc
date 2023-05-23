@@ -225,11 +225,22 @@ for key, value in hypertonie.items():
 
     st.write(key + ": " + str(value[0]) + " - " + str(value[1]))
 
+import streamlit as st
+
 # Titel hinzufügen
 st.subheader("Notizen")
 
 # Notizen-Box
 eingabe_notizen = st.text_area("Notizen hier eingeben:", value="", key="notizen_input")
+
+# Laden der aktuellen Notizen
+address_data = load_key(api_key, bin_id4, username)
+notizen = address_data.get('notizen', [])
+
+# Aktuelle Notizen anzeigen
+st.write("Aktuelle Notizen:")
+notizen_text = '\n'.join(notizen)
+st.write(notizen_text)
 
 # Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
 if st.button("Notiz speichern"):
@@ -259,17 +270,6 @@ def delete_notes():
 if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
-    
-# Daten aus der JSONBin-Bin laden
-address_data = load_key(api_key, bin_id4, username)
-notizen = address_data.get('notizen', [])
-notizen_text = '\n'.join(notizen)
-
-# Notizen-Box anzeigen
-st.write("Aktuelle Notizen:")
-st.write(notizen_text)
-
-
 
 # Titel hinzufügen
 st.subheader("Terminkalender")
