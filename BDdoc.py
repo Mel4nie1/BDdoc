@@ -113,10 +113,6 @@ if connect_button:
 if systolic is not None and diastolic is not None:
  st.subheader("Aktueller Blutdruckwert")
 
-# Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
-if systolic is not None and diastolic is not None:
- st.subheader("Aktueller Blutdruckwert")
-
 st.write("Systolischer Wert: {}".format(systolic))
 
 st.write("Diastolischer Wert: {}".format(diastolic))
@@ -271,7 +267,20 @@ notizen = '\n'.join(address_data.get('notizen', []))
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
-st.write(eingabe_notizen)
+st.write(notizen)
+
+# Neue Notiz hinzufügen
+st.subheader("Neue Notiz hinzufügen")
+neue_notiz = st.text_input("Neue Notiz eingeben:")
+if st.button("Notiz speichern"):
+    if neue_notiz:
+        address_data['notizen'].append(neue_notiz)
+        res = save_key(api_key, bin_id4, username, address_data)
+        if "success" in res and res["success"]:
+            st.success("Notiz erfolgreich gespeichert!")
+        else:
+            st.write("Fehler beim Speichern der Notiz.")
+
 
 
 
