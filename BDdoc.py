@@ -226,22 +226,25 @@ for key, value in hypertonie.items():
 # Titel hinzufügen
 st.subheader("Notizen")
 
+# Titel hinzufügen
+st.subheader("Notizen")
+
 # Notizen-Box
-eingabe_notizen = st.text_area("Notizen hier eingeben:", value="")
+eingabe_notizen = st.text_area("Notizen hier eingeben:", value="", key="notizen_input")
 
 # Speichern der Notizen nur wenn der Benutzer eine Eingabe gemacht hat
-if eingabe_notizen:
-    # Daten als JSON-Objekt formatieren
-    data = {'notizen': eingabe_notizen.split('\n')}
+if st.button("Notiz speichern"):
+    if eingabe_notizen:
+        # Daten als JSON-Objekt formatieren
+        data = {'notizen': eingabe_notizen.split('\n')}
 
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id4, username, data)
+        # Daten mit save_key() Funktion speichern
+        res = save_key(api_key, bin_id4, username, data)
 
-    if "success" in res and res["success"]:
-        st.success("Notizen erfolgreich gespeichert!")
-    else:
-        st.write("Fehler beim Speichern der Notizen.")
-
+        if "success" in res and res["success"]:
+            st.success("Notizen erfolgreich gespeichert!")
+        else:
+            st.write("Fehler beim Speichern der Notizen.")
 
 # Löschfunktion definieren
 def delete_notes():
@@ -253,13 +256,10 @@ def delete_notes():
     else:
         st.write("Fehler beim Löschen der Notizen.")
 
-
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
-    # Textarea zurücksetzen
-    eingabe_notizen = ''
 
 # Daten aus der JSONBin-Bin laden
 address_data = load_key(api_key, bin_id4, username)
@@ -268,22 +268,6 @@ notizen = '\n'.join(address_data.get('notizen', []))
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
 st.write(notizen)
-
-# Neue Notiz hinzufügen
-st.subheader("Neue Notiz hinzufügen")
-neue_notiz = st.text_input("Neue Notiz eingeben:")
-if st.button("Notiz speichern"):
-    if neue_notiz:
-        address_data['notizen'].append(neue_notiz)
-        res = save_key(api_key, bin_id4, username, address_data)
-        if "success" in res and res["success"]:
-            st.success("Notiz erfolgreich gespeichert!")
-        else:
-            st.write("Fehler beim Speichern der Notiz.")
-
-
-
-
 
 
 # Titel hinzufügen
