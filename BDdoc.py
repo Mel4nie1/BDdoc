@@ -139,7 +139,7 @@ if st.button("Daten speichern"):
     # Hier sollte der entsprechende Code für die Speicherung/Aktualisierung der Daten implementiert werden
 
     # Überprüfen Sie den Erfolg der Speicherung/Aktualisierung
-    if data_saved_successfully:
+    if data_saved_successfully:  # Hier den entsprechenden Erfolgsstatus überprüfen
         st.write("Daten erfolgreich gespeichert/aktualisiert.")
     else:
         st.write("Fehler beim Speichern/Aktualisieren der Daten.")
@@ -147,6 +147,7 @@ if st.button("Daten speichern"):
 # Laden der gespeicherten Daten
 # Hier sollte der entsprechende Code zum Laden der Daten aus der JSONBin-Bin implementiert werden
 address_list = load_key(api_key, bin_id2, username)
+
 
 
 
