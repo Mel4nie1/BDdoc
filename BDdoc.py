@@ -347,6 +347,10 @@ if st.button('Medikament hinzufügen'):
 df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
+for i, row in df.iterrows():
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    df.at[i, 'Eingenommen'] = eingenommen
+
 st.table(df)
 
 # Schaltfläche zum Speichern der Daten
@@ -357,5 +361,3 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
-
-
