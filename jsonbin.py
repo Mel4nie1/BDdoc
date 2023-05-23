@@ -2,31 +2,31 @@ import requests
 
 BIN_API_URL = r'https://api.jsonbin.io/v3/b'
 
-def load_data(api_key, bin_id):
+def load_data(api_key, bin_id1):
     """
     Load entire bin
     """
-    url = BIN_API_URL + '/' + bin_id + '/latest'
+    url = BIN_API_URL + '/' + bin_id1 + '/latest'
     headers = {'X-Master-Key': api_key}
     res = requests.get(url, headers=headers).json()
     return res['record']
 
 
-def save_data(api_key, bin_id, data):
+def save_data(api_key, bin_id1, data):
     """
     Save entire bin
     """
-    url = BIN_API_URL + '/' + bin_id
+    url = BIN_API_URL + '/' + bin_id1
     headers = {'X-Master-Key': api_key, 'Content-Type': 'application/json'}
     res = requests.put(url, headers=headers, json=data).json()
     return res
 
 
-def load_key(api_key, bin_id, key, empty_value=[]):
+def load_key(api_key, bin_id1, key, empty_value=[]):
     """
     Load key from bin
     """
-    url = BIN_API_URL + '/' + bin_id + '/latest'
+    url = BIN_API_URL + '/' + bin_id1 + '/latest'
     headers = {'X-Master-Key': api_key}
     res = requests.get(url, headers=headers).json()
     res = res['record']
@@ -36,11 +36,11 @@ def load_key(api_key, bin_id, key, empty_value=[]):
         return empty_value
 
 
-def save_key(api_key, bin_id, key, data):
+def save_key(api_key, bin_id1, key, data):
     """
     Save key to bin
     """
-    url = BIN_API_URL + '/' + bin_id
+    url = BIN_API_URL + '/' + bin_id1
     headers = {'X-Master-Key': api_key, 'Content-Type': 'application/json'}
     res = requests.get(url, headers=headers).json()
     res = res['record']
