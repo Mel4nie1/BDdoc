@@ -303,14 +303,14 @@ if st.button('Daten speichern'):
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# Leerer DataFrame erstellen
+# Leerer DataFrame erstellen oder aus einer JSON-Datei laden
 df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
     local_tz = get_localzone()
     utc_tz = pytz.utc
-    local_time = local_tz.localize(local_time)
+    local_time = local_time.replace(tzinfo=local_tz)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
@@ -327,28 +327,16 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    df = df.append({
+    neue_zeile = {
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
         'Eingenommen': False
-    }, ignore_index=True)
+    }
+    df = df.append(neue_zeile, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
     if st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'].strftime('%H:%M') + ' Uhr eingenommen?'):
         df.at[i, 'Eingenommen'] = True
 st.table(df)
-
-# Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key=str(dt.datetime.now())):
-    # Die Daten in ein Dictionary umwandeln
-    data = df.to_dict(orient='records')
-    # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_data_to_key(api_key, bin_id6, username, json.dumps(data))
-    if res == 'success':
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.error('Fehler beim Speichern der Daten.')
-
-
