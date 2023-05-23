@@ -113,9 +113,13 @@ if connect_button:
 if systolic is not None and diastolic is not None:
  st.subheader("Aktueller Blutdruckwert")
 
-st.write("Systolischer Wert: {}".format(systolic))
+import streamlit as st
 
-st.write("Diastolischer Wert: {}".format(diastolic))
+# Überprüfen, ob der Blutdruckwert verfügbar ist
+if systolic is not None and diastolic is not None:
+    st.subheader("Aktueller Blutdruckwert")
+    st.write("Systolischer Wert: {}".format(systolic))
+    st.write("Diastolischer Wert: {}".format(diastolic))
 
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
@@ -123,25 +127,27 @@ systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="
 # Eingabefeld für den diastolischen Blutdruck in mmHg
 diastolic_bp = st.number_input("Diastolischer Blutdruck (mmHg):", step=1, format="%d")
 
-# Daten aktualisieren
-data = {
-    "systolic_bp": systolic_bp,
-    "diastolic_bp": diastolic_bp
-}
+# Speichern der neuen Blutdruckwerte
+if st.button("Daten speichern"):
+    # Daten aktualisieren
+    data = {
+        "systolic": systolic_bp,
+        "diastolic": diastolic_bp
+    }
 
-# Daten in der JSONBin-Bin speichern
+    # Speichern der Daten oder Aktualisieren der vorhandenen Daten in der JSONBin-Bin
+    # Hier sollte der entsprechende Code für die Speicherung/Aktualisierung der Daten implementiert werden
+
+    # Überprüfen Sie den Erfolg der Speicherung/Aktualisierung
+    if data_saved_successfully:
+        st.write("Daten erfolgreich gespeichert/aktualisiert.")
+    else:
+        st.write("Fehler beim Speichern/Aktualisieren der Daten.")
+
+# Laden der gespeicherten Daten
+# Hier sollte der entsprechende Code zum Laden der Daten aus der JSONBin-Bin implementiert werden
 address_list = load_key(api_key, bin_id2, username)
-address_list.append(data)
-res = save_key(api_key, bin_id2, username, address_list)
 
-# Überprüfen Sie den Erfolg der Speicherung
-if "success" in res and res["success"]:
-    st.write("Daten erfolgreich gespeichert.")
-else:
-    st.write("Fehler beim Speichern der Daten.")
-
-# Daten aus der JSONBin-Bin laden
-address_list = load_key(api_key, bin_id2, username)
 
 
 # Zufällige Blutdruckwerte generieren
