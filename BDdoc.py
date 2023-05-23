@@ -371,4 +371,4 @@ if st.button('Daten hier speichern', key=str(dt.datetime.now())):
     with open('medikamente.json', 'w') as f:
         json.dump(data, f)
         
-    st.success('Daten wurden erfolgreich gespeichert.')
+    st.success('Daten wurden nun erfolgreich gespeichert.')
