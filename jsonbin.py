@@ -2,11 +2,11 @@ import requests
 
 BIN_API_URL = r'https://api.jsonbin.io/v3/b'
 
-def load_data(api_key, bin_id1):
+def load_data(api_key, bin_id):
     """
     Load entire bin
     """
-    url = BIN_API_URL + '/' + bin_id1 + '/latest'
+    url = BIN_API_URL + '/' + bin_id + '/latest'
     headers = {'X-Master-Key': api_key}
     res = requests.get(url, headers=headers).json()
     return res['record']
@@ -16,17 +16,17 @@ def save_data(api_key, bin_id1, data):
     """
     Save entire bin
     """
-    url = BIN_API_URL + '/' + bin_id1
+    url = BIN_API_URL + '/' + bin_id
     headers = {'X-Master-Key': api_key, 'Content-Type': 'application/json'}
     res = requests.put(url, headers=headers, json=data).json()
     return res
 
 
-def load_key(api_key, bin_id1, key, empty_value=[]):
+def load_key(api_key, bin_id, key, empty_value=[]):
     """
     Load key from bin
     """
-    url = BIN_API_URL + '/' + bin_id1 + '/latest'
+    url = BIN_API_URL + '/' + bin_id + '/latest'
     headers = {'X-Master-Key': api_key}
     res = requests.get(url, headers=headers).json()
     res = res['record']
@@ -36,11 +36,11 @@ def load_key(api_key, bin_id1, key, empty_value=[]):
         return empty_value
 
 
-def save_key(api_key, bin_id1, key, data):
+def save_key(api_key, bin_id, key, data):
     """
     Save key to bin
     """
-    url = BIN_API_URL + '/' + bin_id1
+    url = BIN_API_URL + '/' + bin_id
     headers = {'X-Master-Key': api_key, 'Content-Type': 'application/json'}
     res = requests.get(url, headers=headers).json()
     res = res['record']
@@ -74,7 +74,7 @@ def delete_notes(api_key):
     """
     return save_notes(api_key, [])
 
-def save_key(api_key, bin_id2, username, data):
+def save_key(api_key, bin_id, username, data):
     # Hier wird die Logik zur Speicherung der Daten in der JSONBin-Bin implementiert
     # Du solltest die entsprechende Implementierung für den Zugriff auf die JSONBin-Bin und das Speichern der Daten verwenden
 
