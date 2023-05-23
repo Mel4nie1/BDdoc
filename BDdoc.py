@@ -314,7 +314,7 @@ df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenomm
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = pytz.timezone('YOUR_LOCAL_TIMEZONE')
+    local_tz = pytz.timezone('Europe/Zurich')
     utc_tz = pytz.utc
     local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
