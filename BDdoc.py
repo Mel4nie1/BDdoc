@@ -318,11 +318,12 @@ df = pd.DataFrame(data)
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = get_localzone()
-    utc_tz = pytz.utc
+    local_tz = dt.timezone(dt.timedelta(hours=1))  # Lokale Zeitzone hier angeben (z.B. dt.timezone('Europe/Berlin'))
+    utc_tz = pytz.timezone('UTC')
     local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
+
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
