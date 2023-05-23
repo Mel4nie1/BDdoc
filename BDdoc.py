@@ -361,3 +361,19 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
+        
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern', key=str(dt.datetime.now())):
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+
+        # Medikamentendaten abrufen und anzeigen
+        data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
+        df = pd.DataFrame(data)
+        st.table(df)
+
+    else:
+        st.write('Fehler beim Speichern der Daten.')
+
