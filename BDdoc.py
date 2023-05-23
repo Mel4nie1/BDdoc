@@ -303,21 +303,35 @@ if st.button('Daten speichern'):
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# JSON-Daten aus der JSON-Bin laden oder leeren DataFrame erstellen
-data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
-df = pd.DataFrame(data)
+# Leerer DataFrame erstellen
+df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
-# ...
+# Funktion zur Umwandlung von lokaler Zeit in UTC
+def local_to_utc(local_time):
+    local_tz = get_localzone()
+    utc_tz = pytz.utc
+    local_time = local_tz.localize(local_time)
+    utc_time = local_time.astimezone(utc_tz)
+    return utc_time
+
+# Funktion zum Speichern der Daten
+def save_data(data):
+    save_key(data)
+    st.success('Daten wurden erfolgreich gespeichert.')
+
+# Eingabefelder für das neue Medikament
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    neue_zeile = pd.DataFrame({
-        'Medikament': [neues_medikament],
-        'Einnahme_Menge': [neue_einnahme_menge],
-        'Uhrzeit': [local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit))],
-        'Eingenommen': [False]
-    })
-    df = pd.concat([df, neue_zeile], ignore_index=True)
+    df = df.append({
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Eingenommen': False
+    }, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
@@ -326,14 +340,9 @@ for i, row in df.iterrows():
 st.table(df)
 
 # Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key='daten_speichern_button'):
+if st.button('Daten speichern', key=str(dt.datetime.now())):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
+    save_data(data)
 
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:   
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
 
