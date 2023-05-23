@@ -262,11 +262,12 @@ if st.button("Notizen löschen"):
     
 # Daten aus der JSONBin-Bin laden
 address_data = load_key(api_key, bin_id4, username)
-notizen = '\n'.join(address_data.get('notizen', []))
+notizen = address_data.get('notizen', [])
+notizen_text = '\n'.join(notizen)
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
-st.write(notizen)
+st.write(notizen_text)
 
 
 # Titel hinzufügen
