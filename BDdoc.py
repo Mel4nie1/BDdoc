@@ -323,27 +323,26 @@ if st.button('Daten speichern'):
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# Leerer DataFrame erstellen
-df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
+# JSON-Datei laden oder leere DataFrame erstellen
+try:
+    with open('medikamente.json', 'r') as f:
+        df = pd.read_json(f)
+except:
+    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
     local_tz = get_localzone()
-    utc_tz = dt.timezone.utc
+    utc_tz = pytz.utc
     local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
-
-# Funktion zum Speichern der Daten mit save_key()
-def save_data_to_key(api_key, bin_id6, username, data):
-    # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_key(api_key, bin_id6, username, data)
-    return res
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
 neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
+
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
@@ -360,14 +359,16 @@ for i, row in df.iterrows():
         df.at[i, 'Eingenommen'] = True
 st.table(df)
 
-# Schaltfläche zum Speichern der Daten
 if st.button('Daten speichern', key=str(dt.datetime.now())):
+    
+
+# Termin-Daten im JSON-Format speichern
+  if st.button('Daten speichern'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
-    # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_data_to_key(api_key, bin_id6, username, json.dumps(data))
-    if res == 'success':
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.error('Fehler beim Speichern der Daten.')
-
+    
+    # JSON-Datei öffnen und Daten schreiben
+    with open('medikamente.json', 'w') as f:
+        json.dump(data, f)
+        
+    st.success('Daten wurden erfolgreich gespeichert.')
