@@ -271,7 +271,7 @@ notizen = '\n'.join(address_data.get('notizen', []))
 
 # Notizen-Box anzeigen
 st.write("Aktuelle Notizen:")
-st.write(notizen)
+st.write(eingabe_notizen)
 
 
 
