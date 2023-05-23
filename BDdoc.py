@@ -362,17 +362,5 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
     else:
         st.write('Fehler beim Speichern der Daten.')
         
-# Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key=str(dt.datetime.now())):
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-    if "success" in res and res["success"]:
-        message = 'Daten wurden erfolgreich gespeichert.'
-    else:
-        message = 'Fehler beim Speichern der Daten.'
-
-# Nachricht anzeigen, wenn der Button geklickt wurde
-if 'message' in locals():
-    st.write(message)
 
 
