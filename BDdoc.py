@@ -299,31 +299,25 @@ if st.button('Daten speichern'):
     else:
         st.write('Fehler beim Speichern der Daten.')
 
-    
-import streamlit as st
-import pandas as pd
-import datetime as dt
-import pytz
-import json
 
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# Leerer DataFrame erstellen oder aus einer JSON-Datei laden
+# Leerer DataFrame erstellen
 df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = pytz.timezone('Europe/Zurich')
+    local_tz = pytz.timezone('Europe/Zurich')  # Zeitzone für die Schweiz
     utc_tz = pytz.utc
     local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
 # Funktion zum Speichern der Daten mit save_key()
-def save_data_to_key(api_key, bin_id, username, data):
+def save_data_to_key(api_key, bin_id6, username, data):
     # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
-    res = save_key(api_key, bin_id, username, data)
+    res = save_key(api_key, bin_id6, username, data)
     return res
 
 # Eingabefelder für das neue Medikament
@@ -333,12 +327,12 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    neue_zeile = {
+    neue_zeile = pd.Series({
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
         'Eingenommen': False
-    }
+    })
     df = df.append(neue_zeile, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
@@ -347,4 +341,14 @@ for i, row in df.iterrows():
         df.at[i, 'Eingenommen'] = True
 st.table(df)
 
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern', key=str(dt.datetime.now())):
+    # Die Daten in ein Dictionary umwandeln
+    data = df.to_dict(orient='records')
+    # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
+    res = save_data_to_key(api_key, bin_id6, username, json.dumps(data))
+    if res == 'success':
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.error('Fehler beim Speichern der Daten.')
 
