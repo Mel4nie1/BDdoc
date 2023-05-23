@@ -353,14 +353,7 @@ for i, row in df.iterrows():
 
 st.table(df)
 
-# Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key=str(dt.datetime.now())):
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
+
         
 
 
