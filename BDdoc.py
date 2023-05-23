@@ -314,10 +314,11 @@ def local_to_utc(local_time):
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
-# Funktion zum Speichern der Daten
-def save_data(data):
-    save_key(data)
-    st.success('Daten wurden erfolgreich gespeichert.')
+# Funktion zum Speichern der Daten mit save_key()
+def save_data_to_key(api_key, bin_id6, username, data):
+    # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
+    res = save_key(api_key, bin_id6, username, data)
+    return res
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
@@ -343,6 +344,11 @@ st.table(df)
 if st.button('Daten speichern', key=str(dt.datetime.now())):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
-    save_data(data)
+    # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
+    res = save_data_to_key(api_key, bin_id6, username, json.dumps(data))
+    if res == 'success':
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.error('Fehler beim Speichern der Daten.')
 
 
