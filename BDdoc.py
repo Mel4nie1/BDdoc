@@ -268,6 +268,10 @@ if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
 
+import streamlit as st
+import pandas as pd
+import datetime as dt
+
 # Titel hinzufügen
 st.subheader("Terminkalender")
 
@@ -292,6 +296,18 @@ if st.button('Termin hinzufügen'):
 
 # Tabelle mit den Terminen anzeigen
 st.table(df)
+
+# Termin-Daten in JSON-Bin speichern
+if st.button('Daten speichern'):
+    # Die Daten in ein Dictionary umwandeln
+    data = df.to_dict(orient='records')
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id5, 'termine', data)
+    if "success" in res and res["success"]:    
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
+
 
 # Termin-Daten in JSON-Bin speichern
 if st.button('Daten speichern'):
