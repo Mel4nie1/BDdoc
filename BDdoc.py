@@ -10,7 +10,7 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import datetime as dt
-import pytz
+from pytz import utc
 from tzlocal import get_localzone
 import io
 from PIL import Image
