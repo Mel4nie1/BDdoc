@@ -64,12 +64,6 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-# Setzen des Titels
-st.title("BDdoc")
-
-# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
-st.subheader("Überblick über deine Blutdruckwerte")
-
 # If login is successful, display the profile form
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
@@ -103,6 +97,10 @@ profil = {
 
 # Load existing profiles from the JSON-Bin
 address_list = load_key(api_key, bin_id1, username)
+
+# Initialize an empty list if address_list is None
+if address_list is None:
+    address_list = []
 
 # Append or update the profile in the address_list
 existing_profile = next((item for item in address_list if item["name"] == name), None)
