@@ -345,8 +345,7 @@ def local_to_utc(local_time):
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
-
-# Leere Liste erstellen
+# Leere Liste für Medikamentendaten
 data = []
 
 # Anzahl der Medikamente
@@ -361,13 +360,17 @@ for i in range(anzahl_medikamente):
     
     # Schaltfläche zum Hinzufügen des Medikaments
     if st.button(f'Medikament {i+1} hinzufügen'):
-        # Neue Zeile zum DataFrame hinzufügen
-        data.append({
-            'Medikament': neues_medikament,
-            'Einnahme_Menge': neue_einnahme_menge,
-            'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-            'Eingenommen': False
-        })
+        # Neues leeres Dictionary für das Medikament erstellen
+        medikament = {}
+        
+        # Medikamentendaten hinzufügen
+        medikament['Medikament'] = neues_medikament
+        medikament['Einnahme_Menge'] = neue_einnahme_menge
+        medikament['Uhrzeit'] = neue_uhrzeit.strftime('%H:%M')
+        medikament['Eingenommen'] = False
+        
+        # Medikament zur Datenliste hinzufügen
+        data.append(medikament)
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
@@ -378,6 +381,7 @@ for i, row in df.iterrows():
     df.at[i, 'Eingenommen'] = eingenommen
 
 st.table(df)
+
 
         
 
