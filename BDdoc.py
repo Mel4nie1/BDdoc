@@ -64,10 +64,6 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-# Sidebar with login form
-username = st.sidebar.text_input("Benutzername")
-password = st.sidebar.text_input("Passwort", type="password")
-login_button = st.sidebar.button("Login")
 
 # Check if login button is clicked
 if login_button:
