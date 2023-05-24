@@ -250,19 +250,24 @@ notizen = address_data.get('notizen', [])
 
 # Aktuelle Notizen anzeigen
 st.write("Aktuelle Notizen:")
-st.write(eingabe_notizen)
+st.write('\n'.join(notizen))
 
 # Löschfunktion definieren
 def delete_notes():
     # Daten mit leerem Notizen-Text speichern
     empty_data = {'notizen': []}
     save_key(api_key, bin_id4, username, empty_data)
-    notizen.clear()  # Notizen leeren
+
+    # Aktualisierte Notizen laden
+    address_data = load_key(api_key, bin_id4, username)
+    notizen.clear()
+    notizen.extend(address_data.get('notizen', []))
 
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
+
 
 
 # Funktion zum Laden der Termindaten aus der JSON-Bin
