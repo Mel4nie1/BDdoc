@@ -68,7 +68,6 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-
 # Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
     image = Image.open(io.BytesIO(file.read()))
@@ -79,7 +78,6 @@ if file is not None:
 
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
-
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -100,15 +98,17 @@ profil = {
 # Load existing profiles from the JSON-Bin
 address_list = load_key(api_key, bin_id1, username)
 
-# Append or update the profile in the address_list
-existing_profile = next((item for item in address_list if item["name"] == name), None)
-if existing_profile:
-    existing_profile.update(profil)
+# Update or append the profile in the address_list
+for item in address_list:
+    if item["name"] == name:
+        item.update(profil)
+        break
 else:
     address_list.append(profil)
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
+
 
 
 # Dummy-Daten
