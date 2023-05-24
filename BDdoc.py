@@ -345,35 +345,20 @@ def local_to_utc(local_time):
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
 
-# Leere Liste für Medikamentendaten
-data = []
+# Eingabefelder für das neue Medikament
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
-# Anzahl der Medikamente
-anzahl_medikamente = st.number_input('Anzahl der Medikamente:', min_value=1, step=1, value=1)
-
-# Eingabefelder für die Medikamente
-for i in range(anzahl_medikamente):
-    st.write(f"Medikament {i+1}:")
-    neues_medikament = st.text_input('Name:', key=f'medikament_name_{i}')
-    neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1, key=f'medikament_menge_{i}')
-    neue_uhrzeit = st.time_input('Uhrzeit:', key=f'medikament_zeit_{i}', value=dt.time(9, 0))
-    
-    # Schaltfläche zum Hinzufügen des Medikaments
-    if st.button(f'Medikament {i+1} hinzufügen'):
-        # Neues leeres Dictionary für das Medikament erstellen
-        medikament = {}
-        
-        # Medikamentendaten hinzufügen
-        medikament['Medikament'] = neues_medikament
-        medikament['Einnahme_Menge'] = neue_einnahme_menge
-        medikament['Uhrzeit'] = neue_uhrzeit.strftime('%H:%M')
-        medikament['Eingenommen'] = False
-        
-        # Medikament zur Datenliste hinzufügen
-        data.append(medikament)
-
-# DataFrame erstellen
-df = pd.DataFrame(data)
+# Schaltfläche zum Hinzufügen des neuen Medikaments
+if st.button('Medikament hinzufügen'):
+    # Neue Zeile zum DataFrame hinzufügen
+    df = df.append({
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
+        'Eingenommen': False
+    }, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
@@ -383,9 +368,8 @@ for i, row in df.iterrows():
 st.table(df)
 
 # Medikamentendaten in JSON-Bin speichern
+data = df.to_dict(orient='records')
 save_key(api_key, bin_id6, 'medikamente', data)
-
-
 
         
 
