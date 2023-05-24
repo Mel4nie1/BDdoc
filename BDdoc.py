@@ -271,7 +271,7 @@ def main():
   
     
     # Laden der Termindaten
-    df = load_termine(api_key, bin_id5)
+    df = load_termine(api_key, bin_id)
     
     # Eingabefelder für den neuen Termin
     neuer_termin = st.text_input('Neuer Termin:', '')
@@ -291,14 +291,13 @@ def main():
     # Tabelle mit den Terminen anzeigen
     st.table(df)
     
-    # Termine zum Löschen auswählen
-    delete_selected = st.checkbox('Ausgewählte Termine löschen')
-    if delete_selected:
-        selected_ids = st.multiselect('Termine zum Löschen auswählen:', df['ID'].tolist())
-        df = df[~df['ID'].isin(selected_ids)]
+    # Löschbutton für hinzugefügte Termine
+    delete_termine = st.button('Hinzugefügte Termine löschen')
+    if delete_termine:
+        df = df.iloc[:-1]  # Letzten hinzugefügten Termin entfernen
     
     # Termin-Daten speichern
-    save_termine(api_key, bin_id5, df)
+    save_termine(api_key, bin_id, df)
 
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
