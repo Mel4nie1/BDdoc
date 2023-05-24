@@ -349,20 +349,25 @@ def local_to_utc(local_time):
 # Leere Liste erstellen
 data = []
 
-# Eingabefelder für das neue Medikament
-neues_medikament = st.text_input('Neues Medikament:', '')
-neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
-neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
+# Anzahl der Medikamente
+anzahl_medikamente = st.number_input('Anzahl der Medikamente:', min_value=1, step=1, value=1)
 
-# Schaltfläche zum Hinzufügen des neuen Medikaments
-if st.button('Medikament hinzufügen'):
-    # Neue Zeile zum DataFrame hinzufügen
-    data.append({
-        'Medikament': neues_medikament,
-        'Einnahme_Menge': neue_einnahme_menge,
-        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-        'Eingenommen': False
-    })
+# Eingabefelder für die Medikamente
+for i in range(anzahl_medikamente):
+    st.write(f"Medikament {i+1}:")
+    neues_medikament = st.text_input('Name:', key=f'medikament_name_{i}')
+    neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1, key=f'medikament_menge_{i}')
+    neue_uhrzeit = st.time_input('Uhrzeit:', key=f'medikament_zeit_{i}', value=dt.time(9, 0))
+    
+    # Schaltfläche zum Hinzufügen des Medikaments
+    if st.button(f'Medikament {i+1} hinzufügen'):
+        # Neue Zeile zum DataFrame hinzufügen
+        data.append({
+            'Medikament': neues_medikament,
+            'Einnahme_Menge': neue_einnahme_menge,
+            'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
+            'Eingenommen': False
+        })
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
@@ -373,7 +378,6 @@ for i, row in df.iterrows():
     df.at[i, 'Eingenommen'] = eingenommen
 
 st.table(df)
-
 
         
 
