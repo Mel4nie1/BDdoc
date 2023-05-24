@@ -62,7 +62,6 @@ st.title("BDdoc")
 
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
-
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
@@ -71,6 +70,11 @@ file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg
 if file is not None:
     image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
+    # Speichern des Bilds in der JSON-Bin
+    profile_picture_data = file.read()  # Binärdaten des Bilds
+    save_key(api_key, bin_id1, username, profile_picture_data)
+
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
