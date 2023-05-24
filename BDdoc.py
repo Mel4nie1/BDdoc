@@ -268,10 +268,7 @@ def save_termine(api_key, bin_id5, df):
 # Streamlit-Anwendung
 def main():
     st.subheader("Terminkalender")
-    
-    # API-Schlüssel und Bin-ID
-    api_key = 'YOUR_API_KEY'
-    bin_id = 'YOUR_BIN_ID'
+  
     
     # Laden der Termindaten
     df = load_termine(api_key, bin_id5)
