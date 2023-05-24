@@ -233,12 +233,7 @@ if st.button("Notiz speichern"):
         data = {'notizen': eingabe_notizen.split('\n')}
 
         # Daten mit save_key() Funktion speichern
-        res = save_key(api_key, bin_id4, username, data)
-
-        if "success" in res and res["success"]:
-            st.success("Notizen erfolgreich gespeichert!")
-        else:
-            st.write("Fehler beim Speichern der Notizen.")
+        save_key(api_key, bin_id4, username, data)
             
 # Laden der aktuellen Notizen
 address_data = load_key(api_key, bin_id4, username)
@@ -252,11 +247,7 @@ st.write(eingabe_notizen)
 def delete_notes():
     # Daten mit leerem Notizen-Text speichern
     empty_data = {'notizen': []}
-    res = save_key(api_key, bin_id4, username, empty_data)
-    if "success" in res and res["success"]:
-        st.success("Notizen erfolgreich gelöscht!")
-    else:
-        st.write("Fehler beim Löschen der Notizen.")
+    save_key(api_key, bin_id4, username, empty_data)
 
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
@@ -297,12 +288,7 @@ if st.button('Daten speichern - Termine'):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
     # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id5, 'termine', data)
-    if "success" in res and res["success"]:    
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
-
+    save_key(api_key, bin_id5, 'termine', data)
 
 # Titel der App
 st.subheader('Medikamenten-Tracker')
