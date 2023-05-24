@@ -255,35 +255,63 @@ if st.button("Notizen löschen"):
     delete_notes()
 
 
-st.subheader("Terminkalender")
+import streamlit as st
+import pandas as pd
+import datetime as dt
 
-# Wenn die JSON-Bin existiert, laden Sie die Termine
-data = load_key(api_key, bin_id5, 'termine', empty_value=[])
-df = pd.DataFrame(data)
+# Funktion zum Laden der Termindaten aus der JSON-Bin
+def load_termine(api_key, bin_id):
+    data = load_key(api_key, bin_id, 'termine', empty_value=[])
+    df = pd.DataFrame(data)
+    return df
 
-# Eingabefelder für den neuen Termin
-neuer_termin = st.text_input('Neuer Termin:', '')
-neues_datum = st.date_input('Datum:', dt.date.today())
-neue_uhrzeit = st.time_input('Uhrzeit:', dt.time(9, 0))
+# Funktion zum Speichern der Termindaten in der JSON-Bin
+def save_termine(api_key, bin_id, df):
+    data = df.to_dict(orient='records')
+    save_key(api_key, bin_id, 'termine', data)
 
-if st.button('Termin hinzufügen'):
-    neue_zeit = dt.datetime.combine(neues_datum, neue_uhrzeit)
-    neue_uhrzeit = neue_zeit.strftime('%H:%M')
-    neue_termin = {
-        'Termin': neuer_termin,
-        'Datum': neues_datum.strftime('%Y-%m-%d'),
-        'Uhrzeit': neue_uhrzeit
-    }
-    df = pd.concat([df, pd.DataFrame(neue_termin, index=[0])], ignore_index=True)
+# Streamlit-Anwendung
+def main():
+    st.subheader("Terminkalender")
+    
+    # API-Schlüssel und Bin-ID
+    api_key = 'YOUR_API_KEY'
+    bin_id = 'YOUR_BIN_ID'
+    
+    # Laden der Termindaten
+    df = load_termine(api_key, bin_id)
+    
+    # Eingabefelder für den neuen Termin
+    neuer_termin = st.text_input('Neuer Termin:', '')
+    neues_datum = st.date_input('Datum:', dt.date.today())
+    neue_uhrzeit = st.time_input('Uhrzeit:', dt.time(9, 0))
+    
+    if st.button('Termin hinzufügen'):
+        neue_zeit = dt.datetime.combine(neues_datum, neue_uhrzeit)
+        neue_uhrzeit = neue_zeit.strftime('%H:%M')
+        neue_termin = {
+            'Termin': neuer_termin,
+            'Datum': neues_datum.strftime('%Y-%m-%d'),
+            'Uhrzeit': neue_uhrzeit
+        }
+        df = pd.concat([df, pd.DataFrame(neue_termin, index=[0])], ignore_index=True)
+    
+    # Tabelle mit den Terminen anzeigen
+    st.table(df)
+    
+    # Termine zum Löschen auswählen
+    delete_selected = st.checkbox('Ausgewählte Termine löschen')
+    if delete_selected:
+        selected_ids = st.multiselect('Termine zum Löschen auswählen:', df['ID'].tolist())
+        df = df[~df['ID'].isin(selected_ids)]
+    
+    # Termin-Daten speichern
+    save_termine(api_key, bin_id, df)
 
-# Tabelle mit den Terminen anzeigen
-st.table(df)
+# Streamlit-Anwendung ausführen
+if __name__ == '__main__':
+    main()
 
-# Termin-Daten in JSON-Bin speichern
-# Die Daten in ein Dictionary umwandeln
-data = df.to_dict(orient='records')
-# Daten mit save_key() Funktion speichern
-save_key(api_key, bin_id5, 'termine', data)
 
 # Titel der App
 st.subheader('Medikamenten-Tracker')
