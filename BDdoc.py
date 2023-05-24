@@ -232,6 +232,9 @@ for key, value in hypertonie.items():
 # Titel hinzufügen
 st.subheader("Notizen")
 
+# Titel hinzufügen
+st.subheader("Notizen")
+
 # Notizen-Box
 eingabe_notizen = st.text_area("Notizen hier eingeben:", value="", key="notizen_input")
 
@@ -243,6 +246,10 @@ if st.button("Notiz speichern"):
 
         # Daten mit save_key() Funktion speichern
         save_key(api_key, bin_id4, username, data)
+
+        # Aktualisierte Notizen laden
+        address_data = load_key(api_key, bin_id4, username)
+        notizen = address_data.get('notizen', [])
             
 # Laden der aktuellen Notizen
 address_data = load_key(api_key, bin_id4, username)
@@ -262,6 +269,9 @@ def delete_notes():
     address_data = load_key(api_key, bin_id4, username)
     notizen.clear()
     notizen.extend(address_data.get('notizen', []))
+
+    # Aktuelle Notiz entfernen
+    eingabe_notizen = ""
 
 # Schaltfläche zum Löschen der Notizen
 if st.button("Notizen löschen"):
