@@ -382,6 +382,10 @@ for i, row in df.iterrows():
 
 st.table(df)
 
+# Medikamentendaten in JSON-Bin speichern
+save_key(api_key, bin_id6, 'medikamente', data)
+
+
 
         
 
