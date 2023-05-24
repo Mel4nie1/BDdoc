@@ -271,7 +271,7 @@ def main():
   
     
     # Laden der Termindaten
-    df = load_termine(api_key, bin_id)
+    df = load_termine(api_key, bin_id5)
     
     # Eingabefelder für den neuen Termin
     neuer_termin = st.text_input('Neuer Termin:', '')
@@ -297,7 +297,7 @@ def main():
         df = df.iloc[:-1]  # Letzten hinzugefügten Termin entfernen
     
     # Termin-Daten speichern
-    save_termine(api_key, bin_id, df)
+    save_termine(api_key, bin_id5, df)
 
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
