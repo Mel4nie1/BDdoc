@@ -74,8 +74,8 @@ if file is not None:
     image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-    # Base64-Codierung des Bilds
-    profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
+    # Bild als Base64-Zeichenkette codieren
+    profile_picture_data = base64.b64encode(image.tobytes()).decode('utf-8')
 
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
