@@ -254,11 +254,7 @@ if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
 
-import streamlit as st
-import pandas as pd
-import datetime as dt
 
-# Titel hinzufügen
 st.subheader("Terminkalender")
 
 # Wenn die JSON-Bin existiert, laden Sie die Termine
@@ -284,11 +280,10 @@ if st.button('Termin hinzufügen'):
 st.table(df)
 
 # Termin-Daten in JSON-Bin speichern
-if st.button('Daten speichern - Termine'):
-    # Die Daten in ein Dictionary umwandeln
-    data = df.to_dict(orient='records')
-    # Daten mit save_key() Funktion speichern
-    save_key(api_key, bin_id5, 'termine', data)
+# Die Daten in ein Dictionary umwandeln
+data = df.to_dict(orient='records')
+# Daten mit save_key() Funktion speichern
+save_key(api_key, bin_id5, 'termine', data)
 
 # Titel der App
 st.subheader('Medikamenten-Tracker')
