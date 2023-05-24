@@ -21,6 +21,7 @@ from jsonbin import load_key, save_key
 import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
+import base64
 
 # Hintergrundfarbe auf Rot setzen
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_allow_html=True)
@@ -62,6 +63,7 @@ st.title("BDdoc")
 
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
+
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
@@ -71,8 +73,10 @@ if file is not None:
     image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
+    # Base64-Codierung des Bilds
+    profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
+
     # Speichern des Bilds in der JSON-Bin
-    profile_picture_data = file.read()  # Binärdaten des Bilds
     save_key(api_key, bin_id1, username, profile_picture_data)
 
 
