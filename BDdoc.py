@@ -104,10 +104,6 @@ if address_list is None:
 
 # Append or update the profile in the address_list
 existing_profile = next((item for item in address_list if item["name"] == name), None)
-if existing_profile:
-    existing_profile.update(profil)
-else:
-    address_list.append(profil)
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
