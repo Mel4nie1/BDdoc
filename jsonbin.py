@@ -21,8 +21,20 @@ def save_data(api_key, bin_id, data):
     res = requests.put(url, headers=headers, json=data).json()
     return res
 
+def load_key(api_key, bin_id1, key, empty_value=[]):
+    """
+    Schlüssel aus der Bin laden
+    """
+    url = f"{BIN_API_URL}/{bin_id}/latest"
+    headers = {'X-Master-Key': api_key}
+    res = requests.get(url, headers=headers).json()
+    res = res['record']
+    if key in res:
+        return res[key]
+    else:
+        return empty_value
 
-def load_key(api_key, bin_id, key, empty_value):
+def load_key(api_key, bin_id5, key, empty_value):
     headers = {
         'X-Master-Key': api_key
     }
