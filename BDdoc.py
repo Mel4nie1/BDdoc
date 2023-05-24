@@ -73,12 +73,6 @@ if file is not None:
     image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-    # Bild als Base64-Zeichenkette codieren
-    profile_picture_data = base64.b64encode(image.tobytes()).decode('utf-8')
-
-    # Speichern des Bilds in der JSON-Bin
-    save_key(api_key, bin_id1, username, profile_picture_data)
-
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
 geburtsdatum = st.sidebar.date_input("Geburtsdatum")
@@ -241,9 +235,6 @@ st.subheader(" Hypertonie Einteilung (mmHg)")
 for key, value in hypertonie.items():
 
     st.write(key + ": " + str(value[0]) + " - " + str(value[1]))
-
-# Titel hinzufügen
-st.subheader("Notizen")
 
 # Titel hinzufügen
 st.subheader("Notizen")
