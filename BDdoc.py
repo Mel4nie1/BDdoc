@@ -65,11 +65,6 @@ st.title("BDdoc")
 st.subheader("Überblick über deine Blutdruckwerte")
 
 
-# Check if login button is clicked
-if login_button:
-    # Perform login validation here
-    # ...
-
     # If login is successful, display the profile form
     st.sidebar.subheader("Profil")
     file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
