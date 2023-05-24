@@ -135,13 +135,8 @@ if st.button("Daten speichern"):
         # Daten in der JSONBin-Bin speichern
         address_list = load_key(api_key, bin_id2, username)
         address_list.append(data)
-        res = save_key(api_key, bin_id2, username, address_list)
+        save_key(api_key, bin_id2, username, address_list)
 
-        # Überprüfen Sie den Erfolg der Speicherung
-        if "success" in res and res["success"]:
-            st.success("Daten erfolgreich gespeichert.")
-        else:
-            st.error("Fehler beim Speichern der Daten.")
 
 # Daten aus der JSONBin-Bin laden
 address_list = load_key(api_key, bin_id2, username)
