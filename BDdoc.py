@@ -353,12 +353,7 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
     # Neue Zeile zum DataFrame hinzufügen
-    df = df.append({
-        'Medikament': neues_medikament,
-        'Einnahme_Menge': neue_einnahme_menge,
-        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-        'Eingenommen': False
-    }, ignore_index=True)
+    df.loc[len(df)] = [neues_medikament, neue_einnahme_menge, neue_uhrzeit.strftime('%H:%M'), False]
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
@@ -370,7 +365,5 @@ st.table(df)
 # Medikamentendaten in JSON-Bin speichern
 data = df.to_dict(orient='records')
 save_key(api_key, bin_id6, 'medikamente', data)
-
-        
 
 
