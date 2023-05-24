@@ -88,14 +88,19 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Load profile data using load_key() function
+# Load existing profiles from the JSON-Bin
 address_list = load_key(api_key, bin_id1, username)
 
-# Append new profile to the address_list
-address_list.append(profil)
+# Append or update the profile in the address_list
+existing_profile = next((item for item in address_list if item["name"] == name), None)
+if existing_profile:
+    existing_profile.update(profil)
+else:
+    address_list.append(profil)
 
-# Save updated address_list using save_key() function
+# Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
+
 
 # Dummy-Daten
 systolic = "-"
