@@ -22,18 +22,19 @@ def save_data(api_key, bin_id, data):
     return res
 
 
-def load_key(api_key, bin_id, key, empty_value=[]):
-    """
-    Schlüssel aus der Bin laden
-    """
-    url = f"{BIN_API_URL}/{bin_id}/latest"
-    headers = {'X-Master-Key': api_key}
-    res = requests.get(url, headers=headers).json()
-    res = res['record']
-    if key in res:
-        return res[key]
-    else:
-        return empty_value
+def load_key(api_key, bin_id, key, empty_value):
+    headers = {
+        'X-Master-Key': api_key
+    }
+    url = f'https://api.jsonbin.io/b/{bin_id}/latest'
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if key in data:
+            return data[key]
+    
+    return empty_value
 
 
 def save_key(api_key, bin_id, key, data):
