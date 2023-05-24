@@ -254,21 +254,16 @@ if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
 
-
-import streamlit as st
-import pandas as pd
-import datetime as dt
-
 # Funktion zum Laden der Termindaten aus der JSON-Bin
-def load_termine(api_key, bin_id):
-    data = load_key(api_key, bin_id, 'termine', empty_value=[])
+def load_termine(api_key, bin_id5):
+    data = load_key(api_key, bin_id5, 'termine', empty_value=[])
     df = pd.DataFrame(data)
     return df
 
 # Funktion zum Speichern der Termindaten in der JSON-Bin
-def save_termine(api_key, bin_id, df):
+def save_termine(api_key, bin_id5, df):
     data = df.to_dict(orient='records')
-    save_key(api_key, bin_id, 'termine', data)
+    save_key(api_key, bin_id5, 'termine', data)
 
 # Streamlit-Anwendung
 def main():
@@ -279,7 +274,7 @@ def main():
     bin_id = 'YOUR_BIN_ID'
     
     # Laden der Termindaten
-    df = load_termine(api_key, bin_id)
+    df = load_termine(api_key, bin_id5)
     
     # Eingabefelder für den neuen Termin
     neuer_termin = st.text_input('Neuer Termin:', '')
@@ -306,7 +301,7 @@ def main():
         df = df[~df['ID'].isin(selected_ids)]
     
     # Termin-Daten speichern
-    save_termine(api_key, bin_id, df)
+    save_termine(api_key, bin_id5, df)
 
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
