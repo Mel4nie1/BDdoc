@@ -356,9 +356,15 @@ if st.button('Medikament hinzufügen'):
     df.loc[len(df)] = [neues_medikament, neue_einnahme_menge, neue_uhrzeit.strftime('%H:%M'), False]
 
 # Tabelle mit den Medikamenten anzeigen
+to_delete = []
 for i, row in df.iterrows():
     eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
     df.at[i, 'Eingenommen'] = eingenommen
+    if eingenommen:
+        to_delete.append(i)
+
+# Zeilen löschen
+df = df.drop(to_delete)
 
 st.table(df)
 
