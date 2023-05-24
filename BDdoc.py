@@ -118,13 +118,22 @@ if connect_button:
  systolic = 120
  diastolic = 80
 
-# Zeige den empfangenen Blutdruckwert an, wenn er verfügbar ist
-if systolic is not None and diastolic is not None:
- st.subheader("Aktueller Blutdruckwert")
+# Funktion zum Anzeigen der zuletzt gespeicherten Blutdruckmessung
+def show_last_blood_pressure(address_list):
+    if len(address_list) > 0:
+        last_measurement = address_list[-1]
+        st.subheader("Letzte Blutdruckmessung")
+        st.write("Systolischer Wert: {}".format(last_measurement["systolic_bp"]))
+        st.write("Diastolischer Wert: {}".format(last_measurement["diastolic_bp"]))
+    else:
+        st.subheader("Keine gespeicherte Blutdruckmessung")
 
-st.write("Systolischer Wert: {}".format(systolic))
+# Laden der gespeicherten Blutdruckdaten aus der JSON-Bin
+address_list = load_key(api_key, bin_id2, username)
 
-st.write("Diastolischer Wert: {}".format(diastolic))
+# Aufruf der Funktion zur Anzeige der zuletzt gespeicherten Blutdruckmessung
+show_last_blood_pressure(address_list)
+
 # Eingabefeld für den systolischen Blutdruck in mmHg
 systolic_bp = st.number_input("Systolischer Blutdruck (mmHg):", step=1, format="%d")
 
@@ -141,14 +150,9 @@ if st.button("Daten speichern"):
             "diastolic_bp": diastolic_bp
         }
 
-        # Daten in der JSONBin-Bin speichern
-        address_list = load_key(api_key, bin_id2, username)
+        # Daten in der JSON-Bin speichern
         address_list.append(data)
         save_key(api_key, bin_id2, username, address_list)
-
-
-# Daten aus der JSONBin-Bin laden
-address_list = load_key(api_key, bin_id2, username)
 
 
 # Zufällige Blutdruckwerte generieren
