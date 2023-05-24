@@ -68,14 +68,6 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen
-if file is not None:
-    image = Image.open(io.BytesIO(file.read()))
-    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
-
-    # Base64-Codierung des Bilds
-    profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
-
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
 
