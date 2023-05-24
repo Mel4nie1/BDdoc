@@ -64,6 +64,12 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
+# Setzen des Titels
+st.title("BDdoc")
+
+# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
+st.subheader("Überblick über deine Blutdruckwerte")
+
 # If login is successful, display the profile form
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
