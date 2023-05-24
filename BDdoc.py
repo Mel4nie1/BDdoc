@@ -68,6 +68,7 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
+
 # Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
     image = Image.open(io.BytesIO(file.read()))
