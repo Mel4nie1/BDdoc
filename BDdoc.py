@@ -62,7 +62,7 @@ elif authentication_status == None:
 st.title("BDdoc")
 
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
-st.subheader("Überblick über deine Blutdruckwerte")
+    st.subheader("Überblick über deine Blutdruckwerte")
 
 
     # If login is successful, display the profile form
