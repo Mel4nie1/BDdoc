@@ -64,44 +64,67 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-# Profilbild hochladen
-st.sidebar.subheader("Profil")
-file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
+# Sidebar with login form
+username = st.sidebar.text_input("Benutzername")
+password = st.sidebar.text_input("Passwort", type="password")
+login_button = st.sidebar.button("Login")
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen
-if file is not None:
-    image = Image.open(io.BytesIO(file.read()))
-    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+# Check if login button is clicked
+if login_button:
+    # Perform login validation here
+    # ...
 
-# Sidebar with profile form
-name = st.sidebar.text_input("Name")
-geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
-gewicht = st.sidebar.text_input("Gewicht [kg]")
-krankheiten = st.sidebar.text_input("Krankheiten")
+    # If login is successful, display the profile form
+    st.sidebar.subheader("Profil")
+    file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-# JSON object with profile data
-profil = {
-    "name": name,
-    "geburtsdatum": str(geburtsdatum),
-    "geschlecht": geschlecht,
-    "gewicht": gewicht,
-    "krankheiten": krankheiten.split(", ")
-}
+    # Falls ein Bild hochgeladen wurde, dieses anzeigen
+    if file is not None:
+        image = Image.open(io.BytesIO(file.read()))
+        st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-# Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username)
+        # Base64-Codierung des Bilds
+        profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
 
-# Update or append the profile in the address_list
-for item in address_list:
-    if item["name"] == name:
-        item.update(profil)
-        break
+        # Speichern des Bilds in der JSON-Bin
+        save_key(api_key, bin_id1, username, profile_picture_data)
+
+    # Sidebar with profile form
+    name = st.sidebar.text_input("Name")
+    geburtsdatum = st.sidebar.date_input("Geburtsdatum")
+    geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
+    gewicht = st.sidebar.text_input("Gewicht [kg]")
+    krankheiten = st.sidebar.text_input("Krankheiten")
+
+    # JSON object with profile data
+    profil = {
+        "name": name,
+        "geburtsdatum": str(geburtsdatum),
+        "geschlecht": geschlecht,
+        "gewicht": gewicht,
+        "krankheiten": krankheiten.split(", ")
+    }
+
+    # Load existing profiles from the JSON-Bin
+    address_list = load_key(api_key, bin_id1, username)
+
+    # Append or update the profile in the address_list
+    existing_profile = next((item for item in address_list if item["name"] == name), None)
+    if existing_profile:
+        existing_profile.update(profil)
+    else:
+        address_list.append(profil)
+
+    # Save the updated address_list to the JSON-Bin
+    save_key(api_key, bin_id1, username, address_list)
+
+# Display the profile data if available
+if address_list:
+    st.write("Dein Profil:")
+    for profile in address_list:
+        st.write(profile)
 else:
-    address_list.append(profil)
-
-# Save the updated address_list to the JSON-Bin
-save_key(api_key, bin_id1, username, address_list)
+    st.write("Keine Profildaten verfügbar.")
 
 
 
