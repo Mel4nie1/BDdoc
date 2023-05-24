@@ -88,10 +88,14 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Save profile data using save_key() function
-df= address_list = load_key(api_key, bin_id1, username)
+# Load profile data using load_key() function
+address_list = load_key(api_key, bin_id1, username)
+
+# Append new profile to the address_list
 address_list.append(profil)
-res = save_key(api_key, bin_id1, username, address_list)
+
+# Save updated address_list using save_key() function
+save_key(api_key, bin_id1, username, address_list)
 
 # Dummy-Daten
 systolic = "-"
