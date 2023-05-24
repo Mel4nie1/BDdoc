@@ -64,9 +64,17 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-# If login is successful, display the profile form
+# Profilbild hochladen
 st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
+
+# Falls ein Bild hochgeladen wurde, dieses anzeigen und speichern
+if file is not None:
+    image = Image.open(file)
+    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
+    # Base64-Codierung des Bilds
+    profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
 
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
@@ -74,7 +82,7 @@ file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
 geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
+geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
 gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
@@ -90,9 +98,6 @@ profil = {
 # Load existing profiles from the JSON-Bin
 address_list = load_key(api_key, bin_id1, username)
 
-# Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username)
-
 # Initialize an empty list if address_list is None
 if address_list is None:
     address_list = []
@@ -102,7 +107,7 @@ existing_profile = next((item for item in address_list if item["name"] == name),
 if existing_profile:
     existing_profile.update(profil)
 else:
-    address_list.extend([profil])  # Anstatt append zu verwenden, verwenden Sie extend mit einer Liste mit einem Element
+    address_list.append(profil)
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
