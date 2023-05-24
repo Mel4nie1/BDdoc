@@ -89,7 +89,7 @@ profil = {
 }
 
 # Save profile data using save_key() function
-address_list = load_key(api_key, bin_id1, username)
+df= address_list = load_key(api_key, bin_id1, username)
 address_list.append(profil)
 res = save_key(api_key, bin_id1, username, address_list)
 
