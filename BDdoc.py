@@ -98,12 +98,19 @@ profil = {
 # Load existing profiles from the JSON-Bin
 address_list = load_key(api_key, bin_id1, username)
 
+# Load existing profiles from the JSON-Bin
+address_list = load_key(api_key, bin_id1, username)
+
 # Initialize an empty list if address_list is None
 if address_list is None:
     address_list = []
 
 # Append or update the profile in the address_list
 existing_profile = next((item for item in address_list if item["name"] == name), None)
+if existing_profile:
+    existing_profile.update(profil)
+else:
+    address_list.extend([profil])  # Anstatt append zu verwenden, verwenden Sie extend mit einer Liste mit einem Element
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
@@ -115,6 +122,7 @@ if address_list:
         st.write(profile)
 else:
     st.write("Keine Profildaten verfügbar.")
+
 
 
 
