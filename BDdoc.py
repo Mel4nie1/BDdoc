@@ -59,6 +59,24 @@ elif authentication_status == None:
     st.stop()
 
 
+import streamlit as st
+from PIL import Image
+import io
+import json
+
+# Placeholder functions for saving and loading data
+def save_key(api_key, bin_id, username, data):
+    # Implement the logic to save data to JSON-Bin
+    # You can use libraries like requests or built-in modules like json to handle the saving process
+    # Replace this placeholder function with your actual implementation
+    pass
+
+def load_key(api_key, bin_id, username):
+    # Implement the logic to load data from JSON-Bin
+    # You can use libraries like requests or built-in modules like json to handle the loading process
+    # Replace this placeholder function with your actual implementation
+    pass
+
 # Setzen des Titels
 st.title("BDdoc")
 
@@ -67,51 +85,42 @@ st.subheader("Überblick über deine Blutdruckwerte")
 
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
+
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen und speichern
+# Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
-    image = Image.open(file)
+    image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-    # Sidebar with profile form
-    name = st.sidebar.text_input("Name")
-    geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-    geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
-    gewicht = st.sidebar.text_input("Gewicht [kg]")
-    krankheiten = st.sidebar.text_input("Krankheiten")
+# Sidebar with profile form
+name = st.sidebar.text_input("Name")
+geburtsdatum = st.sidebar.date_input("Geburtsdatum")
+geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
+gewicht = st.sidebar.text_input("Gewicht [kg]")
+krankheiten = st.sidebar.text_input("Krankheiten")
 
-    # Load existing profiles from the JSON-Bin
-    address_list = []
+# JSON object with profile data
+profil = {
+    "name": name,
+    "geburtsdatum": str(geburtsdatum),
+    "geschlecht": geschlecht,
+    "gewicht": gewicht,
+    "krankheiten": krankheiten.split(", ")
+}
 
-    # JSON object with profile data
-    profil = {
-        "name": name,
-        "geburtsdatum": str(geburtsdatum),
-        "geschlecht": geschlecht,
-        "gewicht": gewicht,
-        "krankheiten": krankheiten.split(", ")
-    }
+# Save the profile data using the save_key function
+save_key(api_key, bin_id1, username, profil)
 
-    # Save the updated profile to the address_list
-    address_list.append(profil)
+# Load the profile data using the load_key function
+profil = load_key(api_key, bin_id1, username)
 
-    # Save the updated address_list to the JSON-Bin
-    save_key(api_key, bin_id1, username, address_list)
-
-    # Display the profile data if available
-    if address_list:
-        st.write("Dein Profil:")
-        for profile in address_list:
-            st.write(profile)
-    else:
-        st.write("Keine Profildaten verfügbar.")
-
-# Save button to trigger saving the profile
-if st.button("Profil speichern"):
-    save_key(api_key, bin_id1, username, address_list)
-    st.success("Profil wurde erfolgreich gespeichert.")
-
+# Display the profile data
+if profil:
+    st.write("Dein Profil:")
+    st.write(profil)
+else:
+    st.write("Keine Profildaten verfügbar.")
 
 
 
