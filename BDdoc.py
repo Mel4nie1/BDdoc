@@ -58,25 +58,6 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
-
-import streamlit as st
-from PIL import Image
-import io
-import json
-
-# Placeholder functions for saving and loading data
-def save_key(api_key, bin_id, username, data):
-    # Implement the logic to save data to JSON-Bin
-    # You can use libraries like requests or built-in modules like json to handle the saving process
-    # Replace this placeholder function with your actual implementation
-    pass
-
-def load_key(api_key, bin_id, username):
-    # Implement the logic to load data from JSON-Bin
-    # You can use libraries like requests or built-in modules like json to handle the loading process
-    # Replace this placeholder function with your actual implementation
-    pass
-
 # Setzen des Titels
 st.title("BDdoc")
 
