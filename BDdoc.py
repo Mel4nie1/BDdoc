@@ -58,12 +58,6 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
-# Setzen des Titels
-st.title("BDdoc")
-
-# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
-st.subheader("Überblick über deine Blutdruckwerte")
-
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
 
@@ -71,8 +65,11 @@ file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg
 
 # Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
-    image = Image.open(io.BytesIO(file.read()))
-    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
+ image = Image.open(io.BytesIO(file.read()))
+
+ st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -90,18 +87,13 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Save the profile data using the save_key function
-save_key(api_key, bin_id1, username, profil)
+# JSON-Datei mit Profildaten speichern
+with open("profil.json", "w") as f:
+    json.dump(profil, f)
 
-# Load the profile data using the load_key function
-profil = load_key(api_key, bin_id1, username)
-
-# Display the profile data
-if profil:
-    st.write("Dein Profil:")
-    st.write(profil)
-else:
-    st.write("Keine Profildaten verfügbar.")
+# JSON-Datei mit Profildaten laden
+with open("profil.json", "r") as f:
+    profil = json.load(f)
 
 
 
