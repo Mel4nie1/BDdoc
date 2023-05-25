@@ -80,6 +80,9 @@ geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "d
 gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
+# Load existing profiles from the JSON-Bin
+address_list = load_key(api_key, bin_id1, username)
+
 # JSON object with profile data
 profil = {
     "name": name,
@@ -87,10 +90,7 @@ profil = {
     "geschlecht": geschlecht,
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
-}
-
-# Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username)
+  }
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
