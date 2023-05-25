@@ -90,7 +90,10 @@ profil = {
     "geschlecht": geschlecht,
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
-  }
+}
+
+# Save the updated profile to the address_list
+address_list.append(profil)
 
 # Save the updated address_list to the JSON-Bin
 save_key(api_key, bin_id1, username, address_list)
@@ -102,6 +105,11 @@ if address_list:
         st.write(profile)
 else:
     st.write("Keine Profildaten verfügbar.")
+
+# Save button to trigger saving the profile
+if st.button("Profil speichern"):
+    save_key(api_key, bin_id1, username, address_list)
+    st.success("Profil wurde erfolgreich gespeichert.")
 
 
 
