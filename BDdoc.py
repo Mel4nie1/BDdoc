@@ -58,6 +58,7 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
+
 # Setzen des Titels
 st.title("BDdoc")
 
@@ -110,6 +111,7 @@ if file is not None:
 if st.button("Profil speichern"):
     save_key(api_key, bin_id1, username, address_list)
     st.success("Profil wurde erfolgreich gespeichert.")
+
 
 
 
