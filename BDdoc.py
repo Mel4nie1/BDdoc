@@ -73,34 +73,44 @@ if file is not None:
     image = Image.open(file)
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-# Sidebar with profile form
-name = st.sidebar.text_input("Name")
-geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
-gewicht = st.sidebar.text_input("Gewicht [kg]")
-krankheiten = st.sidebar.text_input("Krankheiten")
+    # Sidebar with profile form
+    name = st.sidebar.text_input("Name")
+    geburtsdatum = st.sidebar.date_input("Geburtsdatum")
+    geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
+    gewicht = st.sidebar.text_input("Gewicht [kg]")
+    krankheiten = st.sidebar.text_input("Krankheiten")
 
-# Load existing profiles from the JSON-Bin
-address_list = []
+    # Load existing profiles from the JSON-Bin
+    address_list = []
 
-# Save the updated profile to the address_list
-address_list.append(profil)
+    # JSON object with profile data
+    profil = {
+        "name": name,
+        "geburtsdatum": str(geburtsdatum),
+        "geschlecht": geschlecht,
+        "gewicht": gewicht,
+        "krankheiten": krankheiten.split(", ")
+    }
 
-# Save the updated address_list to the JSON-Bin
-save_key(api_key, bin_id1, username, address_list)
+    # Save the updated profile to the address_list
+    address_list.append(profil)
 
-# Display the profile data if available
-if address_list:
-    st.write("Dein Profil:")
-    for profile in address_list:
-        st.write(profile)
-else:
-    st.write("Keine Profildaten verfügbar.")
+    # Save the updated address_list to the JSON-Bin
+    save_key(api_key, bin_id1, username, address_list)
+
+    # Display the profile data if available
+    if address_list:
+        st.write("Dein Profil:")
+        for profile in address_list:
+            st.write(profile)
+    else:
+        st.write("Keine Profildaten verfügbar.")
 
 # Save button to trigger saving the profile
 if st.button("Profil speichern"):
     save_key(api_key, bin_id1, username, address_list)
     st.success("Profil wurde erfolgreich gespeichert.")
+
 
 
 
