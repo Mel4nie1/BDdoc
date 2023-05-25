@@ -96,10 +96,10 @@ profil = {
 }
 
 # Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username)
+address_list = load_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
 
 # Save the updated address_list to the JSON-Bin
-save_key(api_key, bin_id1, username, address_list)
+save_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
 
 # Display the profile data if available
 if address_list:
