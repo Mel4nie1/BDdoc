@@ -84,8 +84,8 @@ krankheiten = st.sidebar.text_input("Krankheiten")
 
 # JSON object with profile data
 profil = {
-    "name": name,
-    "geburtsdatum": str(geburtsdatum),
+    name: name,
+    geburtsdatum: str(geburtsdatum),
     "geschlecht": geschlecht,
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
