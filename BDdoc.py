@@ -87,17 +87,19 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# JSON-Datei mit Profildaten speichern
-with open("profil.json", "w") as f:
-    json.dump(profil, f)
+# Save the profile data using save_key function
+save_key(api_key, bin_id1, username, profil)
 
-# JSON-Datei mit Profildaten laden
-with open("profil.json", "r") as f:
-    profil = json.load(f)
+# Load the profile data using load_key function
+address_list = load_key(api_key, bin_id1, username)
 
-
-
-
+# Display the profile data if available
+if address_list:
+    st.write("Dein Profil:")
+    for profile in address_list:
+        st.write(profile)
+else:
+    st.write("Keine Profildaten verfügbar.")
 
 
 # Dummy-Daten
