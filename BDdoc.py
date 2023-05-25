@@ -338,14 +338,17 @@ if __name__ == '__main__':
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-# JSON-Bin-Daten laden oder leeren DataFrame erstellen
-data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
-df = pd.DataFrame(data)
+# JSON-Datei laden oder leere DataFrame erstellen
+try:
+    with open('medikamente.json', 'r') as f:
+        df = pd.read_json(f)
+except:
+    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = dt.timezone(dt.timedelta(hours=1))  # Lokale Zeitzone hier angeben (z.B. dt.timezone('Europe/Berlin'))
-    utc_tz = pytz.timezone('UTC')
+    local_tz = get_localzone()
+    utc_tz = pytz.utc
     local_time = local_tz.localize(local_time)
     utc_time = local_time.astimezone(utc_tz)
     return utc_time
@@ -357,21 +360,29 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    # Neue Zeile zum DataFrame hinzufügen
-    df.loc[len(df)] = [neues_medikament, neue_einnahme_menge, neue_uhrzeit.strftime('%H:%M'), False]
+    df = df.append({
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Eingenommen': False
+    }, ignore_index=True)
 
 # Tabelle mit den Medikamenten anzeigen
-to_delete = []
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
-    df.at[i, 'Eingenommen'] = eingenommen
-    if eingenommen:
-        to_delete.append(i)
-
-# Zeilen löschen
-df = df.drop(to_delete)
-
+    if st.checkbox(f"{row['Medikament']} um {row['Uhrzeit'].strftime('%H:%M')} Uhr eingenommen?"):
+        df.at[i, 'Eingenommen'] = True
 st.table(df)
+
+if st.button('Daten speichern', key=str(dt.datetime.now())):
+    # Die Daten in ein Dictionary umwandeln
+    data = df.to_dict(orient='records')
+
+    # JSON-Datei öffnen und Daten schreiben
+    with open('medikamente.json', 'w') as f:
+        json.dump(data, f)
+
+    st.success('Daten wurden erfolgreich gespeichert.')
+
 
 # Medikamentendaten in JSON-Bin speichern
 data = df.to_dict(orient='records')
