@@ -71,6 +71,10 @@ if file is not None:
  st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
 
+# Set the Streamlit app title
+st.title("BDdoc")
+st.subheader("Überblick über deine Blutdruckwerte")
+
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
 geburtsdatum = st.sidebar.date_input("Geburtsdatum")
@@ -78,9 +82,18 @@ geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "d
 gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
+# JSON object with profile data
+profil = {
+    "name": name,
+    "geburtsdatum": str(geburtsdatum),
+    "geschlecht": geschlecht,
+    "gewicht": gewicht,
+    "krankheiten": krankheiten.split(", ")
+}
 
 # Save the profile data using save_key function
-save_key(api_key, bin_id1, username, profil)
+address_list = [profil]  # Create a list with a single profile
+save_key(api_key, bin_id1, username, address_list)
 
 # Load the profile data using load_key function
 address_list = load_key(api_key, bin_id1, username)
