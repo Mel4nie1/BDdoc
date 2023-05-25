@@ -83,15 +83,6 @@ krankheiten = st.sidebar.text_input("Krankheiten")
 # Load existing profiles from the JSON-Bin
 address_list = []
 
-# JSON object with profile data
-profil = {
-    "name": name,
-    "geburtsdatum": str(geburtsdatum),
-    "geschlecht": geschlecht,
-    "gewicht": gewicht,
-    "krankheiten": krankheiten.split(", ")
-}
-
 # Save the updated profile to the address_list
 address_list.append(profil)
 
