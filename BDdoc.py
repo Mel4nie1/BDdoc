@@ -81,7 +81,7 @@ gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
 # Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username)
+address_list = []
 
 # JSON object with profile data
 profil = {
@@ -110,6 +110,7 @@ else:
 if st.button("Profil speichern"):
     save_key(api_key, bin_id1, username, address_list)
     st.success("Profil wurde erfolgreich gespeichert.")
+
 
 
 
