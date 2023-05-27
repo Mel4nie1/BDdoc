@@ -108,6 +108,7 @@ if address_list:
         st.write(profile)
 else:
     st.write("Keine Profildaten verfügbar.")
+
 # Dummy-Daten
 systolic = "-"
 
