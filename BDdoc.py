@@ -22,6 +22,7 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 import base64
+from PIL import Image
 
 # Hintergrundfarbe auf Rot setzen
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_allow_html=True)
@@ -77,7 +78,7 @@ if file is not None:
     profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
 
     # Speichern des Bilds in der JSON-Bin
-    save_key(api_key, bin_id1, username, profile_picture_data)
+    save_profile_picture(api_key, bin_id1, profile_picture_data)
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -95,17 +96,16 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Load existing profiles from the JSON-Bin
-address_list = load_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
+# Load existing profile data from the JSON-Bin
+existing_profile = load_profile_picture(api_key, bin_id1)
 
-# Save the updated address_list to the JSON-Bin
-save_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
+# Save the updated profile data to the JSON-Bin
+save_profile_picture(api_key, bin_id1, profile_picture_data)
 
 # Display the profile data if available
-if address_list:
+if existing_profile:
     st.write("Dein Profil:")
-    for profile in address_list:
-        st.write(profile)
+    st.write(profil)
 else:
     st.write("Keine Profildaten verfügbar.")
 
