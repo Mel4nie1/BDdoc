@@ -66,6 +66,35 @@ st.subheader("Überblick über deine Blutdruckwerte")
 # Hintergundbildfarbe auf rot ändern
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
+import streamlit as st
+import json
+import io
+from PIL import Image
+
+# Laden des vorhandenen Profilbilds aus der Bin-ID
+profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value=None)
+
+# Profilbild hochladen
+st.sidebar.subheader("Profil")
+file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
+
+# Falls ein Bild hochgeladen wurde, dieses anzeigen und in der Bin-ID speichern
+if file is not None:
+    image = Image.open(io.BytesIO(file.read()))
+    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+    
+    # Das Bild als Bytes speichern
+    image_bytes = io.BytesIO()
+    image.save(image_bytes, format='PNG')
+    
+    # Das Bild in der Bin-ID speichern
+    save_key(api_key, bin_id3, 'profilbild', image_bytes.getvalue())
+
+    # Das hochgeladene Bild als Profilbild setzen
+    profilbild = image
+
+# Weitere Profildaten aus der JSON-Bin abrufen
+profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value={})
 
 import streamlit as st
 import json
