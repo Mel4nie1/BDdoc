@@ -78,7 +78,7 @@ def delete_notes(api_key):
 
 
 
-def save_profile_data(profile):
+def save_profile_data(profil):
     existing_data = load_data()
     existing_data['profile'] = profile_data
     save_data({"record": existing_data})
