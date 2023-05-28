@@ -67,6 +67,41 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
+import streamlit as st
+import json
+
+# Laden der vorhandenen Profildaten aus der JSON-Bin
+profil = load_key(api_key, bin_id1, 'profil', empty_value={})
+
+# Sidebar with profile form
+name = st.sidebar.text_input("Name", profil.get("name", ""))
+geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", ""))
+geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
+gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
+krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
+
+# JSON object with profile data
+profil = {
+    "name": name,
+    "geburtsdatum": str(geburtsdatum),
+    "geschlecht": geschlecht,
+    "gewicht": gewicht,
+    "krankheiten": krankheiten.split(", ")
+}
+
+# Profildaten in der JSON-Bin speichern
+res = save_key(api_key, bin_id1, 'profil', profil)
+
+# Profildaten aus der JSON-Bin abrufen
+profil = load_key(api_key, bin_id1, 'profil', empty_value={})
+
+# Ausgabe der Profildaten
+st.write("Profil:")
+st.write("Name:", profil["name"])
+st.write("Geburtsdatum:", profil["geburtsdatum"])
+st.write("Geschlecht:", profil["geschlecht"])
+st.write("Gewicht:", profil["gewicht"])
+st.write("Krankheiten:", profil["krankheiten"])
 
 
 # Dummy-Daten
