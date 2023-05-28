@@ -1,5 +1,7 @@
 import requests
-
+import base64
+from PIL import Image
+import streamlit as st
 
 BIN_API_URL = "https://api.jsonbin.io/v3/b"
 
