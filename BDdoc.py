@@ -320,11 +320,33 @@ df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
     df.at[i, 'Eingenommen'] = eingenommen
 
-st.table(df)
+# Schaltfläche zum Löschen einer Eingabe
+if st.button('Eingabe löschen'):
+    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
+    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
+    # Eingabe aus dem DataFrame entfernen
+    df = df[df['Medikament'] != ausgewählte_eingabe]
+    # Daten mit save_key() Funktion aktualisieren
+    data = df.to_dict(orient='records')
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Eingabe wurde erfolgreich gelöscht.')
+    else:
+        st.write('Fehler beim Löschen der Eingabe.')
 
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern'):
+    data = df.to_dict(orient='records')
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
+
+st.table(df)
 
 
 
