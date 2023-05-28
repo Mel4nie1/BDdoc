@@ -77,22 +77,7 @@ def delete_notes(api_key):
     return save_notes(api_key, [])
 
 
-def load_profile_picture(api_key, bin_id):
-    response = requests.get(f"{BIN_API_URL}/{bin_id}/latest", headers={"X-Master-Key": api_key})
-    if response.status_code == 200:
-        data = response.json()
-        return data.get("record", {}).get("profile_picture")
-    return None
-
-
-def save_profile_picture(api_key, bin_id, profile_picture_data):
-    data = {
-        "profile_picture": profile_picture_data
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "X-Master-Key": api_key
-    }
-    response = requests.put(f"{BIN_API_URL}/{bin_id}", json=data, headers=headers)
-    return response.status_code == 200
-
+def save_profile_data(profile_data):
+    existing_data = load_data()
+    existing_data['profile'] = profile_data
+    save_data(existing_data)
