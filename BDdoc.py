@@ -84,9 +84,7 @@ if file is not None:
     bin_file_path = 'profile_picture.bin'  # Pfad zur Binärdatei anpassen
     image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
 
-    # Profilbild wieder laden und anzeigen
-    loaded_image = Image.open(bin_file_path)
-    st.image(loaded_image, caption="Geladenes Profilbild", use_column_width=True)
+
 
 import streamlit as st
 import json
