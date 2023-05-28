@@ -67,56 +67,20 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
-import streamlit as st
-from PIL import Image
-import io
-
-# Profilbild hochladen
-st.sidebar.subheader("Profil")
-file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
-
-# Falls ein Bild hochgeladen wurde, dieses anzeigen
-if file is not None:
-    image = Image.open(io.BytesIO(file.read()))
-    
-    # Profilbild kleiner anzeigen
-    image.thumbnail((200, 200))  # Bildgröße anpassen
-
-    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
-
-    # Profilbild speichern
-    bin_file_path = 'profile_picture.bin'  # Pfad zur Binärdatei anpassen
-    image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
-
-    # Profilbild wieder laden und anzeigen
-    loaded_image = Image.open(bin_file_path)
-    st.image(loaded_image, caption="Geladenes Profilbild", use_column_width=True)
-
-
-
-import streamlit as st
-import json
-from datetime import date
-
 # Laden der vorhandenen Profildaten aus der JSON-Bin
 profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name", profil.get("name", ""))
 
-
 geburtsdatum = st.sidebar.text_input("Geburtsdatum", profil.get("geburtsdatum", ""))
-
 
 geschlecht_options = ["", "männlich", "weiblich", "divers"]
 geschlecht = st.sidebar.selectbox("Geschlecht", geschlecht_options, index=geschlecht_options.index(profil.get("geschlecht", "")))
 
-
 gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
 
-
 krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
-
 
 # JSON object with profile data
 profil = {
@@ -129,9 +93,6 @@ profil = {
 
 # Profildaten in der JSON-Bin speichern
 res = save_key(api_key, bin_id1, 'profil', profil)
-
-
-
 
 # Dummy-Daten
 systolic = "-"
@@ -189,11 +150,6 @@ if st.button("Daten speichern"):
         address_list.append(data)
         save_key(api_key, bin_id2, username, address_list)
 
-
-# Funktion zum Erzeugen des Blutdruckverlaufs
-def generate_blood_pressure_chart(address_list):
-    # Datenrahmen für den Blutdruckverlauf erstellen
-    df = pd.DataFrame(address_list)
 
     # Linienchart mit Plotly Express erstellen
     fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
