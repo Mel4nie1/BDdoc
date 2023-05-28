@@ -101,6 +101,12 @@ save_key(api_key, bin_id1, "profil", profil)
 # Display the profile data
 st.write("Dein Profil:")
 st.write(profil)
+
+# Speichern-Button
+if st.button("Speichern"):
+    save_key(api_key, bin_id1, "profil", profil)
+    st.write("Profil erfolgreich gespeichert!")
+    
 # Dummy-Daten
 systolic = "-"
 
