@@ -284,9 +284,6 @@ if __name__ == '__main__':
     main()
 
 
-import streamlit as st
-import pandas as pd
-import datetime as dt
 
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
@@ -308,26 +305,25 @@ if st.button('Medikament hinzufügen'):
     data.append(neuer_datensatz)
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
+
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    # Einzelnen "Löschen"-Button für jeden Eintrag anzeigen
-    if st.button(f'Löschen {i+1}'):
-        # Eintrag aus dem DataFrame und der JSON-Bin entfernen
-        df.drop(i, inplace=True)
-        data = df.to_dict(orient='records')
-        res = save_key(api_key, bin_id6, 'medikamente', data)
-        if "success" in res and res["success"]:
-            st.success('Eingabe wurde erfolgreich gelöscht.')
-        else:
-            st.write('Fehler beim Löschen der Eingabe.')
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    df.at[i, 'Eingenommen'] = eingenommen
+
+# Schaltfläche zum Löschen einer Eingabe
+if st.button('Eingabe löschen'):
+    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
+    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
+    # Eingabe aus dem DataFrame entfernen
+    df = df[df['Medikament'] != ausgewählte_eingabe]
+    # Daten mit save_key() Funktion aktualisieren
+    data = df.to_dict(orient='records')
+    res = save_key(api_key, bin_id6, 'medikamente', data)
 
 st.table(df)
 
