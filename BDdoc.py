@@ -282,9 +282,10 @@ def main():
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
     main()
-import streamlit as st
-import pandas as pd
-import datetime as dt
+
+ # Streamlit-Anwendung
+def main():
+    st.subheader("Medikamenten-Tracker")   
 
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
@@ -306,10 +307,7 @@ if st.button('Medikament hinzufügen'):
     # Daten mit save_key() Funktion speichern
     data.append(neuer_datensatz)
     res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
+
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
@@ -328,19 +326,9 @@ if st.button('Eingabe löschen'):
     # Daten mit save_key() Funktion aktualisieren
     data = df.to_dict(orient='records')
     res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:
-        st.success('Eingabe wurde erfolgreich gelöscht.')
-    else:
-        st.write('Fehler beim Löschen der Eingabe.')
 
-# Schaltfläche zum Speichern der Daten
-if st.button('Medikamente speichern'):
-    data = df.to_dict(orient='records')
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
+
+
 
 st.table(df)
 
