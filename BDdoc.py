@@ -71,14 +71,17 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
 import streamlit as st
 import requests
 
+api = "https://api.streamlit.io/public/v1/files/"
+
 # Profilbild hochladen und speichern
 profilbild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
 if profilbild is not None:
     # Bin-ID3 anfordern
+    response = requests.get(api)
     bin_id3 = response.json()["binId"]
 
     # Profilbild speichern
-    response = requests.post(f"https://api.streamlit.io/public/v3/files/{bin_id3}/{profilbild.name}",
+    response = requests.post(f"{api}{bin_id3}/{profilbild.name}",
                              files={"file": profilbild})
     if response.status_code == 201:
         st.success("Profilbild erfolgreich hochgeladen!")
@@ -86,11 +89,9 @@ if profilbild is not None:
 # Profilbild wiedergeben
 if st.button("Profilbild anzeigen"):
     if bin_id3 is not None:
-        st.image(f"https://api.streamlit.io/public/v1/files/{bin_id3}/{profilbild.name}")
+        st.image(f"{api}{bin_id3}/{profilbild.name}")
     else:
         st.warning("Lade zuerst ein Profilbild hoch!")
-
-        
         
 
 # Laden der vorhandenen Profildaten aus der JSON-Bin
