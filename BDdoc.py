@@ -118,7 +118,8 @@ st.write(f"Dein Profil ({selected_profile}):")
 st.write("Name:", name)
 st.write("Geburtsdatum:", geburtsdatum)
 st.write("Geschlecht:", geschlecht)
-st.write("Gewicht [
+st.write("Gewicht [kg]:", gewicht)
+st.write("krankheiten:", krankheiten)
 
 # Dummy-Daten
 systolic = "-"
