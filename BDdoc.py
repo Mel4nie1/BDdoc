@@ -329,25 +329,42 @@ medikament_hinzufuegen("Antibiotikum", "1 Tablette", datetime.datetime(2023, 5, 
 # Streamlit-Anwendung
 st.title("Medikamentenverwaltung")
 
-# Anzeige der Medikamentenliste
-st.subheader("Medikamentenliste")
-for medikament in medikamentenliste:
-    st.write(medikament)
+# Leere Liste erstellen
+data = []
 
-# Auswahl des einzunehmenden Medikaments
-selected_medikament = st.selectbox("Medikament auswählen", [medikament.name for medikament in medikamentenliste])
+# Eingabefelder für das neue Medikament
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
-# Schaltfläche zum Speichern der Einnahme
-if st.button("Als eingenommen markieren"):
-    save_key(selected_medikament)
-    st.success(f"{selected_medikament} wurde als eingenommen markiert.")
+# Schaltfläche zum Hinzufügen des neuen Medikaments
+if st.button('Medikament hinzufügen'):
+    # Neue Zeile zum DataFrame hinzufügen
+    data.append({
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
+        'Eingenommen': False
+    })
 
-# Aktualisieren der Medikamentenliste
-medikamentenliste = [medikament for medikament in medikamentenliste if not medikament.eingenommen]
+# DataFrame erstellen
+df = pd.DataFrame(data)
 
-# Anzeige der aktualisierten Medikamentenliste
-st.subheader("Aktualisierte Medikamentenliste")
-for medikament in medikamentenliste:
-    st.write(medikament)
+# Tabelle mit den Medikamenten anzeigen
+for i, row in df.iterrows():
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    df.at[i, 'Eingenommen'] = eingenommen
+
+st.table(df)
+
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern', key=str(dt.datetime.now())):
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
+
 
 
