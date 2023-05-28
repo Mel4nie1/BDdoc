@@ -294,12 +294,12 @@ import datetime as dt
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
 # Eingabefelder für das neue Medikament
-neues_medikament = st.text_input('Neues Medikament:', '', key='neues_medikament_input')
-neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1, key='neue_einnahme_menge_input')
-neue_uhrzeit = st.time_input('Uhrzeit:', key='neue_uhrzeit_input', value=dt.time(9, 0))
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
-if st.button('Medikament hinzufügen', key='medikament_hinzufügen_button'):
+if st.button('Medikament hinzufügen'):
     # Neuen Datensatz erstellen
     neuer_datensatz = {
         'Medikament': neues_medikament,
@@ -318,25 +318,21 @@ if st.button('Medikament hinzufügen', key='medikament_hinzufügen_button'):
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
-# Schaltfläche zum Löschen einer Eingabe
-if st.button('Eingabe löschen', key='eingabe_löschen_button'):
-    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
-    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'], key='ausgewählte_eingabe_dropdown')
-    # Eingabe aus dem DataFrame entfernen
-    df = df[df['Medikament'] != ausgewählte_eingabe]
-    # Daten mit save_key() Funktion aktualisieren
+# Tabelle mit den Medikamenten anzeigen
+for i, row in df.iterrows():
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
+    df.at[i, 'Eingenommen'] = eingenommen
+
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern'):
     data = df.to_dict(orient='records')
     res = save_key(api_key, bin_id6, 'medikamente', data)
     if "success" in res and res["success"]:
-        st.success('Eingabe wurde erfolgreich gelöscht.')
+        st.success('Daten wurden erfolgreich gespeichert.')
     else:
-        st.write('Fehler beim Löschen der Eingabe.')
+        st.write('Fehler beim Speichern der Daten.')
 
-# Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key='daten_speichern_button'):
-    data = df.to_dict(orient='records')
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-
+st.table(df)
 
 
 
