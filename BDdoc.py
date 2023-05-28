@@ -67,32 +67,55 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
 
+# Funktion zum Laden der gespeicherten Blutdruckdaten
+def load_key(api_key, bin_id2, username):
+    # Hier den Code einfügen, um die Daten aus der JSON-Bin zu laden
+    # Beispielcode:
+    address_list = [
+        {
+            "Datum": "2022-01-01",
+            "Systolischer BD": 120,
+            "Diastolischer BD": 80
+        },
+        {
+            "Datum": "2022-01-02",
+            "Systolischer BD": 130,
+            "Diastolischer BD": 85
+        },
+        {
+            "Datum": "2022-01-03",
+            "Systolischer BD": 125,
+            "Diastolischer BD": 82
+        }
+    ]
+    return address_list
+
 
 # Dummy-Daten
 systolic = "-"
-
 diastolic = "-"
 
 # Erstelle einen Button zum Verbinden mit einem Bluetooth-Gerät
 connect_button = st.button("Verbinde mit Blutdruckgerät ❤️")
 
 if connect_button:
- st.write("Erfolgreich verbunden")
+    st.write("Erfolgreich verbunden")
 
- # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
- # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
- systolic = 120
- diastolic = 80
+    # Simuliere das Empfangen von Daten vom Bluetooth-Gerät
+    # Ersetze dies durch deinen tatsächlichen Code zum Empfangen von Daten
+    systolic = 120
+    diastolic = 80
 
 # Funktion zum Anzeigen der zuletzt gespeicherten Blutdruckmessung
 def show_last_blood_pressure(address_list):
     if len(address_list) > 0:
         last_measurement = address_list[-1]
         st.subheader("Letzte Blutdruckmessung")
-        st.write("Systolischer Wert: {}".format(last_measurement["systolic_bp"]))
-        st.write("Diastolischer Wert: {}".format(last_measurement["diastolic_bp"]))
+        st.write("Systolischer Wert: {}".format(last_measurement["Systolischer BD"]))
+        st.write("Diastolischer Wert: {}".format(last_measurement["Diastolischer BD"]))
     else:
         st.subheader("Keine gespeicherte Blutdruckmessung")
+
 
 # Laden der gespeicherten Blutdruckdaten aus der JSON-Bin
 address_list = load_key(api_key, bin_id2, username)
@@ -112,8 +135,9 @@ if st.button("Daten speichern"):
     if systolic_bp is not None and diastolic_bp is not None:
         # Daten aktualisieren
         data = {
-            "systolic_bp": systolic_bp,
-            "diastolic_bp": diastolic_bp
+            "Datum": pd.Timestamp.now().strftime('%Y-%m-%d'),
+            "Systolischer BD": systolic_bp,
+            "Diastolischer BD": diastolic_bp
         }
 
         # Daten in der JSON-Bin speichern
@@ -121,50 +145,32 @@ if st.button("Daten speichern"):
         save_key(api_key, bin_id2, username, address_list)
 
 
-# Zufällige Blutdruckwerte generieren
-dates = pd.date_range(start='2022-01-01', end='2022-12-31', freq='D')
-sbp_values = [random.randint(90, 200) for _ in range(len(dates))]
-dbp_values = [random.randint(50, 120) for _ in range(len(dates))]
+# Funktion zum Erzeugen des Blutdruckverlaufs
+def generate_blood_pressure_chart(address_list):
+    # Datenrahmen für den Blutdruckverlauf erstellen
+    df = pd.DataFrame(address_list)
+    df['Datum'] = pd.to_datetime(df['Datum'])
 
-df = pd.DataFrame({'Datum': dates, 'Systolischer BD': sbp_values, 'Diastolischer BD': dbp_values})
+    # Linienchart mit Plotly Express erstellen
+    fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
+    fig_line.update_layout(xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
 
-# Titel
-st.subheader('Blutdruckverlauf')
-# Dropdown-Menü für die Auswahl des Zeitraums
-time_range = st.selectbox('Ansicht:', ('Woche', 'Monat'))
+    # Balkendiagramm mit Plotly erstellen
+    fig_bar = go.Figure(data=[go.Bar(x=df['Datum'], y=df['Systolischer BD'], name='Systolischer BD'),
+                              go.Bar(x=df['Datum'], y=df['Diastolischer BD'], name='Diastolischer BD')])
+    fig_bar.update_layout(barmode='group', xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
 
-# Daten nach ausgewähltem Zeitraum gruppieren
-if time_range == 'Woche':
-    df_grouped = df.groupby(pd.Grouper(key='Datum', freq='D')).mean().reset_index()
-    df_grouped['Wochentag'] = df_grouped['Datum'].dt.strftime('%A')
-    df_grouped = df_grouped.groupby('Wochentag').mean().reset_index()
-    df_grouped['Datum'] = df_grouped['Wochentag']
-else:
-    df_grouped = df.groupby(pd.Grouper(key='Datum', freq='MS')).mean().reset_index()
-    df_grouped['Datum'] = df_grouped['Datum'].dt.strftime('%Y-%m-%d')
-
-# Gruppierte Daten als JSON-String speichern
-json_data = df_grouped.to_json(orient='records')
-
-# Daten mit save_key() Funktion speichern
-res = save_key(api_key, bin_id3, username, json_data)
+    # Ansicht auswählen und entsprechende Chart anzeigen
+    chart_type = st.selectbox('Chart-Typ:', ('Liniendiagramm', 'Balkendiagramm'))
+    if chart_type == 'Liniendiagramm':
+        st.plotly_chart(fig_line, use_container_width=True)
+    else:
+        st.plotly_chart(fig_bar, use_container_width=True)
 
 
-# Linienchart mit Plotly Express erstellen
-fig_line = px.line(df_grouped, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
-fig_line.update_layout(xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
+# Aufruf der Funktion zum Erzeugen des Blutdruckverlaufs
+generate_blood_pressure_chart(address_list)
 
-# Balkendiagramm mit Plotly erstellen
-fig_bar = go.Figure(data=[go.Bar(x=df_grouped['Datum'], y=df_grouped['Systolischer BD'], name='Systolischer BD'),
-                          go.Bar(x=df_grouped['Datum'], y=df_grouped['Diastolischer BD'], name='Diastolischer BD')])
-fig_bar.update_layout(barmode='group', xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
-
-# Ansicht auswählen und entsprechende Chart anzeigen
-chart_type = st.selectbox('Chart-Typ:', ('Liniendiagramm', 'Balkendiagramm'))
-if chart_type == 'Liniendiagramm':
-    st.plotly_chart(fig_line, use_container_width=True)
-else:
-    st.plotly_chart(fig_bar, use_container_width=True)
 
 
 # Normalwert definieren
