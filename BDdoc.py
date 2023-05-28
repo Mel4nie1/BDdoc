@@ -80,7 +80,7 @@ if file is not None:
     save_key(api_key, bin_id1, username, profile_picture_data)
 
 # Profile Manager erstellen
-profile_manager = ProfileManager(api_key, bin_id2)
+profile_manager = ProfileManager(api_key, bin_id1)
 
 # Sidebar mit Profilformular
 name = st.sidebar.text_input("Name")
