@@ -78,33 +78,48 @@ if file is not None:
 
  st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
+
+
 # Setzen des Titels
 st.title("BDdoc")
 
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
+# Profil auswählen
+selected_profile = st.sidebar.selectbox("Profil auswählen", ["Profil 1", "Profil 2", "Profil 3"])
+
+# Bin-ID für das ausgewählte Profil
+bin_id = None
+
+if selected_profile == "Profil 1":
+    bin_id = "BIN_ID_1"  # Aktualisieren Sie die Bin-ID für Profil 1
+elif selected_profile == "Profil 2":
+    bin_id = "BIN_ID_2"  # Aktualisieren Sie die Bin-ID für Profil 2
+elif selected_profile == "Profil 3":
+    bin_id = "BIN_ID_3"  # Aktualisieren Sie die Bin-ID für Profil 3
+
 # Sidebar with profile form
-name = st.sidebar.text_input("Name", load_key("name", ""))
-geburtsdatum = st.sidebar.date_input("Geburtsdatum", load_key("geburtsdatum"))
-geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"], index=0 if load_key("geschlecht") == "" else None)
-gewicht = st.sidebar.text_input("Gewicht [kg]", load_key("gewicht", ""))
-krankheiten = st.sidebar.text_input("Krankheiten", load_key("krankheiten", ""))
+name = st.sidebar.text_input("Name", load_key(bin_id1, "name", ""))
+geburtsdatum = st.sidebar.date_input("Geburtsdatum", load_key(bin_id1, "geburtsdatum"))
+geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"], index=0 if load_key(bin_id1, "geschlecht") == "" else None)
+gewicht = st.sidebar.text_input("Gewicht [kg]", load_key(bin_id1, "gewicht", ""))
+krankheiten = st.sidebar.text_input("Krankheiten", load_key(bin_id1, "krankheiten", ""))
 
 # Save the profile data
-save_key("name", name)
-save_key("geburtsdatum", geburtsdatum)
-save_key("geschlecht", geschlecht)
-save_key("gewicht", gewicht)
-save_key("krankheiten", krankheiten)
+save_key(bin_id1, "name", name)
+save_key(bin_id1, "geburtsdatum", str(geburtsdatum))
+save_key(bin_id1, "geschlecht", geschlecht)
+save_key(bin_id1, "gewicht", gewicht)
+save_key(bin_id1, "krankheiten", krankheiten)
 
 # Display the profile data
-st.write("Dein Profil:")
+st.write(f"Dein Profil ({selected_profile}):")
 st.write("Name:", name)
 st.write("Geburtsdatum:", geburtsdatum)
 st.write("Geschlecht:", geschlecht)
-st.write("Gewicht [kg]:", gewicht)
-st.write("Krankheiten:", krankheiten)
+st.write("Gewicht [
+
 # Dummy-Daten
 systolic = "-"
 
