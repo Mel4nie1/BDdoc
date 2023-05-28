@@ -68,6 +68,8 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 import base64
 
+import base64
+
 # Profilbild hochladen
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
@@ -93,6 +95,7 @@ if profilbild_base64 is not None:
     image_bytes = base64.b64decode(profilbild_base64)
     profilbild = Image.open(io.BytesIO(image_bytes))
     st.image(profilbild, caption="Dein Profilbild", use_column_width=True)
+
 
 
 import streamlit as st
