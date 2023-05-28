@@ -293,9 +293,6 @@ import datetime as dt
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
-# Erstellen eines leeren DataFrames
-df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
-
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
@@ -310,11 +307,16 @@ if st.button('Medikament hinzufügen'):
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
-    # Datensatz dem DataFrame hinzufügen
-    df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    data.append(neuer_datensatz)
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
+# DataFrame erstellen
+df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
