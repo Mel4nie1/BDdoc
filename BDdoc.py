@@ -284,17 +284,12 @@ if __name__ == '__main__':
     main()
 
 
-import datetime as dt
-import pandas as pd
-import json
 import streamlit as st
-from tzlocal import get_localzone
+import pandas as pd
+import datetime as dt
 
-# Titel der App
-st.subheader('Medikamenten-Tracker')
-
-# Leere Liste erstellen
-data = []
+# Laden der vorhandenen Daten aus der JSON-Bin
+data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
@@ -303,13 +298,20 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    # Neue Zeile zum DataFrame hinzufügen
-    data.append({
+    # Neuen Datensatz zum DataFrame hinzufügen
+    neuer_datensatz = {
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
-    })
+    }
+    data.append(neuer_datensatz)
+    # Daten mit save_key() Funktion speichern
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
@@ -321,14 +323,6 @@ for i, row in df.iterrows():
 
 st.table(df)
 
-# Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern', key=str(dt.datetime.now())):
-    # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
 
 
 
