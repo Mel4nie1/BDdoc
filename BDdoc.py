@@ -334,7 +334,7 @@ if st.button('Eingabe löschen'):
         st.write('Fehler beim Löschen der Eingabe.')
 
 # Schaltfläche zum Speichern der Daten
-if st.button('Daten speichern'):
+if st.button('Medikamente speichern'):
     data = df.to_dict(orient='records')
     res = save_key(api_key, bin_id6, 'medikamente', data)
     if "success" in res and res["success"]:
