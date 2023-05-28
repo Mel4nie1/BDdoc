@@ -79,17 +79,17 @@ name = st.sidebar.text_input("Name", profil.get("name", ""))
 
 
 geburtsdatum = st.sidebar.text_input("Geburtsdatum", profil.get("geburtsdatum", ""))
-st.write("Geburtsdatum:", geburtsdatum)
+
 
 geschlecht_options = ["", "männlich", "weiblich", "divers"]
 geschlecht = st.sidebar.selectbox("Geschlecht", geschlecht_options, index=geschlecht_options.index(profil.get("geschlecht", "")))
-st.write("Geschlecht:", geschlecht)
+
 
 gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
-st.write("Gewicht:", gewicht)
+
 
 krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
-st.write("Krankheiten:", krankheiten)
+
 
 # JSON object with profile data
 profil = {
