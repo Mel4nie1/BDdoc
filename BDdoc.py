@@ -66,28 +66,6 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
-# Laden des Profils aus der JSON-Bin
-load_profile(api_key, bin_id1)
-
-# Profil-Eingabesektion
-st.subheader("Profilinformationen")
-fullname = st.text_input("Vollständiger Name", profile_data.get("fullname", ""))
-age = st.number_input("Alter", min_value=0, value=profile_data.get("age", 0))
-gender = st.selectbox("Geschlecht", ["Männlich", "Weiblich", "Andere"], index=profile_data.get("gender", 0))
-height = st.number_input("Größe (in cm)", min_value=0, value=profile_data.get("height", 0))
-weight = st.number_input("Gewicht (in kg)", min_value=0, value=profile_data.get("weight", 0))
-
-# Schaltfläche zum Speichern des Profils
-if st.button("Profil speichern"):
-    # Profil-Daten aktualisieren
-    load_profile["fullname"] = fullname
-    load_profile["age"] = age
-    load_profile["gender"] = gender
-    load_profile["height"] = height
-    load_profile["weight"] = weight
-
-    # Profil in der JSON-Bin speichern
-    save_profile(api_key, bin_id1, profile_data)
 
 
 # Dummy-Daten
