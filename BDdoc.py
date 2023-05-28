@@ -81,21 +81,12 @@ if file is not None:
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
     # Profilbild speichern
-    bin_id3 = 'path/to/profile_picture.bin'  # Pfade anpassen
-    image.save(bin_id3, format='PNG')  # Bild im PNG-Format speichern
+    bin_file_path = 'profile_picture.bin'  # Pfad zur Binärdatei anpassen
+    image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
 
-# Beispielaufruf zum Laden des Profilbildes
-def load_profile_picture(bin_file_path):
-    with open(bin_file_path, 'rb') as bin_file:
-        image_data = bin_file.read()
-
-    return image_data
-
-# Binärdaten des Profilbildes laden und anzeigen
-loaded_image_data = load_profile_picture('path/to/profile_picture.bin')  # Pfad anpassen
-if loaded_image_data:
-    image = Image.open(io.BytesIO(loaded_image_data))
-    st.image(image, caption="Geladenes Profilbild", use_column_width=True)
+    # Profilbild wieder laden und anzeigen
+    loaded_image = Image.open(bin_file_path)
+    st.image(loaded_image, caption="Geladenes Profilbild", use_column_width=True)
 
 import streamlit as st
 import json
