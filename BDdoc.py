@@ -67,7 +67,7 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
 # Laden des Profils aus der JSON-Bin
-profile_data = load_profile(api_key, bin_id1)
+load_profile(api_key, bin_id1)
 
 # Profil-Eingabesektion
 st.subheader("Profilinformationen")
@@ -80,11 +80,11 @@ weight = st.number_input("Gewicht (in kg)", min_value=0, value=profile_data.get(
 # Schaltfläche zum Speichern des Profils
 if st.button("Profil speichern"):
     # Profil-Daten aktualisieren
-    profile_data["fullname"] = fullname
-    profile_data["age"] = age
-    profile_data["gender"] = gender
-    profile_data["height"] = height
-    profile_data["weight"] = weight
+    load_profile["fullname"] = fullname
+    load_profile["age"] = age
+    load_profile["gender"] = gender
+    load_profile["height"] = height
+    load_profile["weight"] = weight
 
     # Profil in der JSON-Bin speichern
     save_profile(api_key, bin_id1, profile_data)
