@@ -86,19 +86,6 @@ st.title("BDdoc")
 # Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
 
-# Profil auswählen
-selected_profile = st.sidebar.selectbox("Profil auswählen", ["Profil 1", "Profil 2", "Profil 3"])
-
-# Bin-ID für das ausgewählte Profil
-bin_id = None
-
-if selected_profile == "Profil 1":
-    bin_id = "BIN_ID_1"  # Aktualisieren Sie die Bin-ID für Profil 1
-elif selected_profile == "Profil 2":
-    bin_id = "BIN_ID_2"  # Aktualisieren Sie die Bin-ID für Profil 2
-elif selected_profile == "Profil 3":
-    bin_id = "BIN_ID_3"  # Aktualisieren Sie die Bin-ID für Profil 3
-
 # Sidebar with profile form
 name = st.sidebar.text_input("Name", load_key(bin_id1, "name", ""))
 geburtsdatum = st.sidebar.date_input("Geburtsdatum", load_key(bin_id1, "geburtsdatum"))
@@ -114,7 +101,7 @@ save_key(bin_id1, "gewicht", gewicht)
 save_key(bin_id1, "krankheiten", krankheiten)
 
 # Display the profile data
-st.write(f"Dein Profil ({selected_profile}):")
+st.write("Dein Profil:", Dein Profil)
 st.write("Name:", name)
 st.write("Geburtsdatum:", geburtsdatum)
 st.write("Geschlecht:", geschlecht)
