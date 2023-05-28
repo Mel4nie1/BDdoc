@@ -286,11 +286,15 @@ if __name__ == '__main__':
 
 
 
+import streamlit as st
+import pandas as pd
+import datetime as dt
+
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
-# DataFrame erstellen
-df = pd.DataFrame(data)
+# Erstellen eines leeren DataFrames
+df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
@@ -299,32 +303,23 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    # Neuen Datensatz zum DataFrame hinzufügen
+    # Neuen Datensatz erstellen
     neuer_datensatz = {
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
+    # Datensatz dem DataFrame hinzufügen
     df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
 
+
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
     df.at[i, 'Eingenommen'] = eingenommen
-
-# Schaltfläche zum Löschen einer Eingabe
-if st.button('Eingabe löschen'):
-    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
-    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
-    # Eingabe aus dem DataFrame entfernen
-    df = df[df['Medikament'] != ausgewählte_eingabe]
-    # Daten mit save_key() Funktion aktualisieren
-    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-
-    
 
 st.table(df)
 
