@@ -314,8 +314,8 @@ df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    if st.button(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?'):
-        df.at[i, 'Eingenommen'] = True
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    df.at[i, 'Eingenommen'] = eingenommen
 
 # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
 ausgewählte_eingabe = st.selectbox('Eingabe löschen:', df['Medikament'])
@@ -325,6 +325,5 @@ if st.button('Löschen'):
     df = df[df['Medikament'] != ausgewählte_eingabe]
 
 st.table(df)
-
 
 
