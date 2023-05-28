@@ -66,55 +66,6 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
-# Seitenleiste mit Benutzerdaten
-st.sidebar.title("Benutzerprofil")
-
-# Name
-name = st.sidebar.text_input("Name")
-
-# Geburtsdatum
-geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-
-# Geschlecht
-geschlecht = st.sidebar.selectbox("Geschlecht", ["Männlich", "Weiblich", "Andere"])
-
-# Alter berechnen
-if geburtsdatum:
-    today = datetime.date.today()
-    alter = today.year - geburtsdatum.year
-    st.sidebar.text(f"Alter: {alter}")
-
-# Krankheiten
-krankheiten = st.sidebar.text_area("Krankheiten")
-
-# Speichern-Button
-if st.sidebar.button("Speichern"):
-    data = {
-        "Name": name,
-        "Geburtsdatum": str(geburtsdatum),
-        "Geschlecht": geschlecht,
-        "Krankheiten": krankheiten
-    }
-    save_data(data)
-
-# Profilbild hochladen
-profilbild = st.sidebar.file_uploader("Profilbild hochladen")
-
-# Hauptinhalt der Seite
-st.title("Benutzerprofil")
-st.subheader("Aktuelle Informationen")
-
-# Laden der gespeicherten Daten von bin_id1
-saved_data = load_data()
-
-# Anzeigen der gespeicherten Daten
-if saved_data:
-    st.write(f"Name: {saved_data['Name']}")
-    st.write(f"Geburtsdatum: {saved_data['Geburtsdatum']}")
-    st.write(f"Geschlecht: {saved_data['Geschlecht']}")
-    st.write(f"Krankheiten: {saved_data['Krankheiten']}")
-else:
-    st.write("Es sind keine Daten vorhanden.")
 
 
 # Dummy-Daten
