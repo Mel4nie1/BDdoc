@@ -149,7 +149,11 @@ if st.button("Daten speichern"):
         # Daten in der JSON-Bin speichern
         address_list.append(data)
         save_key(api_key, bin_id2, username, address_list)
-
+        
+# Funktion zum Erzeugen des Blutdruckverlaufs
+def generate_blood_pressure_chart(address_list):
+    # Datenrahmen für den Blutdruckverlauf erstellen
+    df = pd.DataFrame(address_list)
 
     # Linienchart mit Plotly Express erstellen
     fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
