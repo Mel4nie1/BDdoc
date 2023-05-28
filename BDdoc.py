@@ -76,7 +76,7 @@ profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name", profil.get("name", ""))
-st.write("Name:", name)
+
 
 geburtsdatum = st.sidebar.text_input("Geburtsdatum", profil.get("geburtsdatum", ""))
 st.write("Geburtsdatum:", geburtsdatum)
