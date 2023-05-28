@@ -23,6 +23,7 @@ from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 import base64
 from PIL import Image
+from datetime import datetime
 
 # Hintergrundfarbe auf Rot setzen
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""", unsafe_allow_html=True)
@@ -73,35 +74,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 
-# Funktion zum Laden der gespeicherten Blutdruckdaten
-def load_key(api_key, bin_id, username):
-    # Hier den Code einfügen, um die Daten aus der JSON-Bin zu laden
-    # Beispielcode:
-    address_list = [
-        {
-            "Datum": "2022-01-01",
-            "Systolischer BD": 120,
-            "Diastolischer BD": 80
-        },
-        {
-            "Datum": "2022-01-02",
-            "Systolischer BD": 130,
-            "Diastolischer BD": 85
-        },
-        {
-            "Datum": "2022-01-03",
-            "Systolischer BD": 125,
-            "Diastolischer BD": 82
-        }
-    ]
-    return address_list
 
-
-# Funktion zum Speichern der Blutdruckdaten
-def save_key(api_key, bin_id, username, data):
-    # Hier den Code einfügen, um die Daten in der JSON-Bin zu speichern
-    # Beispielcode:
-    return True
 
 
 # Dummy-Daten
@@ -165,6 +138,11 @@ if st.button("Daten speichern"):
 def generate_blood_pressure_chart(address_list):
     # Datenrahmen für den Blutdruckverlauf erstellen
     df = pd.DataFrame(address_list)
+
+    # Filtern der Daten bis zum vorherigen Tag
+    df['Datum'] = pd.to_datetime(df['Datum'])
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    df = df[df['Datum'] < current_date]
 
     # Linienchart mit Plotly Express erstellen
     fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
