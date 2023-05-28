@@ -69,6 +69,7 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
 
 import streamlit as st
 import json
+from datetime import date
 
 # Laden der vorhandenen Profildaten aus der JSON-Bin
 profil = load_key(api_key, bin_id1, 'profil', empty_value={})
@@ -77,7 +78,7 @@ profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 name = st.sidebar.text_input("Name", profil.get("name", ""))
 st.write("Name:", name)
 
-geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", None))
+geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", date.today()))
 st.write("Geburtsdatum:", geburtsdatum)
 
 geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
@@ -92,7 +93,7 @@ st.write("Krankheiten:", krankheiten)
 # JSON object with profile data
 profil = {
     "name": name,
-    "geburtsdatum": str(geburtsdatum) if geburtsdatum else "",
+    "geburtsdatum": str(geburtsdatum),
     "geschlecht": geschlecht,
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
@@ -100,6 +101,7 @@ profil = {
 
 # Profildaten in der JSON-Bin speichern
 res = save_key(api_key, bin_id1, 'profil', profil)
+
 
 
 
