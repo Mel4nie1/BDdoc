@@ -66,6 +66,29 @@ st.subheader("Überblick über deine Blutdruckwerte")
 # Hintergundbildfarbe auf rot ändern
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
+def save_profile_picture(image_data):
+    try:
+        with open("bin_id3", "wb") as file:
+            file.write(image_data)
+        print("Profilbild wurde erfolgreich gespeichert.")
+    except Exception as e:
+        print(f"Fehler beim Speichern des Profilbildes: {str(e)}")
+
+def retrieve_profile_picture():
+    try:
+        with open("bin_id3", "rb") as file:
+            image_data = file.read()
+            print("Profilbild wurde erfolgreich abgerufen.")
+            return image_data
+    except Exception as e:
+        print(f"Fehler beim Abrufen des Profilbildes: {str(e)}")
+        return None
+
+# Beispielverwendung
+image_data = b"example_image_data"  # Hier solltest du den tatsächlichen Bildinhalt als Bytes angeben
+save_profile_picture(image_data)
+retrieved_image_data = retrieve_profile_picture()
+print(retrieved_image_data)
 
 
 # Laden der vorhandenen Profildaten aus der JSON-Bin
