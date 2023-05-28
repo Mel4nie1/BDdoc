@@ -307,7 +307,7 @@ if st.button('Medikament hinzufügen'):
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
-
+    df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
 
@@ -320,7 +320,6 @@ if st.button('Eingabe löschen'):
     # Daten mit save_key() Funktion aktualisieren
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
 
-
 # Tabelle mit den Medikamenten anzeigen
 st.table(df)
 
@@ -331,6 +330,11 @@ for i, row in df.iterrows():
 
 # Daten mit save_key() Funktion aktualisieren
 res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+
+# DataFrame als Datei herunterladen
+csv_data = df.to_csv(index=False)
+st.download_button(label="Daten herunterladen", data=csv_data, file_name="medikamente.csv")
+
 
 
 
