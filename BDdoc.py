@@ -78,7 +78,7 @@ if file is not None:
     profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
 
     # Speichern des Bilds in der JSON-Bin
-    save_profile_picture(api_key, bin_id1, profile_picture_data)
+    save_profile_picture(api_key, bin_id, profile_picture_data)
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -95,6 +95,12 @@ profil = {
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
 }
+
+# Load existing profile picture from the JSON-Bin
+existing_profile = load_profile_picture(api_key, bin_id)
+
+# Save the updated profile picture to the JSON-Bin
+save_profile_picture(api_key, bin_id, profile_picture_data)
 
 
 # Dummy-Daten
