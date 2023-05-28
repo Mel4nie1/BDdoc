@@ -75,15 +75,24 @@ profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name", profil.get("name", ""))
+st.write("Name:", name)
+
 geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", None))
+st.write("Geburtsdatum:", geburtsdatum)
+
 geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
+st.write("Geschlecht:", geschlecht)
+
 gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
+st.write("Gewicht:", gewicht)
+
 krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
+st.write("Krankheiten:", krankheiten)
 
 # JSON object with profile data
 profil = {
     "name": name,
-    "geburtsdatum": str(geburtsdatum),
+    "geburtsdatum": str(geburtsdatum) if geburtsdatum else "",
     "geschlecht": geschlecht,
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
@@ -92,16 +101,6 @@ profil = {
 # Profildaten in der JSON-Bin speichern
 res = save_key(api_key, bin_id1, 'profil', profil)
 
-# Profildaten aus der JSON-Bin abrufen
-profil = load_key(api_key, bin_id1, 'profil', empty_value={})
-
-# Ausgabe der Profildaten
-st.write("Profil:")
-st.write("Name:", profil["name"])
-st.write("Geburtsdatum:", profil["geburtsdatum"])
-st.write("Geschlecht:", profil["geschlecht"])
-st.write("Gewicht:", profil["gewicht"])
-st.write("Krankheiten:", profil["krankheiten"])
 
 
 # Dummy-Daten
