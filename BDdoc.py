@@ -284,10 +284,6 @@ if __name__ == '__main__':
     main()
 
 
-import streamlit as st
-import pandas as pd
-import datetime as dt
-
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
@@ -303,7 +299,7 @@ if st.button('Medikament hinzufügen'):
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-        'Eingenommen': False
+        'Eingenommen': Nein
     }
     data.append(neuer_datensatz)
     # Daten mit save_key() Funktion speichern
