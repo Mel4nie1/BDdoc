@@ -290,6 +290,9 @@ import datetime as dt
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
+# DataFrame erstellen
+df = pd.DataFrame(data)
+
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
@@ -297,34 +300,38 @@ neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9,
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
-    # Neuen Datensatz erstellen
+    # Neuen Datensatz zum DataFrame hinzufügen
     neuer_datensatz = {
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
+    df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
-    data.append(neuer_datensatz)
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-
-# DataFrame erstellen
-df = pd.DataFrame(data)
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    checkbox_id = f"checkbox_{i}"
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
     df.at[i, 'Eingenommen'] = eingenommen
 
-# Dropdown-Menü zum Auswählen des zu löschenden Medikaments anzeigen
-ausgewähltes_medikament = st.selectbox('Medikament löschen:', df['Medikament'])
-
-# Schaltfläche zum Löschen des ausgewählten Medikaments
-if st.button('Medikament löschen'):
-    df = df[df['Medikament'] != ausgewähltes_medikament]
-    data = df.to_dict('records')
-    res = save_key(api_key, bin_id6, 'medikamente', data)
+# Schaltfläche zum Löschen einer Eingabe
+if st.button('Eingabe löschen'):
+    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
+    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
+    # Eingabe aus dem DataFrame entfernen
+    df = df[df['Medikament'] != ausgewählte_eingabe]
+    # Daten mit save_key() Funktion aktualisieren
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    if "success" in res and res["success"]:
+        st.success('Eingabe wurde erfolgreich gelöscht.')
+    else:
+        st.write('Fehler beim Löschen der Eingabe.')
 
 st.table(df)
 
