@@ -293,6 +293,7 @@ from tzlocal import get_localzone
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
+import streamlit as st
 import datetime
 
 # Medikamentenklasse
@@ -325,16 +326,28 @@ medikament_hinzufuegen("Ibuprofen", "1 Tablette", datetime.datetime(2023, 5, 23,
 medikament_hinzufuegen("Paracetamol", "2 Tabletten", datetime.datetime(2023, 5, 23, 12, 0))
 medikament_hinzufuegen("Antibiotikum", "1 Tablette", datetime.datetime(2023, 5, 23, 16, 0))
 
-print("Medikamentenliste vor der Einnahme:")
+# Streamlit-Anwendung
+st.title("Medikamentenverwaltung")
+
+# Anzeige der Medikamentenliste
+st.subheader("Medikamentenliste")
 for medikament in medikamentenliste:
-    print(medikament)
+    st.write(medikament)
 
-# Beispielhafte Einnahme des Medikaments "Ibuprofen"
-save_key("Ibuprofen")
+# Auswahl des einzunehmenden Medikaments
+selected_medikament = st.selectbox("Medikament auswählen", [medikament.name for medikament in medikamentenliste])
 
-print("\nMedikamentenliste nach der Einnahme:")
+# Schaltfläche zum Speichern der Einnahme
+if st.button("Als eingenommen markieren"):
+    save_key(selected_medikament)
+    st.success(f"{selected_medikament} wurde als eingenommen markiert.")
+
+# Aktualisieren der Medikamentenliste
+medikamentenliste = [medikament for medikament in medikamentenliste if not medikament.eingenommen]
+
+# Anzeige der aktualisierten Medikamentenliste
+st.subheader("Aktualisierte Medikamentenliste")
 for medikament in medikamentenliste:
-    print(medikament)
-
+    st.write(medikament)
 
 
