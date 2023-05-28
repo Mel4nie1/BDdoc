@@ -307,6 +307,9 @@ def main():
 if __name__ == '__main__':
     main()
 
+# Titel hinzufügen
+st.subheader("Medikamenten-Tracker")
+
 # Streamlit-Anwendung
 def main():
     st.subheader("Medikamenten-Tracker")   
@@ -332,7 +335,6 @@ if st.button('Medikament hinzufügen'):
     data.append(neuer_datensatz)
     res = save_key(api_key, bin_id6, 'medikamente', data)
 
-
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
@@ -350,9 +352,6 @@ if st.button('Eingabe löschen'):
     # Daten mit save_key() Funktion aktualisieren
     data = df.to_dict(orient='records')
     res = save_key(api_key, bin_id6, 'medikamente', data)
-
-
-
 
 st.table(df)
 
