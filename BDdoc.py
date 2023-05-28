@@ -337,6 +337,9 @@ def main():
     
     st.table(df)
 
+# Aufruf der Hauptfunk
+
+
 # Aufruf der Hauptfunktion
 if __name__ == "__main__":
     main()
