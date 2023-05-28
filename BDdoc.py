@@ -97,13 +97,6 @@ profil = {
 }
 
 
-# Display the profile data if available
-if existing_profile:
-    st.write("Dein Profil:")
-    st.write(profil)
-else:
-    st.write("Keine Profildaten verfügbar.")
-
 # Dummy-Daten
 systolic = "-"
 
