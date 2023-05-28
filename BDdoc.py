@@ -285,8 +285,12 @@ if __name__ == '__main__':
 
 
 
+
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
+
+# DataFrame erstellen
+df = pd.DataFrame(data)
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
@@ -302,17 +306,13 @@ if st.button('Medikament hinzufügen'):
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
-    data.append(neuer_datensatz)
+    df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-
-
-# DataFrame erstellen
-df = pd.DataFrame(data)
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
     df.at[i, 'Eingenommen'] = eingenommen
 
 # Schaltfläche zum Löschen einer Eingabe
@@ -322,10 +322,12 @@ if st.button('Eingabe löschen'):
     # Eingabe aus dem DataFrame entfernen
     df = df[df['Medikament'] != ausgewählte_eingabe]
     # Daten mit save_key() Funktion aktualisieren
-    data = df.to_dict(orient='records')
-    res = save_key(api_key, bin_id6, 'medikamente', data)
+    res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+
+    
 
 st.table(df)
+
 
 
 
