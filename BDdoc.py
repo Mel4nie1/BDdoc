@@ -66,38 +66,32 @@ st.subheader("Überblick über deine Blutdruckwerte")
 # Hintergundbildfarbe auf rot ändern
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
-import streamlit as st
-import json
-import io
-from PIL import Image
-
-# Laden des vorhandenen Profilbilds aus der Bin-ID
-profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value=None)
+import base64
 
 # Profilbild hochladen
-st.sidebar.subheader("Profil")
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen und in der Bin-ID speichern
+# Falls ein Bild hochgeladen wurde, dieses als Base64-kodierten String speichern und in der Bin-ID ablegen
 if file is not None:
     image = Image.open(io.BytesIO(file.read()))
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
     
-    # Das Bild als Bytes speichern
-    image_bytes = io.BytesIO()
-    image.save(image_bytes, format='PNG')
+    # Das Bild als Base64-kodierten String speichern
+    image_base64 = base64.b64encode(file.read()).decode('utf-8')
     
     # Das Bild in der Bin-ID speichern
-    save_key(api_key, bin_id3, 'profilbild', image_bytes.getvalue())
+    save_key(api_key, bin_id3, 'profilbild', image_base64)
 
     # Das hochgeladene Bild als Profilbild setzen
     profilbild = image
 
 # Weitere Profildaten aus der JSON-Bin abrufen
-profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value=None)
+profilbild_base64 = load_key(api_key, bin_id3, 'profilbild', empty_value=None)
 
 # Profilbild anzeigen
-if profilbild is not None:
+if profilbild_base64 is not None:
+    image_bytes = base64.b64decode(profilbild_base64)
+    profilbild = Image.open(io.BytesIO(image_bytes))
     st.image(profilbild, caption="Dein Profilbild", use_column_width=True)
 
 
