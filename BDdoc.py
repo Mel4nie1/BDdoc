@@ -68,14 +68,6 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
 
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from datetime import datetime
-
-
-
 
 # Dummy-Daten
 systolic = "-"
@@ -139,11 +131,6 @@ def generate_blood_pressure_chart(address_list):
     # Datenrahmen für den Blutdruckverlauf erstellen
     df = pd.DataFrame(address_list)
 
-    # Filtern der Daten bis zum vorherigen Tag
-    df['Datum'] = pd.to_datetime(df['Datum'])
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    df = df[df['Datum'] < current_date]
-
     # Linienchart mit Plotly Express erstellen
     fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
     fig_line.update_layout(xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
@@ -163,6 +150,7 @@ def generate_blood_pressure_chart(address_list):
 
 # Aufruf der Funktion zum Erzeugen des Blutdruckverlaufs
 generate_blood_pressure_chart(address_list)
+
 
 
 
