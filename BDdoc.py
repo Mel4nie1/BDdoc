@@ -94,7 +94,12 @@ if file is not None:
     profilbild = image
 
 # Weitere Profildaten aus der JSON-Bin abrufen
-profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value={})
+profilbild = load_key(api_key, bin_id3, 'profilbild', empty_value=None)
+
+# Profilbild anzeigen
+if profilbild is not None:
+    st.image(profilbild, caption="Dein Profilbild", use_column_width=True)
+
 
 import streamlit as st
 import json
