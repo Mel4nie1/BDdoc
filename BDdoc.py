@@ -75,7 +75,7 @@ profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name", profil.get("name", ""))
-geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", ""))
+geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", None))
 geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
 gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
 krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
