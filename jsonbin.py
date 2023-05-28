@@ -92,3 +92,8 @@ def save_profile(api_key, bin_id, profile_data):
         "Content-Type": "application/json",
         "X-Master-Key": api_key
     }
+    
+# Funktion zum Erzeugen des Blutdruckverlaufs
+def generate_blood_pressure_chart(address_list):
+    # Datenrahmen für den Blutdruckverlauf erstellen
+    df = pd.DataFrame(address_list)
