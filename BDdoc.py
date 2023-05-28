@@ -283,7 +283,6 @@ def main():
 if __name__ == '__main__':
     main()
 
-
 import streamlit as st
 import pandas as pd
 import datetime as dt
@@ -314,15 +313,16 @@ df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    checkbox_id = f"checkbox_{i}"
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
     df.at[i, 'Eingenommen'] = eingenommen
 
-# Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
-ausgewählte_eingabe = st.selectbox('Eingabe löschen:', df['Medikament'])
+# Dropdown-Menü zum Auswählen der zu löschenden Medikamente anzeigen
+ausgewähltes_medikament = st.selectbox('Medikament löschen:', df['Medikament'])
 
-# Schaltfläche zum Löschen der ausgewählten Eingabe
-if st.button('Löschen'):
-    df = df[df['Medikament'] != ausgewählte_eingabe]
+# Schaltfläche zum Löschen des ausgewählten Medikaments
+if st.button('Medikament löschen'):
+    df = df[df['Medikament'] != ausgewähltes_medikament]
 
 st.table(df)
 
