@@ -172,7 +172,7 @@ def generate_blood_pressure_chart(address_list):
     # Balkendiagramm mit Plotly erstellen
     fig_bar = go.Figure(data=[go.Bar(x=df['Datum'], y=df['Systolischer BD'], name='Systolischer BD'),
                               go.Bar(x=df['Datum'], y=df['Diastolischer BD'], name='Diastolischer BD')])
-    fig_bar.update_layout(barmode='group', xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
+    fig_bar.update_layout(barmode='group', xaxis_tickformat='%Y-%m-%d', xaxis_title='Datum', yaxis_title='Blutdruck (mmHg)')
 
     # Ansicht auswählen und entsprechende Chart anzeigen
     chart_type = st.selectbox('Chart-Typ:', ('Liniendiagramm', 'Balkendiagramm'))
@@ -184,7 +184,6 @@ def generate_blood_pressure_chart(address_list):
 
 # Aufruf der Funktion zum Erzeugen des Blutdruckverlaufs
 generate_blood_pressure_chart(address_list)
-
 
 
 
