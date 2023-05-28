@@ -85,32 +85,26 @@ st.title("BDdoc")
 st.subheader("Überblick über deine Blutdruckwerte")
 
 # Sidebar with profile form
-name = st.sidebar.text_input("Name")
-geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
-gewicht = st.sidebar.text_input("Gewicht [kg]")
-krankheiten = st.sidebar.text_input("Krankheiten")
+name = st.sidebar.text_input("Name", load_key("name", ""))
+geburtsdatum = st.sidebar.date_input("Geburtsdatum", load_key("geburtsdatum"))
+geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"], index=0 if load_key("geschlecht") == "" else None)
+gewicht = st.sidebar.text_input("Gewicht [kg]", load_key("gewicht", ""))
+krankheiten = st.sidebar.text_input("Krankheiten", load_key("krankheiten", ""))
 
-# JSON object with profile data
-profil = {
-    "name": name,
-    "geburtsdatum": str(geburtsdatum),
-    "geschlecht": geschlecht,
-    "gewicht": gewicht,
-    "krankheiten": krankheiten.split(", ")
-}
-
-# Save the profile data to the JSON-Bin
-save_profile_data(profil)
+# Save the profile data
+save_key("name", name)
+save_key("geburtsdatum", geburtsdatum)
+save_key("geschlecht", geschlecht)
+save_key("gewicht", gewicht)
+save_key("krankheiten", krankheiten)
 
 # Display the profile data
 st.write("Dein Profil:")
-st.write(profil)
-
-# Speichern-Button
-if st.button("Speichern"):
-    save_profile_data(profil)
-    st.write("Profil erfolgreich gespeichert!")
+st.write("Name:", name)
+st.write("Geburtsdatum:", geburtsdatum)
+st.write("Geschlecht:", geschlecht)
+st.write("Gewicht [kg]:", gewicht)
+st.write("Krankheiten:", krankheiten)
 # Dummy-Daten
 systolic = "-"
 
