@@ -91,14 +91,6 @@ st.write("Gewicht:", gewicht)
 krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(profil.get("krankheiten", [])))
 st.write("Krankheiten:", krankheiten)
 
-# JSON object with profile data
-profil = {
-    "name": name,
-    "geburtsdatum": str(geburtsdatum),
-    "geschlecht": geschlecht,
-    "gewicht": gewicht,
-    "krankheiten": krankheiten.split(", ")
-}
 
 # Profildaten in der JSON-Bin speichern
 res = save_key(api_key, bin_id1, 'profil', profil)
