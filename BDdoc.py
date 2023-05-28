@@ -317,6 +317,9 @@ for i, row in df.iterrows():
     checkbox_id = f"checkbox_{i}"
     eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
     df.at[i, 'Eingenommen'] = eingenommen
+    delete_button_id = f"delete_button_{i}"
+    if st.button('Löschen', key=delete_button_id):
+        df = df.drop(i)
 
 st.table(df)
 
