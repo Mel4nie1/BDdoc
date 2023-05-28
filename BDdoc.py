@@ -79,15 +79,14 @@ if file is not None:
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
 
-
-# Sidebar mit Profilformular
+# Sidebar with profile form
 name = st.sidebar.text_input("Name")
 geburtsdatum = st.sidebar.date_input("Geburtsdatum")
 geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
 gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
-# JSON-Objekt mit Profildaten
+# JSON object with profile data
 profil = {
     "name": name,
     "geburtsdatum": str(geburtsdatum),
@@ -96,38 +95,19 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Laden vorhandener Profile
-names = [address["name"] for address in profile_manager.address_list]
+# Load existing profiles from the JSON-Bin
+address_list = load_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
 
-# Überprüfen, ob das aktuelle Benutzerprofil in der JSON-Bin existiert
-if name in names:
-    st.sidebar.success("Profil gefunden")
-    existing_profile = next((address for address in profile_manager.address_list if address["name"] == name), None)
-    # Formularfelder mit vorhandenen Profildaten ausfüllen
-    if existing_profile is not None:
-        name = st.sidebar.text_input("Name", existing_profile["name"])
-        geburtsdatum = st.sidebar.date_input("Geburtsdatum", dt.datetime.strptime(existing_profile["geburtsdatum"], "%Y-%m-%d").date())
-        geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"], existing_profile["geschlecht"])
-        gewicht = st.sidebar.text_input("Gewicht [kg]", existing_profile["gewicht"])
-        krankheiten = st.sidebar.text_input("Krankheiten", ", ".join(existing_profile["krankheiten"]))
+# Save the updated address_list to the JSON-Bin
+save_key(api_key, bin_id1, username, {'profile_picture': profile_picture_data})
 
-        # Profildaten in der JSON-Bin aktualisieren
-        existing_profile["name"] = name
-        existing_profile["geburtsdatum"] = str(geburtsdatum)
-        existing_profile["geschlecht"] = geschlecht
-        existing_profile["gewicht"] = gewicht
-        existing_profile["krankheiten"] = krankheiten.split(", ")
-
-        profile_manager.update_profile(existing_profile)
+# Display the profile data if available
+if address_list:
+    st.write("Dein Profil:")
+    for profile in address_list:
+        st.write(profile)
 else:
-    st.sidebar.warning("Profil nicht gefunden")
-    if st.sidebar.button("Profil erstellen"):
-        # Neues Profil zur JSON-Bin hinzufügen
-        profile_manager.create_profile(profil)
-        st.sidebar.success("Profil erstellt")
-
-# Weitere Streamlit-Code hier einfügen (z. B. Anzeige des Profils)
-
+    st.write("Keine Profildaten verfügbar.")
 
 # Dummy-Daten
 systolic = "-"
@@ -410,5 +390,3 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
 # Medikamentendaten in JSON-Bin speichern
 data = df.to_dict(orient='records')
 save_key(api_key, bin_id6, 'medikamente', data)
-
-
