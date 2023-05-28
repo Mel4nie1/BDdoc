@@ -78,7 +78,7 @@ def delete_notes(api_key):
 class ProfileManager:
     def __init__(self, api_key, bin_id):
         self.api_key = api_key
-        self.bin_id = bin_id
+        self.bin_id = bin_id2
         self.address_list = self.load_profiles()
 
     def load_profiles(self):
