@@ -75,11 +75,10 @@ import requests
 profilbild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
 if profilbild is not None:
     # Bin-ID3 anfordern
-    response = requests.get("https://api.streamlit.io/public/v1/files/")
     bin_id3 = response.json()["binId"]
 
     # Profilbild speichern
-    response = requests.post(f"https://api.streamlit.io/public/v1/files/{bin_id3}/{profilbild.name}",
+    response = requests.post(f"https://api.streamlit.io/public/v3/files/{bin_id3}/{profilbild.name}",
                              files={"file": profilbild})
     if response.status_code == 201:
         st.success("Profilbild erfolgreich hochgeladen!")
