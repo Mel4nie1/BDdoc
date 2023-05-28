@@ -317,13 +317,16 @@ for i, row in df.iterrows():
     eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
     df.at[i, 'Eingenommen'] = eingenommen
 
-# Dropdown-Menü zum Auswählen der zu löschenden Medikamente anzeigen
+# Dropdown-Menü zum Auswählen des zu löschenden Medikaments anzeigen
 ausgewähltes_medikament = st.selectbox('Medikament löschen:', df['Medikament'])
 
 # Schaltfläche zum Löschen des ausgewählten Medikaments
 if st.button('Medikament löschen'):
     df = df[df['Medikament'] != ausgewähltes_medikament]
+    data = df.to_dict('records')
+    res = save_key(api_key, bin_id6, 'medikamente', data)
 
 st.table(df)
+
 
 
