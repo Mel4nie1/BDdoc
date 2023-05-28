@@ -96,11 +96,6 @@ profil = {
     "krankheiten": krankheiten.split(", ")
 }
 
-# Load existing profile picture from the JSON-Bin
-existing_profile = load_profile_picture(api_key, bin_id1)
-
-# Save the updated profile picture to the JSON-Bin
-save_profile_picture(api_key, bin_id1, profile_picture_data)
 
 # Display the profile data if available
 if existing_profile:
