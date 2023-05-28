@@ -284,9 +284,9 @@ if __name__ == '__main__':
     main()
 
 
-# Streamlit-Anwendung
-def main():
-    st.subheader("Medikamenten Tracker")
+import streamlit as st
+import pandas as pd
+import datetime as dt
 
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
@@ -309,17 +309,16 @@ if st.button('Medikament hinzufügen'):
     data.append(neuer_datensatz)
     res = save_key(api_key, bin_id6, 'medikamente', data)
 
-
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
+    checkbox_id = f"checkbox_{i}"
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
     df.at[i, 'Eingenommen'] = eingenommen
 
 st.table(df)
-
 
 
 
