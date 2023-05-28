@@ -79,7 +79,7 @@ def delete_notes(api_key):
 
 # Funktion zum Laden des Profils aus der JSON-Bin
 def load_profile(api_key, bin_id):
-    url = f"https://api.jsonbin.io/v3/b/{bin_id}/latest"
+    url = f"https://api.jsonbin.io/v3/b/{bin_id1}/latest"
     headers = {
         "X-Master-Key": api_key
     }
@@ -87,7 +87,7 @@ def load_profile(api_key, bin_id):
 
 # Funktion zum Speichern des Profils in der JSON-Bin
 def save_profile(api_key, bin_id, profile_data):
-    url = f"https://api.jsonbin.io/v3/b/{bin_id}"
+    url = f"https://api.jsonbin.io/v3/b/{bin_id1}"
     headers = {
         "Content-Type": "application/json",
         "X-Master-Key": api_key
