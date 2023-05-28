@@ -293,42 +293,6 @@ from tzlocal import get_localzone
 # Titel der App
 st.subheader('Medikamenten-Tracker')
 
-import streamlit as st
-import datetime
-
-# Medikamentenklasse
-class Medikament:
-    def __init__(self, name, menge, zeit):
-        self.name = name
-        self.menge = menge
-        self.zeit = zeit
-        self.eingenommen = False
-    
-    def __str__(self):
-        return f"{self.name} - {self.menge} - {self.zeit} - {'Eingenommen' if self.eingenommen else 'Nicht eingenommen'}"
-
-# Medikamentenliste
-medikamentenliste = []
-
-# Funktion zum Hinzufügen eines Medikaments
-def medikament_hinzufuegen(name, menge, zeit):
-    medikament = Medikament(name, menge, zeit)
-    medikamentenliste.append(medikament)
-
-# Funktion zum Speichern als eingenommen markieren
-def save_key(name):
-    for medikament in medikamentenliste:
-        if medikament.name == name:
-            medikament.eingenommen = True
-
-# Beispielhafte Verwendung
-medikament_hinzufuegen("Ibuprofen", "1 Tablette", datetime.datetime(2023, 5, 23, 8, 0))
-medikament_hinzufuegen("Paracetamol", "2 Tabletten", datetime.datetime(2023, 5, 23, 12, 0))
-medikament_hinzufuegen("Antibiotikum", "1 Tablette", datetime.datetime(2023, 5, 23, 16, 0))
-
-# Streamlit-Anwendung
-st.title("Medikamentenverwaltung")
-
 # Leere Liste erstellen
 data = []
 
@@ -365,6 +329,7 @@ if st.button('Daten speichern', key=str(dt.datetime.now())):
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
+
 
 
 
