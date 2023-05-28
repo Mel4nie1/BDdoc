@@ -307,13 +307,10 @@ if st.button('Medikament hinzufügen'):
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
         'Eingenommen': False
     }
-    df = df.append(neuer_datensatz, ignore_index=True)
+
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.error('Fehler beim Speichern der Daten.')
+)
 
 # Schaltfläche zum Löschen einer Eingabe
 if st.button('Eingabe löschen'):
@@ -323,10 +320,7 @@ if st.button('Eingabe löschen'):
     df = df[df['Medikament'] != ausgewählte_eingabe]
     # Daten mit save_key() Funktion aktualisieren
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-    if "success" in res and res["success"]:
-        st.success('Eingabe wurde erfolgreich gelöscht.')
-    else:
-        st.error('Fehler beim Löschen der Eingabe.')
+
 
 # Tabelle mit den Medikamenten anzeigen
 st.table(df)
@@ -338,10 +332,6 @@ for i, row in df.iterrows():
 
 # Daten mit save_key() Funktion aktualisieren
 res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-if "success" in res and res["success"]:
-    st.success('Daten wurden erfolgreich gespeichert.')
-else:
-    st.error('Fehler beim Speichern der Daten.')
 
 
 
