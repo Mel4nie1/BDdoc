@@ -282,12 +282,12 @@ def main():
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
     main()
-
 import streamlit as st
 import pandas as pd
 import datetime as dt
 
 # Laden der vorhandenen Daten aus der JSON-Bin
+# (Assuming the load_key() and save_key() functions are defined correctly)
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
 # DataFrame erstellen
@@ -310,12 +310,10 @@ if st.button('Medikament hinzufügen'):
     df = df.append(neuer_datensatz, ignore_index=True)
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-
-
-# Tabelle mit den Medikamenten anzeigen
-for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
-    df.at[i, 'Eingenommen'] = eingenommen
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.error('Fehler beim Speichern der Daten.')
 
 # Schaltfläche zum Löschen einer Eingabe
 if st.button('Eingabe löschen'):
@@ -325,9 +323,26 @@ if st.button('Eingabe löschen'):
     df = df[df['Medikament'] != ausgewählte_eingabe]
     # Daten mit save_key() Funktion aktualisieren
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+    if "success" in res and res["success"]:
+        st.success('Eingabe wurde erfolgreich gelöscht.')
+    else:
+        st.error('Fehler beim Löschen der Eingabe.')
 
-
+# Tabelle mit den Medikamenten anzeigen
 st.table(df)
+
+# Checkboxen für die Einnahmeanzeige
+for i, row in df.iterrows():
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
+    df.at[i, 'Eingenommen'] = eingenommen
+
+# Daten mit save_key() Funktion aktualisieren
+res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
+if "success" in res and res["success"]:
+    st.success('Daten wurden erfolgreich gespeichert.')
+else:
+    st.error('Fehler beim Speichern der Daten.')
+
 
 
 
