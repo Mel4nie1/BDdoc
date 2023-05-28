@@ -79,7 +79,7 @@ def delete_notes(api_key):
 
 # Funktion zum Speichern des Profils in der JSON-Bin
 def save_profile(api_key, bin_id, profile_data):
-    save_key(api_key, bin_id, username, profile_data)
+
     
     def load_profile(api_key, bin_id):
     url = f"https://api.jsonbin.io/v3/b/{bin_id}/latest"
