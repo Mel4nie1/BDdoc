@@ -318,11 +318,6 @@ if st.button('Medikament hinzufügen'):
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
-# Tabelle mit den Medikamenten anzeigen
-for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
-    df.at[i, 'Eingenommen'] = eingenommen
-
 # Schaltfläche zum Löschen einer Eingabe
 if st.button('Eingabe löschen'):
     # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
@@ -345,6 +340,13 @@ if st.button('Daten speichern'):
         st.success('Daten wurden erfolgreich gespeichert.')
     else:
         st.write('Fehler beim Speichern der Daten.')
+
+# Medikamente anzeigen und Schaltfläche zum Einnahme bestätigen
+for i, row in df.iterrows():
+    if not row['Eingenommen']:
+        eingenommen = st.button('Medikament eingenommen: ' + row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr')
+        if eingenommen:
+            df.at[i, 'Eingenommen'] = True
 
 st.table(df)
 
