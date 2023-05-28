@@ -66,7 +66,6 @@ st.subheader("Überblick über deine Blutdruckwerte")
 # Hintergundbildfarbe auf rot ändern
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
-import base64
 
 import base64
 
