@@ -75,3 +75,31 @@ def delete_notes(api_key):
     return save_notes(api_key, [])
 
 
+class ProfileManager:
+    def __init__(self, api_key, bin_id):
+        self.api_key = api_key
+        self.bin_id = bin_id
+        self.address_list = self.load_profiles()
+
+    def load_profiles(self):
+        # Laden der vorhandenen Profile aus der JSON-Bin
+        address_list = []
+        # Code zum Laden der Profile hier einfügen
+        return address_list
+
+    def save_profiles(self):
+        # Speichern der Profile in der JSON-Bin
+        # Code zum Speichern der Profile hier einfügen
+        pass
+
+    def update_profile(self, profile):
+        # Aktualisieren des Profils in der JSON-Bin
+        # Code zum Aktualisieren des Profils hier einfügen
+        pass
+
+    def create_profile(self, profile):
+        # Hinzufügen des neuen Profils zur JSON-Bin
+        # Code zum Hinzufügen des Profils hier einfügen
+        pass
+
+
