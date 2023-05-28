@@ -81,7 +81,8 @@ st.write("Name:", name)
 geburtsdatum = st.sidebar.text_input("Geburtsdatum", profil.get("geburtsdatum", ""))
 st.write("Geburtsdatum:", geburtsdatum)
 
-geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
+geschlecht_options = ["", "männlich", "weiblich", "divers"]
+geschlecht = st.sidebar.selectbox("Geschlecht", geschlecht_options, index=geschlecht_options.index(profil.get("geschlecht", "")))
 st.write("Geschlecht:", geschlecht)
 
 gewicht = st.sidebar.text_input("Gewicht [kg]", profil.get("gewicht", ""))
