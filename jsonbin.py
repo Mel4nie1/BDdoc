@@ -77,8 +77,11 @@ def delete_notes(api_key):
     return save_notes(api_key, [])
 
 
+# Funktion zum Laden des Profils aus der JSON-Bin
+def load_profile(api_key, bin_id):
+    profile_data = load_key(api_key, bin_id, username, empty_value={})
+    return profile_data
 
-def save_profile_data(profil):
-    existing_data = load_data()
-    existing_data['profil'] = profile_data
-    save_data({"record": existing_data})
+# Funktion zum Speichern des Profils in der JSON-Bin
+def save_profile(api_key, bin_id, profile_data):
+    save_key(api_key, bin_id, username, profile_data)
