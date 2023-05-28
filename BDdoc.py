@@ -59,31 +59,30 @@ elif authentication_status == None:
     st.warning('Please enter your username and password')
     st.stop()
 
-# Setzen des Titels
 st.title("BDdoc")
-
-# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
 st.subheader("Überblick über deine Blutdruckwerte")
+
+# Hintergundbildfarbe auf rot ändern
+st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
+ unsafe_allow_html=True)
 
 # Profilbild hochladen
 st.sidebar.subheader("Profil")
+
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen und speichern
+# Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
-    image = Image.open(file)
-    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
-    # Base64-Codierung des Bilds
-    profile_picture_data = base64.b64encode(file.read()).decode('utf-8')
+ image = Image.open(io.BytesIO(file.read()))
 
-    # Speichern des Bilds in der JSON-Bin
-    save_profile_picture(profile_picture_data)
+ st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
 geburtsdatum = st.sidebar.date_input("Geburtsdatum")
-geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"])
+geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"))
 gewicht = st.sidebar.text_input("Gewicht [kg]")
 krankheiten = st.sidebar.text_input("Krankheiten")
 
@@ -95,6 +94,9 @@ profil = {
     "gewicht": gewicht,
     "krankheiten": krankheiten.split(", ")
 }
+
+# Save the profile data to the JSON-Bin
+save_key(API_KEY, BIN_ID, "profil", profil)
 
 # Display the profile data
 st.write("Dein Profil:")
