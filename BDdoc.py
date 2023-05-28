@@ -310,7 +310,6 @@ if st.button('Medikament hinzufügen'):
 
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', df.to_dict(orient='records'))
-)
 
 # Schaltfläche zum Löschen einer Eingabe
 if st.button('Eingabe löschen'):
