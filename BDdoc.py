@@ -66,47 +66,55 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
+# Seitenleiste mit Benutzerdaten
+st.sidebar.title("Benutzerprofil")
+
+# Name
+name = st.sidebar.text_input("Name")
+
+# Geburtsdatum
+geburtsdatum = st.sidebar.date_input("Geburtsdatum")
+
+# Geschlecht
+geschlecht = st.sidebar.selectbox("Geschlecht", ["Männlich", "Weiblich", "Andere"])
+
+# Alter berechnen
+if geburtsdatum:
+    today = datetime.date.today()
+    alter = today.year - geburtsdatum.year
+    st.sidebar.text(f"Alter: {alter}")
+
+# Krankheiten
+krankheiten = st.sidebar.text_area("Krankheiten")
+
+# Speichern-Button
+if st.sidebar.button("Speichern"):
+    data = {
+        "Name": name,
+        "Geburtsdatum": str(geburtsdatum),
+        "Geschlecht": geschlecht,
+        "Krankheiten": krankheiten
+    }
+    save_data(data)
+
 # Profilbild hochladen
-st.sidebar.subheader("Profil")
+profilbild = st.sidebar.file_uploader("Profilbild hochladen")
 
-file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
+# Hauptinhalt der Seite
+st.title("Benutzerprofil")
+st.subheader("Aktuelle Informationen")
 
-# Falls ein Bild hochgeladen wurde, dieses anzeigen
-if file is not None:
+# Laden der gespeicherten Daten von bin_id1
+saved_data = load_data()
 
- image = Image.open(io.BytesIO(file.read()))
-
- st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
-
-
-
-# Setzen des Titels
-st.title("BDdoc")
-
-# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
-st.subheader("Überblick über deine Blutdruckwerte")
-
-# Sidebar with profile form
-name = st.sidebar.text_input("Name", load_key(bin_id1, "name", ""))
-geburtsdatum = st.sidebar.date_input("Geburtsdatum", load_key(bin_id1, "geburtsdatum"))
-geschlecht = st.sidebar.selectbox("Geschlecht", ["", "männlich", "weiblich", "divers"], index=0 if load_key(bin_id1, "geschlecht") == "" else None)
-gewicht = st.sidebar.text_input("Gewicht [kg]", load_key(bin_id1, "gewicht", ""))
-krankheiten = st.sidebar.text_input("Krankheiten", load_key(bin_id1, "krankheiten", ""))
-
-# Save the profile data
-save_key(bin_id1, "name", name)
-save_key(bin_id1, "geburtsdatum", str(geburtsdatum))
-save_key(bin_id1, "geschlecht", geschlecht)
-save_key(bin_id1, "gewicht", gewicht)
-save_key(bin_id1, "krankheiten", krankheiten)
-
-# Display the profile data
-st.write("Dein Profil:")
-st.write("Name:", name)
-st.write("Geburtsdatum:", geburtsdatum)
-st.write("Geschlecht:", geschlecht)
-st.write("Gewicht [kg]:", gewicht)
-st.write("Krankheiten:", krankheiten)
+# Anzeigen der gespeicherten Daten
+if saved_data:
+    st.write(f"Name: {saved_data['Name']}")
+    st.write(f"Geburtsdatum: {saved_data['Geburtsdatum']}")
+    st.write(f"Geschlecht: {saved_data['Geschlecht']}")
+    st.write(f"Krankheiten: {saved_data['Krankheiten']}")
+else:
+    st.write("Es sind keine Daten vorhanden.")
 
 
 # Dummy-Daten
