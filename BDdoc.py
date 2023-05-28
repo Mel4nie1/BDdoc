@@ -71,7 +71,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
+from datetime import datetime
 
 # Funktion zum Laden der gespeicherten Blutdruckdaten
 def load_key(api_key, bin_id, username):
@@ -146,9 +146,12 @@ diastolic_bp = st.number_input("Diastolischer Blutdruck (mmHg):", step=1, format
 if st.button("Daten speichern"):
     # Speichern der Daten nur, wenn beide Werte eingegeben wurden
     if systolic_bp is not None and diastolic_bp is not None:
+        # Aktuelles Datum erfassen
+        current_date = datetime.now().strftime("%Y-%m-%d")
+
         # Daten aktualisieren
         data = {
-            "Datum": pd.to_datetime('today').normalize(),
+            "Datum": current_date,
             "Systolischer BD": systolic_bp,
             "Diastolischer BD": diastolic_bp
         }
@@ -162,7 +165,6 @@ if st.button("Daten speichern"):
 def generate_blood_pressure_chart(address_list):
     # Datenrahmen für den Blutdruckverlauf erstellen
     df = pd.DataFrame(address_list)
-    df['Datum'] = pd.to_datetime(df['Datum'])
 
     # Linienchart mit Plotly Express erstellen
     fig_line = px.line(df, x='Datum', y=['Systolischer BD', 'Diastolischer BD'])
