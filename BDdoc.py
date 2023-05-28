@@ -67,8 +67,15 @@ st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import random
+
+
 # Funktion zum Laden der gespeicherten Blutdruckdaten
-def load_key(api_key, bin_id2, username):
+def load_key(api_key, bin_id, username):
     # Hier den Code einfügen, um die Daten aus der JSON-Bin zu laden
     # Beispielcode:
     address_list = [
@@ -89,6 +96,13 @@ def load_key(api_key, bin_id2, username):
         }
     ]
     return address_list
+
+
+# Funktion zum Speichern der Blutdruckdaten
+def save_key(api_key, bin_id, username, data):
+    # Hier den Code einfügen, um die Daten in der JSON-Bin zu speichern
+    # Beispielcode:
+    return True
 
 
 # Dummy-Daten
@@ -135,7 +149,7 @@ if st.button("Daten speichern"):
     if systolic_bp is not None and diastolic_bp is not None:
         # Daten aktualisieren
         data = {
-            "Datum": pd.Timestamp.now().strftime('%Y-%m-%d'),
+            "Datum": pd.to_datetime('today').normalize(),
             "Systolischer BD": systolic_bp,
             "Diastolischer BD": diastolic_bp
         }
@@ -170,6 +184,7 @@ def generate_blood_pressure_chart(address_list):
 
 # Aufruf der Funktion zum Erzeugen des Blutdruckverlaufs
 generate_blood_pressure_chart(address_list)
+
 
 
 
