@@ -66,6 +66,23 @@ st.subheader("Überblick über deine Blutdruckwerte")
 # Hintergundbildfarbe auf rot ändern
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
+def save_key(image_data):
+    # Dummy-Funktion zur Simulation des Speicherns des Profilbildes
+    # Hier könntest du den Code hinzufügen, um das Bild tatsächlich zu speichern
+    saved_key = "example_key"
+    return saved_key
+
+def retrieve_image(saved_key):
+    # Dummy-Funktion zur Simulation des Wiedergebens des Profilbildes
+    # Hier könntest du den Code hinzufügen, um das Bild tatsächlich abzurufen und zurückzugeben
+    image_data = "example_image_data"
+    return image_data
+
+# Beispielverwendung
+image_data = "example_image_data"  # Hier solltest du den tatsächlichen Bildinhalt einfügen
+saved_key = save_key(image_data)
+retrieved_image_data = retrieve_image(saved_key)
+print(retrieved_image_data)
 
 # Laden der vorhandenen Profildaten aus der JSON-Bin
 profil = load_key(api_key, bin_id1, 'profil', empty_value={})
