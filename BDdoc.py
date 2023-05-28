@@ -284,46 +284,62 @@ if __name__ == '__main__':
     main()
 
 
-import datetime
+import datetime as dt
+import pandas as pd
+import json
+import streamlit as st
+from tzlocal import get_localzone
 
-# Medikamentenklasse
-class Medikament:
-    def __init__(self, name, menge, zeit):
-        self.name = name
-        self.menge = menge
-        self.zeit = zeit
-        self.eingenommen = False
-    
-    def __str__(self):
-        return f"{self.name} - {self.menge} - {self.zeit} - {'Eingenommen' if self.eingenommen else 'Nicht eingenommen'}"
+# Titel der App
+st.subheader('Medikamenten-Tracker')
 
-# Medikamentenliste
-medikamentenliste = []
+# Leerer DataFrame erstellen
+df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
-# Funktion zum Hinzufügen eines Medikaments
-def medikament_hinzufuegen(name, menge, zeit):
-    medikament = Medikament(name, menge, zeit)
-    medikamentenliste.append(medikament)
+# Funktion zur Umwandlung von lokaler Zeit in UTC
+def local_to_utc(local_time):
+    local_tz = get_localzone()
+    utc_tz = dt.timezone.utc
+    local_time = local_tz.localize(local_time)
+    utc_time = local_time.astimezone(utc_tz)
+    return utc_time
 
-# Funktion zum Speichern als eingenommen markieren
-def save_key(name):
-    for medikament in medikamentenliste:
-        if medikament.name == name:
-            medikament.eingenommen = True
+# Funktion zum Speichern der Daten mit save_key()
+def save_data_to_key(api_key, bin_id, username, data):
+    # Hier rufen Sie die save_key() Funktion auf und übergeben die erforderlichen Argumente
+    res = save_key(api_key, bin_id, username, data)
+    return res
 
-# Beispielhafte Verwendung
-medikament_hinzufuegen("Ibuprofen", "1 Tablette", datetime.datetime(2023, 5, 23, 8, 0))
-medikament_hinzufuegen("Paracetamol", "2 Tabletten", datetime.datetime(2023, 5, 23, 12, 0))
-medikament_hinzufuegen("Antibiotikum", "1 Tablette", datetime.datetime(2023, 5, 23, 16, 0))
+# Eingabefelder für das neue Medikament
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
-print("Medikamentenliste vor der Einnahme:")
-for medikament in medikamentenliste:
-    print(medikament)
+# Schaltfläche zum Hinzufügen des neuen Medikaments
+if st.button('Medikament hinzufügen'):
+    neue_zeile = {
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Eingenommen': False
+    }
+    df = df.append(neue_zeile, ignore_index=True)
 
-# Beispielhafte Einnahme des Medikaments "Ibuprofen"
-save_key("Ibuprofen")
+# Tabelle mit den Medikamenten anzeigen
+for i, row in df.iterrows():
+    if st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'].strftime('%H:%M') + ' Uhr eingenommen?'):
+        df.at[i, 'Eingenommen'] = True
+st.table(df)
 
-print("\nMedikamentenliste nach der Einnahme:")
-for medikament in medikamentenliste:
-    print(medikament)
+# Schaltfläche zum Speichern der Daten
+if st.button('Daten speichern', key=str(dt.datetime.now())):
+    # Die Daten in ein Dictionary umwandeln
+    data = df.to_dict(orient='records')
+    # Hier rufen Sie die save_data_to_key() Funktion auf und übergeben die erforderlichen Argumente
+    res = save_data_to_key(api_key, bin_id3, username, json.dumps(data))
+    if res == 'success':
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.error('Fehler beim Speichern der Daten.')
+
 
