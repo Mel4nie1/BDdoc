@@ -79,8 +79,6 @@ if file is not None:
     # Speichern des Bilds in der JSON-Bin
     save_key(api_key, bin_id1, username, profile_picture_data)
 
-# Profile Manager erstellen
-profile_manager = ProfileManager(api_key, bin_id1)
 
 # Sidebar mit Profilformular
 name = st.sidebar.text_input("Name")
