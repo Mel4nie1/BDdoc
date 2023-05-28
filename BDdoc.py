@@ -96,7 +96,7 @@ profil = {
 }
 
 # Save the profile data to the JSON-Bin
-save_key(API_KEY, BIN_ID, "profil", profil)
+save_key(API_KEY, bin_id1, "profil", profil)
 
 # Display the profile data
 st.write("Dein Profil:")
