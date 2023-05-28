@@ -67,6 +67,35 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
+import streamlit as st
+from PIL import Image
+import io
+
+# Profilbild hochladen
+st.sidebar.subheader("Profil")
+file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
+
+# Falls ein Bild hochgeladen wurde, dieses anzeigen
+if file is not None:
+    image = Image.open(io.BytesIO(file.read()))
+    st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
+
+    # Profilbild speichern
+    bin_file_path = 'path/to/profile_picture.bin'  # Pfade anpassen
+    image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
+
+# Beispielaufruf zum Laden des Profilbildes
+def load_profile_picture(bin_file_path):
+    with open(bin_file_path, 'rb') as bin_file:
+        image_data = bin_file.read()
+
+    return image_data
+
+# Binärdaten des Profilbildes laden und anzeigen
+loaded_image_data = load_profile_picture('path/to/profile_picture.bin')  # Pfad anpassen
+if loaded_image_data:
+    image = Image.open(io.BytesIO(loaded_image_data))
+    st.image(image, caption="Geladenes Profilbild", use_column_width=True)
 
 import streamlit as st
 import json
