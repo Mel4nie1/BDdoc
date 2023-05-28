@@ -283,60 +283,54 @@ def main():
 if __name__ == '__main__':
     main()
 
-import streamlit as st
-import pandas as pd
-import datetime as dt
+# Streamlit-Anwendung
+def main():
+    st.subheader("Medikamenten-Tracker")   
 
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
 
-def main():
-    st.subheader("Medikamenten-Tracker")   
-    
-    # Eingabefelder für das neue Medikament
-    neues_medikament = st.text_input('Neues Medikament:', '')
-    neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
-    neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
-    
-    # Schaltfläche zum Hinzufügen des neuen Medikaments
-    if st.button('Medikament hinzufügen'):
-        # Neuen Datensatz erstellen
-        neuer_datensatz = {
-            'Medikament': neues_medikament,
-            'Einnahme_Menge': neue_einnahme_menge,
-            'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-            'Eingenommen': False
-        }
-        # Daten mit save_key() Funktion speichern
-        data.append(neuer_datensatz)
-        res = save_key(api_key, bin_id6, 'medikamente', data)
-    
-    # DataFrame erstellen
-    df = pd.DataFrame(data)
-    
-    # Tabelle mit den Medikamenten anzeigen
-    for i, row in df.iterrows():
-        eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
-        df.at[i, 'Eingenommen'] = eingenommen
-        
-        # Medikament als eingenommen markieren und löschen, wenn abgehakt
-        if eingenommen:
-            df = df[df['Medikament'] != row['Medikament']]
-            data = df.to_dict(orient='records')
-            res = save_key(api_key, bin_id6, 'medikamente', data)
-    
-    # Schaltfläche zum Löschen einer Eingabe
-    if st.button('Eingabe löschen'):
-        # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
-        ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
-        # Eingabe aus dem DataFrame entfernen
-        df = df[df['Medikament'] != ausgewählte_eingabe]
-        # Daten mit save_key() Funktion aktualisieren
-        data = df.to_dict(orient='records')
-        res = save_key(api_key, bin_id6, 'medikamente', data)
-    
-    st.table(df)
+# Eingabefelder für das neue Medikament
+neues_medikament = st.text_input('Neues Medikament:', '')
+neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
 
+# Schaltfläche zum Hinzufügen des neuen Medikaments
+if st.button('Medikament hinzufügen'):
+    # Neuen Datensatz erstellen
+    neuer_datensatz = {
+        'Medikament': neues_medikament,
+        'Einnahme_Menge': neue_einnahme_menge,
+        'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
+        'Eingenommen': False
+    }
+    # Daten mit save_key() Funktion speichern
+    data.append(neuer_datensatz)
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+
+
+# DataFrame erstellen
+df = pd.DataFrame(data)
+
+# Tabelle mit den Medikamenten anzeigen
+for i, row in df.iterrows():
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
+    df.at[i, 'Eingenommen'] = eingenommen
+
+# Schaltfläche zum Löschen einer Eingabe
+if st.button('Eingabe löschen'):
+    # Dropdown-Menü zum Auswählen der zu löschenden Eingabe anzeigen
+    ausgewählte_eingabe = st.selectbox('Eingabe auswählen:', df['Medikament'])
+    # Eingabe aus dem DataFrame entfernen
+    df = df[df['Medikament'] != ausgewählte_eingabe]
+    # Daten mit save_key() Funktion aktualisieren
+    data = df.to_dict(orient='records')
+    res = save_key(api_key, bin_id6, 'medikamente', data)
+
+
+
+
+st.table(df)
 
 
 
