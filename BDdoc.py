@@ -78,6 +78,11 @@ if file is not None:
 
  st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
+# Setzen des Titels
+st.title("BDdoc")
+
+# Anzeigen des Untertitels in kleinerer Schriftgröße und anderem Stil
+st.subheader("Überblick über deine Blutdruckwerte")
 
 # Sidebar with profile form
 name = st.sidebar.text_input("Name")
@@ -96,7 +101,7 @@ profil = {
 }
 
 # Save the profile data to the JSON-Bin
-save_key(api_key, bin_id1, "profil", profil)
+save_profile_data(profil)
 
 # Display the profile data
 st.write("Dein Profil:")
@@ -104,9 +109,8 @@ st.write(profil)
 
 # Speichern-Button
 if st.button("Speichern"):
-    save_key(api_key, bin_id1, "profil", profil)
+    save_profile_data(profil)
     st.write("Profil erfolgreich gespeichert!")
-    
 # Dummy-Daten
 systolic = "-"
 
