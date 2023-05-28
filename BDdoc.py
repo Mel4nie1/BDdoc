@@ -78,11 +78,19 @@ file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg
 # Falls ein Bild hochgeladen wurde, dieses anzeigen
 if file is not None:
     image = Image.open(io.BytesIO(file.read()))
+    
+    # Profilbild kleiner anzeigen
+    image.thumbnail((200, 200))  # Bildgröße anpassen
+
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
     # Profilbild speichern
     bin_file_path = 'profile_picture.bin'  # Pfad zur Binärdatei anpassen
     image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
+
+    # Profilbild wieder laden und anzeigen
+    loaded_image = Image.open(bin_file_path)
+    st.image(loaded_image, caption="Geladenes Profilbild", use_column_width=True)
 
 
 
