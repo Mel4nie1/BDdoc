@@ -81,8 +81,8 @@ if file is not None:
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
 
     # Profilbild speichern
-    bin_file_path = 'path/to/profile_picture.bin'  # Pfade anpassen
-    image.save(bin_file_path, format='PNG')  # Bild im PNG-Format speichern
+    bin_id3 = 'path/to/profile_picture.bin'  # Pfade anpassen
+    image.save(bin_id3, format='PNG')  # Bild im PNG-Format speichern
 
 # Beispielaufruf zum Laden des Profilbildes
 def load_profile_picture(bin_file_path):
