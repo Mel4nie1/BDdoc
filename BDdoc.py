@@ -284,35 +284,42 @@ if __name__ == '__main__':
     main()
 
 
-# Titel der App
-st.subheader('Medikamenten-Tracker')
-
-# JSON-Datei laden oder leere DataFrame erstellen
-try:
-    with open('medikamente.json', 'r') as f:
-        df = pd.read_json(f)
-except:
-    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
+import streamlit as st
+import pandas as pd
+from datetime import datetime, time
+import pytz
+import json
 
 # Funktion zur Umwandlung von lokaler Zeit in UTC
 def local_to_utc(local_time):
-    local_tz = get_localzone()
-    utc_tz = pytz.utc
-    local_time = local_tz.localize(local_time)
-    utc_time = local_time.astimezone(utc_tz)
+    local_tz = pytz.timezone('YOUR_TIMEZONE')  # Replace 'YOUR_TIMEZONE' with your desired timezone
+    utc_time = local_time.astimezone(pytz.utc)
     return utc_time
+
+# JSON-Bin speichern Funktion
+def save_medication_data(api_key, bin_id, key_name, data):
+    # Implementiere hier den Code zum Speichern der Daten mit save_key
+    pass
+
+# JSON-Daten laden oder leeren DataFrame erstellen
+try:
+    # Lade die Daten aus dem JSON-Bin oder einem anderen Speicherort
+    data = load_medication_data(api_key, bin_id, 'medikamente')
+    df = pd.DataFrame(data)
+except:
+    df = pd.DataFrame(columns=['Medikament', 'Einnahme_Menge', 'Uhrzeit', 'Eingenommen'])
 
 # Eingabefelder für das neue Medikament
 neues_medikament = st.text_input('Neues Medikament:', '')
 neue_einnahme_menge = st.number_input('Einnahme-Menge:', min_value=0, step=1, value=1)
-neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=dt.time(9, 0))
+neue_uhrzeit = st.time_input('Uhrzeit:', key='meds_time_input', value=time(9, 0))
 
 # Schaltfläche zum Hinzufügen des neuen Medikaments
 if st.button('Medikament hinzufügen'):
     df = df.append({
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
-        'Uhrzeit': local_to_utc(dt.datetime.combine(dt.date.today(), neue_uhrzeit)),
+        'Uhrzeit': local_to_utc(datetime.combine(datetime.now().date(), neue_uhrzeit)),
         'Eingenommen': False
     }, ignore_index=True)
 
@@ -322,17 +329,12 @@ for i, row in df.iterrows():
         df.at[i, 'Eingenommen'] = True
 st.table(df)
 
-if st.button('Daten speichern', key=str(dt.datetime.now())):
+if st.button('Daten speichern', key=str(datetime.now())):
     # Die Daten in ein Dictionary umwandeln
     data = df.to_dict(orient='records')
 
-    # JSON-Datei öffnen und Daten schreiben
-    with open('medikamente.json', 'w') as f:
-        json.dump(data, f)
+    # Die Daten mit save_key speichern
+    save_medication_data(api_key, bin_id, 'medikamente', data)
 
     st.success('Daten wurden erfolgreich gespeichert.')
 
-
-# Medikamentendaten in JSON-Bin speichern
-data = df.to_dict(orient='records')
-save_key(api_key, bin_id6, 'medikamente', data)
