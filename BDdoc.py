@@ -67,18 +67,25 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
+import streamlit as st
+import io
 import base64
+from PIL import Image
 
 # Profilbild hochladen
 file = st.sidebar.file_uploader("👤 Profilbild auswählen", type=["jpg", "jpeg", "png"])
 
 # Falls ein Bild hochgeladen wurde, dieses als Base64-kodierten String speichern und in der Bin-ID ablegen
 if file is not None:
-    image = Image.open(io.BytesIO(file.read()))
+    image = Image.open(file)
     st.sidebar.image(image, caption="Dein Profilbild", use_column_width=True)
     
+    # Das Bild als Byte-Objekt speichern
+    image_bytes = io.BytesIO()
+    image.save(image_bytes, format='PNG')
+    
     # Das Bild als Base64-kodierten String speichern
-    image_base64 = base64.b64encode(file.read()).decode('utf-8')
+    image_base64 = base64.b64encode(image_bytes.getvalue()).decode('utf-8')
     
     # Das Bild in der Bin-ID speichern
     save_key(api_key, bin_id3, 'profilbild', image_base64)
