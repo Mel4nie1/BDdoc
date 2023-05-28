@@ -299,15 +299,12 @@ if st.button('Medikament hinzufügen'):
         'Medikament': neues_medikament,
         'Einnahme_Menge': neue_einnahme_menge,
         'Uhrzeit': neue_uhrzeit.strftime('%H:%M'),
-        'Eingenommen': Nein
+        'Eingenommen': False
     }
     data.append(neuer_datensatz)
     # Daten mit save_key() Funktion speichern
     res = save_key(api_key, bin_id6, 'medikamente', data)
-    if "success" in res and res["success"]:
-        st.success('Daten wurden erfolgreich gespeichert.')
-    else:
-        st.write('Fehler beim Speichern der Daten.')
+
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
