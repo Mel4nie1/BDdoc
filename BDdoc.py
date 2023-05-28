@@ -306,27 +306,20 @@ if st.button('Medikament hinzufügen'):
     # Daten mit save_key() Funktion speichern
     data.append(neuer_datensatz)
     res = save_key(api_key, bin_id6, 'medikamente', data)
+    if "success" in res and res["success"]:
+        st.success('Daten wurden erfolgreich gespeichert.')
+    else:
+        st.write('Fehler beim Speichern der Daten.')
 
 # DataFrame erstellen
 df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    checkbox_id = f"checkbox_{i}"
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', key=checkbox_id)
+    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?')
     df.at[i, 'Eingenommen'] = eingenommen
 
-# Dropdown-Menü zum Auswählen des zu löschenden Medikaments anzeigen
-ausgewähltes_medikament = st.selectbox('Medikament löschen:', df['Medikament'])
-
-# Schaltfläche zum Löschen des ausgewählten Medikaments
-if st.button('Medikament löschen'):
-    df = df[df['Medikament'] != ausgewähltes_medikament]
-    data = df.to_dict('records')
-    res = save_key(api_key, bin_id6, 'medikamente', data)
-
 st.table(df)
-
 
 
 
