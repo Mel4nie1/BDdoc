@@ -78,7 +78,7 @@ profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 name = st.sidebar.text_input("Name", profil.get("name", ""))
 st.write("Name:", name)
 
-geburtsdatum = st.sidebar.date_input("Geburtsdatum", profil.get("geburtsdatum", date.today()))
+geburtsdatum = st.sidebar.text_input("Geburtsdatum", profil.get("geburtsdatum", ""))
 st.write("Geburtsdatum:", geburtsdatum)
 
 geschlecht = st.sidebar.selectbox("Geschlecht", ("", "männlich", "weiblich", "divers"), index=profil.get("geschlecht", 0))
