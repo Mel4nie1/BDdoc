@@ -97,7 +97,7 @@ profil = {
 }
 
 # Load existing profile picture from the JSON-Bin
-existing_profile = load_profile_picture(api_key, bin_id)
+ load_profile_picture(api_key, bin_id)
 
 # Save the updated profile picture to the JSON-Bin
 save_profile_picture(api_key, bin_id, profile_picture_data)
