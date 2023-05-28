@@ -101,12 +101,13 @@ save_key(bin_id1, "gewicht", gewicht)
 save_key(bin_id1, "krankheiten", krankheiten)
 
 # Display the profile data
-st.write("Dein Profil:", Dein Profil)
+st.write("Dein Profil:")
 st.write("Name:", name)
 st.write("Geburtsdatum:", geburtsdatum)
 st.write("Geschlecht:", geschlecht)
 st.write("Gewicht [kg]:", gewicht)
-st.write("krankheiten:", krankheiten)
+st.write("Krankheiten:", krankheiten)
+
 
 # Dummy-Daten
 systolic = "-"
