@@ -308,12 +308,16 @@ def main():
 if __name__ == '__main__':
     main()
 
+import streamlit as st
+import pandas as pd
+import datetime as dt
+
 # Titel hinzufügen
-st.subheader("Medikamenten-Tracker")
+st.title("Medikamenten-Tracker")
 
 # Streamlit-Anwendung
 def main():
-    st.subheader("Medikamenten-Tracker")   
+    st.subheader("Medikamenten-Tracker")
 
 # Laden der vorhandenen Daten aus der JSON-Bin
 data = load_key(api_key, bin_id6, 'medikamente', empty_value=[])
@@ -355,7 +359,6 @@ if st.button('Eingabe löschen'):
     res = save_key(api_key, bin_id6, 'medikamente', data)
 
 st.table(df)
-
 
 
 
