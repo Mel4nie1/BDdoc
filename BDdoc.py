@@ -67,7 +67,10 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
-
+# Streamlit-Anwendung
+def main():
+    st.subheader("Dein Profil")
+    
 # Laden der vorhandenen Profildaten aus der JSON-Bin
 profil = load_key(api_key, bin_id1, 'profil', empty_value={})
 
@@ -176,9 +179,6 @@ def generate_blood_pressure_chart(address_list):
 # Aufruf der Funktion zum Erzeugen des Blutdruckverlaufs
 generate_blood_pressure_chart(address_list)
 
-
-
-
 # Normalwert definieren
 normalwerte = {"Systolisch": [0, 120], "Diastolisch": [0, 80]}
 
@@ -257,8 +257,6 @@ if st.button("Notizen löschen"):
     # Löschfunktion aufrufen
     delete_notes()
 
-
-
 # Funktion zum Laden der Termindaten aus der JSON-Bin
 def load_termine(api_key, bin_id5):
     data = load_key(api_key, bin_id5, 'termine', empty_value=[])
@@ -307,10 +305,6 @@ def main():
 # Streamlit-Anwendung ausführen
 if __name__ == '__main__':
     main()
-
-import streamlit as st
-import pandas as pd
-import datetime as dt
 
 # Titel hinzufügen
 st.title("Medikamenten-Tracker")
