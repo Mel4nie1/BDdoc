@@ -67,9 +67,8 @@ st.subheader("Überblick über deine Blutdruckwerte")
 st.markdown(""" <style>.stApp {background-color: #FFC0CB;}</style>""",
  unsafe_allow_html=True)
 
-# Streamlit-Anwendung
-def main():
-    st.subheader("Dein Profil")
+# Titel Profil
+st.sidebar.subheader("Dein Profil")
     
 # Laden der vorhandenen Profildaten aus der JSON-Bin
 profil = load_key(api_key, bin_id1, 'profil', empty_value={})
