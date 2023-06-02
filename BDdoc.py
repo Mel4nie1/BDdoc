@@ -345,7 +345,8 @@ df = pd.DataFrame(data)
 
 # Tabelle mit den Medikamenten anzeigen
 for i, row in df.iterrows():
-    eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
+    with st.cache(key=f"checkbox_{i}"):
+        eingenommen = st.checkbox(row['Medikament'] + ' um ' + row['Uhrzeit'] + ' Uhr eingenommen?', value=row['Eingenommen'])
     df.at[i, 'Eingenommen'] = eingenommen
 
 # Schaltfläche zum Löschen einer Eingabe
@@ -359,6 +360,7 @@ if st.button('Eingabe löschen'):
     res = save_key(api_key, bin_id6, 'medikamente', data)
 
 st.table(df)
+
 
 
 
