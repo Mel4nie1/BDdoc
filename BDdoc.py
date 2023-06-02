@@ -306,7 +306,7 @@ if __name__ == '__main__':
     main()
 
 # Titel hinzufügen
-st.title("Medikamenten-Tracker")
+st.subheader("Medikamenten-Tracker")
 
 # Streamlit-Anwendung
 def main():
